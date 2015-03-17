@@ -399,7 +399,7 @@ void RF24Gateway::handleTX(){
             if (writtenBytes != msg->size) {
                 //std::cerr << "Tun: Less bytes written to tun/tap device then requested." << std::endl;
 				printf("Tun: Less bytes written %d to tun/tap device then requested %d.",writtenBytes,msg->size);
-				//rxQueue.pop();
+				rxQueue.pop();
 				return;
             } else {
                 if (DEBUG >= 1) {

@@ -152,8 +152,8 @@ private:
  *
  * a: Install RF24 libs per installer. <br>
  * b: Manually download/clone RF24Gateway from https://github.com/TMRh20/RF24Gateway and run 'make install' <br>
- * c: Edit the InterfaceConfig.sh file to configure your IP/Subnet and run it to set up the interface. <br>
- * d: 'make' and run the example file <br>
+ * c: 'make' and run the example file <br>
+ * d: Edit the InterfaceConfig.sh file to configure your IP/Subnet and run it to set up the interface. <br>
  *
  * Note: Forwarding/NAT may need to be configured as with RF24toTUN<br>
  * Note: RF24Gateway defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh with the default configuration.
