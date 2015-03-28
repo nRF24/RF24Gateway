@@ -63,7 +63,7 @@ public:
    * @param data_rate The RF24 datarate to use (RF24_250KBPS, RF24_1MBPS, RF24_2MBPS)
    *
    * @code gw.begin(); //Start the gateway using RF24Mesh, with nodeID 0 (Master) @endcode
-   * @code gw.begin(1); //Start the gateway using RF24Mesh, with nodeID 1 (Child node) @endcode
+   * @code uint8_t nodeID; gw.begin(nodeID); //Start the gateway using RF24Mesh, with nodeID 1 (Child node) @endcode
    */
   void begin(uint8_t nodeID=0, uint8_t channel=97,rf24_datarate_e data_rate=RF24_1MBPS);
   

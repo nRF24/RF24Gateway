@@ -164,29 +164,26 @@ void RF24Gateway::update(){
 
 void RF24Gateway::handleRadio(){
 	
-	uint8_t type;
 	
 		if(mesh_enabled){
-		  if(mesh_enabled){
-			type=mesh.update();
+			mesh.update();
 			if(!thisNodeAddress){
 				mesh.DHCP();
 			}
-		  }
 		}else{
-           type=network.update();
+           network.update();
         }
+		
+		RF24NetworkFrame f;
+		while(network.external_queue.size() > 0){
+			f = network.external_queue.front();
 
-begin:         
-		if(type==EXTERNAL_DATA_TYPE){
-            RF24NetworkHeader header;
             msgStruct msg;
-            uint8_t buffer[MAX_PAYLOAD_SIZE];
 
-            unsigned int bytesRead = network.read(header,buffer,MAX_PAYLOAD_SIZE);
+            unsigned int bytesRead = f.message_size;
+
             if (bytesRead > 0) {
-                //msg.setPayload(buffer,bytesRead);
-				memcpy(&msg.message,buffer,bytesRead);
+				memcpy(&msg.message,&f.message_buffer,bytesRead);
 				msg.size=bytesRead;
 				
                 if (DEBUG >= 1) {
@@ -206,22 +203,20 @@ begin:
             } else {
                 std::cerr << "Radio: Error reading data from radio. Read '" << bytesRead << "' Bytes." << std::endl;
             }
+			network.external_queue.pop();
         } //End RX
 
 		
 		if(mesh_enabled){
-			type=mesh.update();
+			mesh.update();
 			if(!thisNodeAddress){
 				mesh.DHCP();
 			}
 		}else{
-            type=network.update();
+            network.update();
 		}
-		if(type==EXTERNAL_DATA_TYPE){
-			goto begin;
-		}
-	//if(!network.available()){	
-	if(type != EXTERNAL_DATA_TYPE){
+		
+	if(network.external_queue.size() == 0){
 	    if(dataRate == RF24_2MBPS){
 		 delayMicroseconds(1000);
 		}else
@@ -238,7 +233,7 @@ begin:
         
 		bool ok = 0;
 		
-		if(!txQueue.empty() && !radio.available() && type!=EXTERNAL_DATA_TYPE) {
+		if(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
 			
 		//	if(dataRate == RF24_2MBPS){
 		//		delayMicroseconds(1000);
