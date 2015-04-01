@@ -34,6 +34,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 #include <stdlib.h>
 //#include <net/if.h>
