@@ -25,13 +25,17 @@ int main(int argc, char** argv) {
   //Config for use without RF24Mesh
   // uint16_t RF24NetworkAddress = 0; 
   // gw.begin(RF24NetworkAddress);
- 
+  
+  //Set this to your chosen IP/Subnet
+  char ip[] = "10.10.2.2";
+  char subnet[] = "255.255.255.0";
+  
+  gw.setIP(ip,subnet);
  
  while(1){
     
 	// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	// RF24Network user payloads are loaded into the user cache
-
 	gw.update();
 	
 	if( network.available() ){
@@ -39,7 +43,7 @@ int main(int argc, char** argv) {
 		size_t size = network.peek(header);
 		uint8_t buf[size];
 	    network.read(header,&buf,size);
-	  printf("Received Network Message, type: %d\n",header.type);
+	  printf("Received Network Message, type: %d id %d \n",header.type,header.id);
 	}
  }
 

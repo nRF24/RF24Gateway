@@ -11,15 +11,13 @@
  */
   #include "net/if_arp.h"
   #include <cstdlib>
-  #include <stdio.h>
   #include <cstdint>
   #include <iostream>
   #include <string>
   #include <sys/socket.h>
-  #include <sys/types.h>
-  #include <netinet/in.h>
   #include <linux/if.h>
   #include <linux/if_tun.h>
+  #include <arpa/inet.h>
   #include <fcntl.h>
   #include <unistd.h>
   #include <sys/ioctl.h>
@@ -83,6 +81,16 @@ public:
   void begin(uint16_t address, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS, bool meshEnable=0, uint8_t nodeID=0 );
   
   /**
+   * Once the Gateway has been started via begin() , call setIP to configure the IP and
+   * subnet mask.
+   *
+   * @param ip A character array containing the numeric IP address ie: 192.168.1.1
+   * @param mask A character array containing the subnet mask ie: 255.255.255.0
+   * @return -1 if failed, 0 on success
+   */
+  int setIP( char *ip_addr, char *mask);
+  
+  /**
    * Calling update() keeps the network and mesh layers active and processing data. This needs to be called regularly.
    * @code
    * gw.update();
@@ -96,15 +104,18 @@ public:
   uint16_t thisNodeAddress; /**< Address of our node in Octal format (01,021, etc) */
   uint8_t thisNodeID;  /**< NodeID (0-255) */
   
+  
+  bool meshEnabled(); /**< Is RF24Mesh enabled? */
+  bool config_TUN; /**< Using a TAP(false) or TUN(true) interface */
+  
 private:
   RF24& radio;
   RF24Network& network;
   RF24Mesh& mesh;
   
   bool begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel);
-  
   bool mesh_enabled;
-  bool config_TUN;
+  
   uint8_t channel;
   rf24_datarate_e dataRate;
   char tunName[IFNAMSIZ];
@@ -116,7 +127,7 @@ private:
   void handleRadio();
   void handleRX();
   void handleTX();
-
+   
   int configDevice(uint16_t address);  
   int allocateTunDevice(char *dev, int flags, uint16_t address);
   
@@ -132,7 +143,32 @@ private:
   void printPayload(char *buffer, int nread, std::string debugMsg = "");
 };
   
-  
+/**
+ * @example RF24GatewayNode.cpp
+ *
+ * A simple example of using RF24Gateway node to forward IP traffic automatically to a network interface, while
+ * managing standard RF24Network user payloads independently.
+ */
+ 
+ /**
+ * @example RF24Gateway_ncurses.cpp
+ *
+ * RF24Gateway NCurses interface - TMRh20 2015 <br>
+ * This is a generic tool for nodes supporting or combining with RF24Ethernet and/or RF24Network.
+ * 
+ * The tool provides a simple interface for monitoring information and activity regarding the RF24Gateway: <br>
+ * a: Interface statistics from /proc/net/dev <br>
+ * b: RF24Mesh address/id assignments <br>
+ * c: RF24Network/Radio information <br>
+ * d: Active IP connections (optional) <br>
+ *
+ * **Requirements: NCurses** <br>
+ * Install NCurses: apt-get install libncurses5-dev
+ *
+ * @image html ncurses.JPG
+ */
+ 
+ 
 /**
  * @mainpage RF24Gateway
  *
@@ -151,12 +187,13 @@ private:
  * **Current:** 
  *
  * a: Install RF24 libs per installer. <br>
- * b: Manually download/clone RF24Gateway from https://github.com/TMRh20/RF24Gateway and run 'make install' <br>
- * c: 'make' and run the example file <br>
- * d: Edit the InterfaceConfig.sh file to configure your IP/Subnet and run it to set up the interface. <br>
+ * b: Manually download/clone RF24Gateway from https://github.com/TMRh20/RF24Gateway and run 'sudo make install' <br>
+ * c: Edit one of the examples to specify your CE/CSN pin config ( RF24 radio(22,0); ) <br>
+ * d: If using the RF24GatewayNode example, edit to set your IP/Subnet information <br> 
+ * e: 'make' and run the example file(s) <br>
  *
  * Note: Forwarding/NAT may need to be configured as with RF24toTUN<br>
- * Note: RF24Gateway defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh with the default configuration.
+ * Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh with the default configuration.
  *
  * 
  */
