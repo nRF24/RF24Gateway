@@ -37,7 +37,7 @@
 #include <fstream>
 
 #include <stdlib.h>
-//#include <net/if.h>
+#include <linux/if.h>
 #include <net/if_arp.h>
 #include <sys/ioctl.h>
 #include <linux/sockios.h>
@@ -89,6 +89,12 @@ WINDOW * cfgPad;
 int main() {	
   
   gw.begin();
+  
+  //uint8_t nodeID = 22;
+  //gw.begin(nodeID,3,RF24_2MBPS);
+  
+  //uint16_t address = 0;
+  //gw.begin(address,3,RF24_2MBPS);
   
   /** Setup NCurses**/
   /*******************************/ 
@@ -219,17 +225,18 @@ void drawMain(){
   wprintw(win,"RF24Gateway Ncurses Interface by TMRh20 - 2015\n");  
   whline(win,ACS_HLINE, maxY-2);
   attroff(COLOR_PAIR(1));
-  
+  refresh();
   /** Display Network Interface Info **/
   /*******************************/
 
-retryIF:
+
   
   //Interface Information
   struct ifaddrs *ifap, *ifa;
   int family,s,n;
   char host[NI_MAXHOST];
-  
+
+retryIF:  
   
   getifaddrs (&ifap);
   for (ifa = ifap, n=0; ifa != NULL; ifa = ifa->ifa_next, n++) {  
@@ -294,12 +301,12 @@ void drawHelp(){
 
 void drawCfg(bool isConf){
 
-	drawMain();
+	if(isConf){drawMain();}
 	nocbreak();
 	echo();
 	timeout(30000);
 	
-	sleep(0.5);
+	sleep(1);
 	wattron(win,COLOR_PAIR(1));
 	mvwprintw(win,5,1, isConf ? "IP Configuration\n" : "**Interface Not Configured:**\n");
 	wattroff(win,COLOR_PAIR(1));

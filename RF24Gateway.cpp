@@ -2,6 +2,7 @@
 
 
 #include "RF24Gateway.h"
+#include "RF24Mesh/RF24Mesh_config.h"
 
 /***************************************************************************************/
 
@@ -36,7 +37,9 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 	config_TUN = configTUN;
 	
 	///FIX
+	
 	channel = _channel;//97;
+	
 	dataRate = data_rate;
 	
 	configDevice(address);
@@ -45,7 +48,11 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 	thisNodeAddress = address;
 
     if(meshEnable){
-
+      // GW radio channel setting takes precedence over mesh_default_channel
+	  if(channel == 97 && MESH_DEFAULT_CHANNEL != 97){
+	    channel = MESH_DEFAULT_CHANNEL;
+	  }
+	
 	  if(!thisNodeAddress && !mesh_nodeID){	  
 	     mesh.setNodeID(0);
 	  }else{
@@ -54,22 +61,25 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 		}
 		mesh.setNodeID(mesh_nodeID); //Try not to conflict with any low-numbered node-ids
 	  }
-	  mesh.setChannel(channel);
-	  mesh.begin();
+	  mesh.begin(channel,data_rate);
 	  thisNodeAddress = mesh.mesh_address;
 	}else{
 	  radio.begin();
       delay(5);
       const uint16_t this_node = address;
-      network.begin(/*channel*/ channel, /*node address*/ this_node);
+	  radio.setDataRate(dataRate);
+	  radio.setChannel(channel);
+	  
+      network.begin(/*node address*/ this_node);
 	  thisNodeAddress = this_node;
+	  
 	}
 	network.multicastRelay=1;
 
-	radio.setDataRate(dataRate);
-    #if (DEBUG >= 1)
+
+    //#if (DEBUG >= 1)
         radio.printDetails();
-    #endif
+    //#endif
 	
 	
     return true;
@@ -128,11 +138,11 @@ int RF24Gateway::allocateTunDevice(char *dev, int flags, uint16_t address) {
     // Create device
     if(ioctl(fd, TUNSETIFF, (void *) &ifr) < 0) {
         //close(fd);
-		#if (DEBUG >= 1)
+		//#if (DEBUG >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETIFF" << std::endl;
 		std::cerr << "RF24Gw: If changing from TAP/TUN, run 'sudo ip link delete tun_nrf24' to remove the interface" << std::endl;
         return -1;
-		#endif
+		//#endif
     }
 
     //Make persistent
@@ -522,3 +532,5 @@ void printPayload(char *buffer, int nread, std::string debugMsg = "") {
 
 
 }
+
+/***************************************************************************************/
