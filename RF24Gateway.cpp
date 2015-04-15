@@ -81,8 +81,7 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
         radio.printDetails();
     //#endif
 	
-	
-    return true;
+	return true;
 }
 
 /***************************************************************************************/
@@ -200,21 +199,24 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 		perror(ifr.ifr_name);
 		return -1;
 	}
-	
-/* Read interface flags */
-	if (ioctl(sockfd, SIOCGIFFLAGS, &ifr) < 0) {
-		fprintf(stderr, "ifdown: shutdown ");
-		perror(ifr.ifr_name);
-		return -1;
-	}
-  
+
 	#ifdef ifr_flags
 	# define IRFFLAGS       ifr_flags
 	#else   /* Present on kFreeBSD */
 	# define IRFFLAGS       ifr_flagshigh
 	#endif
 
-  memcpy(&ifr.ifr_addr, &sin, sizeof(struct sockaddr)); 
+    if (!(ifr.IRFFLAGS & IFF_UP)) {
+		//fprintf(stdout, "Device is currently down..setting up.-- %u\n",ifr.IRFFLAGS);
+		ifr.IRFFLAGS |= IFF_UP;
+		if (ioctl(sockfd, SIOCSIFFLAGS, &ifr) < 0) {
+			fprintf(stderr, "ifup: failed ");
+			perror(ifr.ifr_name);
+			return -1;
+		}
+	}	
+
+	memcpy(&ifr.ifr_addr, &sin, sizeof(struct sockaddr)); 
  
   // Set interface address
   if (ioctl(sockfd, SIOCSIFADDR, &ifr) < 0) {
@@ -245,7 +247,6 @@ void RF24Gateway::update(){
   handleRadio();
   //handleTX();
   //handleRX();
-  
 }
 
 /***************************************************************************************/
@@ -266,7 +267,7 @@ void RF24Gateway::handleRadio(){
         }
 		
 		RF24NetworkFrame f;
-		while(network.external_queue.size() > 0){
+		while(network.external_queue.size() > 0 ){
 			f = network.external_queue.front();
 
             msgStruct msg;
@@ -298,7 +299,7 @@ void RF24Gateway::handleRadio(){
             }
 			network.external_queue.pop();
 			
-        }	    		
+        }
 		handleTX();
 		if(mesh_enabled){
 		
@@ -310,28 +311,33 @@ void RF24Gateway::handleRadio(){
 		}else{
            while(network.update());
         }
-		
 		handleRX();
 		
-	if(network.external_queue.size() == 0 ){	
+	if(network.external_queue.size() == 0 || txQueue.empty()){
+		//sched_yield();
 		if(dataRate == RF24_2MBPS){
-		 delayMicroseconds(1000);
+		 delayMicroseconds(850);
 		}else
 		if(dataRate == RF24_1MBPS){
-		 delayMicroseconds(1500);
+		 delayMicroseconds(1000);
 		}else
 		if(dataRate == RF24_250KBPS){
 		 delayMicroseconds(4500);
 		}
 	}
          // TX section
-
 		bool ok = 0;
 		
-			
-		
-        if(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
-
+        while(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
+		  if(dataRate == RF24_2MBPS){
+		    delayMicroseconds(850);
+		  }else
+		  if(dataRate == RF24_1MBPS){
+		    delayMicroseconds(1500);
+		  }else
+		  if(dataRate == RF24_250KBPS){
+		    delayMicroseconds(4500);
+		  }
 			msgStruct *msgTx = &txQueue.front();
 			
             #if (DEBUG >= 1)
@@ -418,8 +424,6 @@ void RF24Gateway::handleRadio(){
 
         } //End Tx
 		
-		
-		
 }
 
 /***************************************************************************************/
@@ -456,30 +460,26 @@ void RF24Gateway::handleRX(){
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
 			
-			if(txQueue.size() < 2){ // 150kB max queue size
+			if(txQueue.size() < 2){
 			  txQueue.push(msg);
 			}else{
-		      //std::cout << "**** Tun Drop ****" << std::endl;
+			  droppedIncoming++;
 			}
-			//return 1;
+
 		} else{
           #if (DEBUG >= 1)
 	      std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
 	      #endif
-		  //return 0;
+
 	    }
       }
     }
-	//return 0;
-
-
 }
 
 /***************************************************************************************/
 
  void RF24Gateway::handleTX(){
 
- 
 		if(rxQueue.size() < 1){
 		  return;
 		}
@@ -516,7 +516,6 @@ void RF24Gateway::handleRX(){
             #endif
 		rxQueue.pop();
         }
-
 
 }
 

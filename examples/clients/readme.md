@@ -1,0 +1,1 @@
+Client examples demonstrating how to request information and control sensors running RF24Ethernet server examples.

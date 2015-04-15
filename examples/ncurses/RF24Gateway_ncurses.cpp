@@ -89,6 +89,7 @@ WINDOW * cfgPad;
 int main() {	
   
   gw.begin();
+
   
   //uint8_t nodeID = 22;
   //gw.begin(nodeID,3,RF24_2MBPS);
@@ -122,17 +123,21 @@ int main() {
   timeout(0);
   
   drawMain();
-    
+
+
+  
 /******************************************************************/ 
 /***********************LOOP***************************************/  
  while(1){
 	
+	//delayMicroseconds(5000);
+	//delay(1);
 	/**
 	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	* RF24Network user payloads are loaded into the user cache		
 	*/
     gw.update();
-	
+  
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
 	if( network.available() ){
@@ -197,6 +202,7 @@ int main() {
 		case 'c' : drawCfg(1); break;
 		// h: Display help menu
 		case 'h' : drawHelp(); break;
+		case 'x' : clear(); endwin(); return 0; break;
 	  }
 
 	
@@ -204,10 +210,10 @@ int main() {
  }//while 1
 
 
- delwin(meshPad);
- delwin(connPad);
+ //delwin(meshPad);
+ //delwin(connPad);
+ clear();
  endwin();
- refresh();
  return 0;
  
 }//main
@@ -421,6 +427,13 @@ void drawRF24Pad(){
    int pa = radio.getPALevel();
    wprintw(rf24Pad,"PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW" : pa == 2 ? "HIGH" : pa == 3 ? "MAX" : "ERROR" );
    wprintw(rf24Pad,"IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP" );
+   wprintw(rf24Pad,"IF Drops: %u\n", gw.ifDropped() );
+   #if defined (ENABLE_NETWORK_STATS)
+     uint32_t ok,fail;
+	 network.failures(&fail,&ok);
+     wprintw(rf24Pad,"TX Packets: %u\n", ok );
+	 wprintw(rf24Pad,"TX Drops: %u\n", fail );
+   #endif
    
    if(padSelection == 1){
 	 wattron(rf24Pad,COLOR_PAIR(1));

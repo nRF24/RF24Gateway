@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
   char subnet[] = "255.255.255.0";
   
   gw.setIP(ip,subnet);
- 
+  
  while(1){
     
 	// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
@@ -47,5 +47,5 @@ int main(int argc, char** argv) {
 	}
  }
 
-
+  return 0;
 }

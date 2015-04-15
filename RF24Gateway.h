@@ -108,6 +108,10 @@ public:
   bool meshEnabled(); /**< Is RF24Mesh enabled? */
   bool config_TUN; /**< Using a TAP(false) or TUN(true) interface */
   
+  uint32_t ifDropped(){
+    return droppedIncoming;
+  }
+  
 private:
   RF24& radio;
   RF24Network& network;
@@ -115,6 +119,8 @@ private:
   
   bool begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel);
   bool mesh_enabled;
+  
+  uint32_t droppedIncoming;
   
   uint8_t channel;
   rf24_datarate_e dataRate;
@@ -143,6 +149,9 @@ private:
   void printPayload(char *buffer, int nread, std::string debugMsg = "");
 };
   
+  
+  
+
 /**
  * @example RF24GatewayNode.cpp
  *
@@ -168,6 +177,23 @@ private:
  * @image html ncurses.JPG
  */
  
+ /** @example bClient.sh
+ *
+ * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
+ * the sensor nodes. Example of on demand LED/Lighting control using a Bash script.
+ */
+ 
+ /** @example nodeClient.js
+ *
+ * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
+ * the sensor nodes. Example of on demand LED/Lighting control using a NodeJS script.
+ */
+
+ /** @example pyClient.py
+ *
+ * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
+ * the sensor nodes. Example of scheduled LED/Lighting control using a Python script.
+ */
  
 /**
  * @mainpage RF24Gateway
