@@ -180,19 +180,19 @@ private:
  /** @example bClient.sh
  *
  * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
- * the sensor nodes. Example of on demand LED/Lighting control using a Bash script.
+ * the sensor nodes. <br>Example of on demand LED/Lighting control using a Bash script.
  */
  
  /** @example nodeClient.js
  *
  * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
- * the sensor nodes. Example of on demand LED/Lighting control using a NodeJS script.
+ * the sensor nodes. <br> Example of on demand LED/Lighting control using a NodeJS script.
  */
 
  /** @example pyClient.py
  *
  * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with
- * the sensor nodes. Example of scheduled LED/Lighting control using a Python script.
+ * the sensor nodes. <br> Example of scheduled LED/Lighting control using a Python script.
  */
  
 /**
@@ -207,18 +207,10 @@ private:
  *
  * @section Installation Installation
  *
- * Installation instructions will be included with the RF24Ethernet documentation at http://tmrh20.github.io/RF24Ethernet once RF24Gateway
- * is completed. 
+ * Installation instructions are included with the RF24Ethernet documentation at http://tmrh20.github.io/RF24Ethernet 
  *
- * **Current:** 
  *
- * a: Install RF24 libs per installer. <br>
- * b: Manually download/clone RF24Gateway from https://github.com/TMRh20/RF24Gateway and run 'sudo make install' <br>
- * c: Edit one of the examples to specify your CE/CSN pin config ( RF24 radio(22,0); ) <br>
- * d: If using the RF24GatewayNode example, edit to set your IP/Subnet information <br> 
- * e: 'make' and run the example file(s) <br>
- *
- * Note: Forwarding/NAT may need to be configured as with RF24toTUN<br>
+ * Note: Forwarding/NAT may need to be configured<br>
  * Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh with the default configuration.
  *
  * 
