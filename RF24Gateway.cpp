@@ -396,7 +396,7 @@ void RF24Gateway::handleRadio(){
 		  }else{ // TUN always needs to use RF24Mesh for address assignment AND resolution
 
 			   uint8_t lastOctet = tmp[19];
-			   uint8_t meshAddr;
+			   uint16_t meshAddr;
 
 			  if ( (meshAddr = mesh.getAddress(lastOctet)) > 0 || thisNodeID) {
 				RF24NetworkHeader header(meshAddr, EXTERNAL_DATA_TYPE);
