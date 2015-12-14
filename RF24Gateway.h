@@ -173,6 +173,7 @@ private:
  *
  * **Requirements: NCurses** <br>
  * Install NCurses: apt-get install libncurses5-dev
+ * Optional: Enable nf_conntrack: @code modprobe nf_conntrack_ipv4 @endcode
  *
  * @image html ncurses.JPG
  */
@@ -207,12 +208,24 @@ private:
  *
  * @section Installation Installation
  *
- * Installation instructions are included with the RF24Ethernet documentation at http://tmrh20.github.io/RF24Ethernet 
+ * See http://tmrh20.github.io/RF24 for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
+ * 
+ * After running the installer, RF24Gateway will be installed at rf24libs/RF24Gateway. <b><a href="examples.html">Examples</a></b> are included for operating the gateway
+ * as well as client scripts & programs to control nodes via http requests.
  *
+ * Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh or be statically assigned within RF24Mesh.
  *
- * Note: Forwarding/NAT may need to be configured<br>
- * Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh with the default configuration.
+ * See http://tmrh20.github.io/RF24Ethernet/ for related documentation for use with RF24Gateway. 
  *
+ * @section HowItWorks How It Works
+ *
+ * RF24Gateway is relatively simple in design, and uses the <a href="https://www.kernel.org/doc/Documentation/networking/tuntap.txt">Universal TUN/TAP driver for Linux</a> <br>
+ * Data incoming from the RF24 communication stack (designated as external data) is passed to the interface without modification. Conversely, incoming TCP/IP or other data
+ * received on the TUN/TAP interface is passed directly into the radio network and designated as external data.
+ *
+ * Linux devices running RF24Gateway can establish network links using the built-in TCP/IP stack, and users can include Arduino/AVR devices or additional RPi devices to automatically
+ * extend the wireless range.<br>
+ * Arduino/AVR devices, etc must utilize a software IP stack such as uIP.
  * 
  */
  

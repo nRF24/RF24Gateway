@@ -409,6 +409,7 @@ void RF24Gateway::handleRadio(){
 			  }
 		  
 		  }
+          delay( rf24_min(msgTx->size/48,20));
 		  txQueue.pop();
 		  
 
