@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
   char subnet[] = "255.255.255.0";
   
   gw.setIP(ip,subnet);
+  radio.maskIRQ(1,1,0);
   attachInterrupt(23, INT_EDGE_FALLING, intHandler);
   
   

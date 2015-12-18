@@ -129,6 +129,7 @@ int main() {
   
   drawMain();
   
+  radio.maskIRQ(1,1,0);
   attachInterrupt(23, INT_EDGE_FALLING, intHandler);
 
   
