@@ -11,13 +11,6 @@ RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 RF24Gateway gw(radio,network,mesh);
 
-void intHandler(){
-    
-    gw.update(true);	
-
-}
-
-
 int main(int argc, char** argv) {
 
   //Config for use with RF24Mesh as Master Node
