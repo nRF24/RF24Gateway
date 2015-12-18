@@ -87,6 +87,10 @@ WINDOW * cfgPad;
  
 /******************************************************************/ 
 /***********************MAIN***************************************/  	
+void intHandler(){
+    gw.update(true);
+}
+
 
 int main() {	
   
@@ -124,7 +128,8 @@ int main() {
   timeout(0);
   
   drawMain();
-
+  
+  attachInterrupt(23, INT_EDGE_FALLING, intHandler);
 
   
 /******************************************************************/ 
@@ -137,7 +142,8 @@ int main() {
 	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	* RF24Network user payloads are loaded into the user cache		
 	*/
-    gw.update();
+    //gw.update();
+    gw.poll(10);
   
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
@@ -159,7 +165,10 @@ int main() {
           myTime.hr = tm->tm_hour;
           myTime.min = tm->tm_min;
          RF24NetworkHeader hdr(header.from_node,1); 
+         rfNoInterrupts();
          network.write(hdr,&myTime,sizeof(myTime));
+         gw.update();
+         rfInterrupts();
 
    	}
           network.read(header,&buf,size);

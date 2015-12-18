@@ -98,8 +98,16 @@ public:
    *  ...do something
    * }
    * @endcode
+   * @param interrupts. Set true if called from an interrupt handler & call poll() from the main loop or a thread.
    */
-  void update(); 
+  void update(bool interrupts=0); 
+  
+  /**
+   * gw.poll(); needs to be called to handle incoming data from the network interface.
+   * The function will perform a delayed wait of max 3ms unless otherwise specified.
+   * @param waitDelay How long in milliseconds this function will wait for incoming data.
+   */
+  void poll(uint32_t waitDelay=3); 
   
   uint16_t thisNodeAddress; /**< Address of our node in Octal format (01,021, etc) */
   uint8_t thisNodeID;  /**< NodeID (0-255) */
@@ -130,8 +138,9 @@ private:
   unsigned long packets_sent;  /**< How many have we sent already */
   uint32_t interfaceInTimer;
   
-  void handleRadio();
-  void handleRX();
+  void handleRadioOut();
+  void handleRadioIn();
+  void handleRX(uint32_t waitDelay=0);
   void handleTX();
    
   int configDevice(uint16_t address);  
@@ -176,6 +185,18 @@ private:
  * Optional: Enable nf_conntrack: @code modprobe nf_conntrack_ipv4 @endcode
  *
  * @image html ncurses.JPG
+ */
+ 
+ /**
+ * @example gwNodeInt.cpp
+ *
+ * A copy of the RF24GatewayNode example using interrupts.
+ */
+ 
+ /**
+ * @example RF24Gateway_ncursesInt.cpp
+ *
+ * A copy of the ncurses example using interrupts.
  */
  
  /** @example bClient.sh
