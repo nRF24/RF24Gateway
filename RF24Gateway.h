@@ -188,7 +188,7 @@ private:
  */
  
  /**
- * @example gwNodeInt.cpp
+ * @example RF24GatewayNodeInt.cpp
  *
  * A copy of the RF24GatewayNode example using interrupts.
  */

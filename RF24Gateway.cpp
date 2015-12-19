@@ -245,8 +245,8 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 
 void RF24Gateway::update(bool interrupts){
   
-  if(interrupts){
-    handleRadioIn();
+  if(interrupts){    
+    handleRadioIn();    
   }else{
     handleRadioIn();
     handleRX();
@@ -257,10 +257,7 @@ void RF24Gateway::update(bool interrupts){
 void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
-    rfNoInterrupts();
     handleRadioOut();
-    handleRadioIn();
-    rfInterrupts();
 
 }
 /***************************************************************************************/
@@ -319,6 +316,7 @@ void RF24Gateway::handleRadioOut(){
 		bool ok = 0;
 		
         while(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
+        //while(!txQueue.empty() && network.external_queue.size() == 0) {
 			msgStruct *msgTx = &txQueue.front();
 			
             #if (DEBUG >= 1)
@@ -441,13 +439,11 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 		    msgStruct msg;
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
-			rfNoInterrupts();
 			if(txQueue.size() < 2){
 			  txQueue.push(msg);
 			}else{
 			  droppedIncoming++;
 			}
-            rfInterrupts();
 
 		} else{
           #if (DEBUG >= 1)
