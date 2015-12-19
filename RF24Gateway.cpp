@@ -250,6 +250,7 @@ void RF24Gateway::update(bool interrupts){
     handleTX();
   }else{
     handleRadioIn();
+    handleTX();
     handleRX();
     handleRadioOut();
   }  
@@ -316,8 +317,10 @@ void RF24Gateway::handleRadioOut(){
 
 		bool ok = 0;
 		
-        while(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
-			msgStruct *msgTx = &txQueue.front();
+        while(!txQueue.empty() && network.external_queue.size() == 0) {
+			
+            
+            msgStruct *msgTx = &txQueue.front();
 			
             #if (DEBUG >= 1)
                 std::cout << "Radio: Sending " << msgTx->size << " bytes ... ";
@@ -388,7 +391,7 @@ void RF24Gateway::handleRadioOut(){
 			  }
 		  
 		  }
-          delay( rf24_min(msgTx->size/48,20));
+          //delay( rf24_min(msgTx->size/48,20));
 		  txQueue.pop();
 		  
 
