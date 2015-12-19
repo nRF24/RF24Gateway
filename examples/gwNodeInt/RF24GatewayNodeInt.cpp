@@ -11,6 +11,14 @@ RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 RF24Gateway gw(radio,network,mesh);
 
+void intHandler(){
+    
+    //Handle RF24Network reads/routing and read/writes of the tun_nrf24 TUN/TAP interface via interrupt
+    gw.update(true);
+
+}
+
+
 int main(int argc, char** argv) {
 
   //Config for use with RF24Mesh as Master Node
@@ -18,7 +26,7 @@ int main(int argc, char** argv) {
    gw.begin();
 
   //Config for use with RF24Mesh as child Node
-  // uint8_t nodeID = 2;
+  // uint8_t nodeID = 1;
   // gw.begin(nodeID);
  
  
@@ -31,19 +39,26 @@ int main(int argc, char** argv) {
   char subnet[] = "255.255.255.0";
   
   gw.setIP(ip,subnet);
+  radio.maskIRQ(1,1,0);
+  attachInterrupt(23, INT_EDGE_FALLING, intHandler);
+  
   
  while(1){
     
 	// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	// RF24Network user payloads are loaded into the user cache
-    gw.update();
-    if( network.available() ){
+	if( network.available() ){
 	  RF24NetworkHeader header;
 		size_t size = network.peek(header);
 		uint8_t buf[size];
 	    network.read(header,&buf,size);
 	  printf("Received Network Message, type: %d id %d from %d\n",header.type,header.id,mesh.getNodeID(header.from_node));
 	}
+   
+   //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
+   //The function will perform a delayed wait of max 3ms unless otherwise specified.
+   gw.poll(3);
+
   }
   return 0;
 }

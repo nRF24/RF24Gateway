@@ -243,30 +243,40 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 
 /***************************************************************************************/
 
-void RF24Gateway::update(){
-  handleRadio();
-  //handleTX();
-  //handleRX();
+void RF24Gateway::update(bool interrupts){
+  
+  if(interrupts){   
+    handleRadioIn();
+    handleTX();
+  }else{
+    handleRadioIn();
+    handleTX();
+    handleRX();
+    handleRadioOut();
+  }  
 }
 
+void RF24Gateway::poll(uint32_t waitDelay){
+
+    handleRX(waitDelay);
+    rfNoInterrupts();
+    handleRadioOut();
+    rfInterrupts();
+}
 /***************************************************************************************/
 
-void RF24Gateway::handleRadio(){
-	
- 
-		
-		if(mesh_enabled){
-		
-			while(mesh.update());
-			
-			if(!thisNodeAddress){
-				mesh.DHCP();
-			}
-		}else{
-           while(network.update());
-        }
-		
-		RF24NetworkFrame f;
+void RF24Gateway::handleRadioIn(){
+    
+    if(mesh_enabled){
+      while(mesh.update());
+        if(!thisNodeAddress){
+            mesh.DHCP();
+    }
+    }else{
+        while(network.update());
+    }
+       
+    RF24NetworkFrame f;
 		while(network.external_queue.size() > 0 ){
 			f = network.external_queue.front();
 
@@ -300,45 +310,17 @@ void RF24Gateway::handleRadio(){
 			network.external_queue.pop();
 			
         }
-		handleTX();
-		if(mesh_enabled){
-		
-		while(mesh.update());
-			
-			if(!thisNodeAddress){
-				mesh.DHCP();
-			}
-		}else{
-           while(network.update());
-        }
-		handleRX();
-		
-	if(network.external_queue.size() == 0 || txQueue.empty()){
-		//sched_yield();
-		if(dataRate == RF24_2MBPS){
-		 delayMicroseconds(850);
-		}else
-		if(dataRate == RF24_1MBPS){
-		 delayMicroseconds(1000);
-		}else
-		if(dataRate == RF24_250KBPS){
-		 delayMicroseconds(4500);
-		}
-	}
-         // TX section
+}
+
+
+void RF24Gateway::handleRadioOut(){
+
 		bool ok = 0;
 		
-        while(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
-		  if(dataRate == RF24_2MBPS){
-		    delayMicroseconds(850);
-		  }else
-		  if(dataRate == RF24_1MBPS){
-		    delayMicroseconds(1500);
-		  }else
-		  if(dataRate == RF24_250KBPS){
-		    delayMicroseconds(4500);
-		  }
-			msgStruct *msgTx = &txQueue.front();
+        while(!txQueue.empty() && network.external_queue.size() == 0) {
+			
+            
+            msgStruct *msgTx = &txQueue.front();
 			
             #if (DEBUG >= 1)
                 std::cout << "Radio: Sending " << msgTx->size << " bytes ... ";
@@ -409,7 +391,7 @@ void RF24Gateway::handleRadio(){
 			  }
 		  
 		  }
-          delay( rf24_min(msgTx->size/48,20));
+          //delay( rf24_min(msgTx->size/48,20));
 		  txQueue.pop();
 		  
 
@@ -429,7 +411,7 @@ void RF24Gateway::handleRadio(){
 
 /***************************************************************************************/
 
-void RF24Gateway::handleRX(){
+void RF24Gateway::handleRX(uint32_t waitDelay){
 
     fd_set socketSet;
     struct timeval selectTimeout;
@@ -440,7 +422,7 @@ void RF24Gateway::handleRX(){
     FD_SET(tunFd, &socketSet);
 
     selectTimeout.tv_sec = 0;
-    selectTimeout.tv_usec = 0;
+    selectTimeout.tv_usec = waitDelay*1000;
 
     if (select(tunFd + 1, &socketSet, NULL, NULL,&selectTimeout) != 0) {
       if (FD_ISSET(tunFd, &socketSet)) {
@@ -456,17 +438,16 @@ void RF24Gateway::handleRX(){
 			  }
 			std::cout <<  std::endl;
             #endif
-
+            rfNoInterrupts();
 		    msgStruct msg;
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
-			
 			if(txQueue.size() < 2){
 			  txQueue.push(msg);
 			}else{
 			  droppedIncoming++;
 			}
-
+            rfInterrupts();
 		} else{
           #if (DEBUG >= 1)
 	      std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
@@ -482,11 +463,13 @@ void RF24Gateway::handleRX(){
  void RF24Gateway::handleTX(){
 
 		if(rxQueue.size() < 1){
+          rfInterrupts();
 		  return;
 		}
 		msgStruct *msg = &rxQueue.front();
 
         if(msg->size > MAX_PAYLOAD_SIZE){
+            rfInterrupts();
 			//printf("*****WTF OVER *****");
 			rxQueue.pop();
 			return;
