@@ -245,8 +245,9 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 
 void RF24Gateway::update(bool interrupts){
   
-  if(interrupts){    
-    handleRadioIn();    
+  if(interrupts){   
+    handleRadioIn();
+    handleTX();
   }else{
     handleRadioIn();
     handleRX();
@@ -257,8 +258,9 @@ void RF24Gateway::update(bool interrupts){
 void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
+    rfNoInterrupts();
     handleRadioOut();
-
+    rfInterrupts();
 }
 /***************************************************************************************/
 
@@ -307,7 +309,6 @@ void RF24Gateway::handleRadioIn(){
 			network.external_queue.pop();
 			
         }
-        handleTX();
 }
 
 
@@ -316,7 +317,6 @@ void RF24Gateway::handleRadioOut(){
 		bool ok = 0;
 		
         while(!txQueue.empty() && !radio.available() && network.external_queue.size() == 0) {
-        //while(!txQueue.empty() && network.external_queue.size() == 0) {
 			msgStruct *msgTx = &txQueue.front();
 			
             #if (DEBUG >= 1)
@@ -435,7 +435,7 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			  }
 			std::cout <<  std::endl;
             #endif
-
+            rfNoInterrupts();
 		    msgStruct msg;
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
@@ -444,7 +444,7 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			}else{
 			  droppedIncoming++;
 			}
-
+            rfInterrupts();
 		} else{
           #if (DEBUG >= 1)
 	      std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
@@ -460,11 +460,13 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
  void RF24Gateway::handleTX(){
 
 		if(rxQueue.size() < 1){
+          rfInterrupts();
 		  return;
 		}
 		msgStruct *msg = &rxQueue.front();
 
         if(msg->size > MAX_PAYLOAD_SIZE){
+            rfInterrupts();
 			//printf("*****WTF OVER *****");
 			rxQueue.pop();
 			return;
