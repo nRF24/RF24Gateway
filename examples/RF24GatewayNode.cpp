@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
 	    network.read(header,&buf,size);
 	  printf("Received Network Message, type: %d id %d from %d\n",header.type,header.id,mesh.getNodeID(header.from_node));
 	}
+    delay(2);
   }
   return 0;
 }

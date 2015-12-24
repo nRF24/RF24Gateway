@@ -225,6 +225,7 @@ int main() {
 
 	
 	}
+    delay(2);
  }//while 1
 
 
