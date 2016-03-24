@@ -59,6 +59,7 @@ WINDOW * connPad;
 WINDOW * devPad;
 WINDOW * rf24Pad;
 WINDOW * cfgPad;
+WINDOW * renewPad;
 
  void drawMain(void);
  void drawHelp(void);
@@ -122,6 +123,7 @@ int main() {
   rf24Pad = newpad(11,40);  
   connPad = newpad(21,150);
   cfgPad = newpad(10,40);
+  renewPad = newpad(1,35);
   
   scrollok(meshPad,true);
   scrollok(connPad,true);
@@ -136,10 +138,28 @@ int main() {
   
 /******************************************************************/ 
 /***********************LOOP***************************************/  
+bool ok = true;
+
  while(1){
 	
-	//delayMicroseconds(5000);
-	//delay(1);
+  
+    
+  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+    mesh_timer = millis();
+    if( ! mesh.checkConnection() ){
+        wclear(renewPad);
+        mvwprintw(renewPad,0,0,"*Renewing Address*");
+        prefresh(renewPad,0,0, 3,26, 4, 55);
+        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+        if( (ok = mesh.renewAddress()) ){
+            wclear(renewPad);
+            prefresh(renewPad,0,0, 3,26, 3, 55);
+        }
+        radio.maskIRQ(1,1,0);
+     }
+  } 
+  if(ok){
+  
 	/**
 	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	* RF24Network user payloads are loaded into the user cache		
@@ -174,6 +194,7 @@ int main() {
 
   
 
+  }
   /** Mesh address/id printout **/
   /*******************************/
     if(millis() - meshInfoTimer > updateRate){
@@ -198,15 +219,6 @@ int main() {
       }
 	} //MeshInfo Timer
    
-  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
-    mesh_timer = millis();
-    if( ! mesh.checkConnection() ){
-        //refresh the network address
-        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
-        mesh.renewAddress();
-        radio.maskIRQ(1,1,0);
-     }
-  }     
    
   /** Handle keyboard input **/
   /*******************************/
