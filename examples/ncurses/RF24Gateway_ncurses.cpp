@@ -77,6 +77,7 @@ WINDOW * cfgPad;
  unsigned long updateRate = 1000;
   
  uint32_t meshInfoTimer = 0;
+ uint32_t mesh_timer = 0;
  std::string subIP;
  std::string tunStr ("tun_nrf24");
  bool showConnPad;
@@ -191,7 +192,13 @@ int main() {
       }
 	} //MeshInfo Timer
    
-   
+  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+    mesh_timer = millis();
+    if( ! mesh.checkConnection() ){
+        //refresh the network address
+        mesh.renewAddress();
+     }
+  }
    
   /** Handle keyboard input **/
   /*******************************/

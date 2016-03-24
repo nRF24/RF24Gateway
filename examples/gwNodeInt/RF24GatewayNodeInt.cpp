@@ -18,6 +18,7 @@ void intHandler(){
 
 }
 
+uint32_t mesh_timer = 0;
 
 int main(int argc, char** argv) {
 
@@ -58,6 +59,16 @@ int main(int argc, char** argv) {
    //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
    //The function will perform a delayed wait of max 3ms unless otherwise specified.
    gw.poll(3);
+   
+  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+    mesh_timer = millis();
+    if( ! mesh.checkConnection() ){
+        //refresh the network address
+        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+        mesh.renewAddress();
+        radio.maskIRQ(1,1,0);
+     }
+  }    
 
   }
   return 0;

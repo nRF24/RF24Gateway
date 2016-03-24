@@ -11,6 +11,8 @@ RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 RF24Gateway gw(radio,network,mesh);
 
+uint32_t mesh_timer = 0;
+
 int main(int argc, char** argv) {
 
   //Config for use with RF24Mesh as Master Node
@@ -45,6 +47,15 @@ int main(int argc, char** argv) {
 	  printf("Received Network Message, type: %d id %d from %d\n",header.type,header.id,mesh.getNodeID(header.from_node));
 	}
     delay(2);
+    
+    if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+      mesh_timer = millis();
+      if( ! mesh.checkConnection() ){
+        //refresh the network address
+        mesh.renewAddress();
+      }
+    }
+  
   }
   return 0;
 }
