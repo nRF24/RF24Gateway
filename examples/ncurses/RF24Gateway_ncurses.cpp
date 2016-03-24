@@ -195,20 +195,10 @@ int main() {
    
   /** Handle keyboard input **/
   /*******************************/
-	int myChar;
-	if ( (myChar = getch()) == '\033') {
-	  getch();
-	  switch(getch()){
-	    case 'A': if(padSelection == 0){meshScroll++;}else if(padSelection == 1){connScroll++;} break;
-		case 'B': if(padSelection == 0){meshScroll--;}else if(padSelection == 1){connScroll--;} break;
-		case 'C': padSelection++; padSelection= std::min(padSelection,1); break; //right
-		case 'D': padSelection--; padSelection= std::max(padSelection,0); break; //left
-	  }
-	  meshScroll = std::max(meshScroll,0);
-	  connScroll = std::max(connScroll,0);
-	  meshInfoTimer = 0;
-	}else
+    int myChar = getch();
+    
     if(myChar > -1){
+      //cout << myChar << endl;
 	  switch(myChar){
 	    // a: En/Disable display of active connections
 	    case 'a' : showConnPad = !showConnPad; if(!showConnPad){ wclear(connPad); prefresh(connPad,0,0, 15,1, maxX-1,maxY-2); drawMain();} break;
@@ -221,6 +211,13 @@ int main() {
 		// h: Display help menu
 		case 'h' : drawHelp(); break;
 		case 'x' : clear(); endwin(); return 0; break;
+	    case 'A': if(padSelection == 0){meshScroll++;}else if(padSelection == 1){connScroll++;} break;
+		case 'B': if(padSelection == 0){meshScroll--;}else if(padSelection == 1){connScroll--;} break;
+		case 'C': padSelection++; padSelection= std::min(padSelection,1); break; //right
+		case 'D': padSelection--; padSelection= std::max(padSelection,0); break; //left
+        meshScroll = std::max(meshScroll,0);
+        connScroll = std::max(connScroll,0);
+        meshInfoTimer = 0;
 	  }
 
 	
