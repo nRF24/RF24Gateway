@@ -61,9 +61,7 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 		}
 		mesh.setNodeID(mesh_nodeID); //Try not to conflict with any low-numbered node-ids
 	  }
-      radio.maskIRQ(1,1,1); //Use polled updates while renewing address
 	  mesh.begin(channel,data_rate);
-      radio.maskIRQ(1,1,0);
 	  thisNodeAddress = mesh.mesh_address;
 	}else{
 	  radio.begin();
