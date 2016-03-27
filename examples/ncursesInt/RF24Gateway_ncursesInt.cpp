@@ -45,12 +45,14 @@
 #include <time.h>
 
 /******************************************************************/
-
-RF24 radio(22,0);
+//User Configuration
+RF24 radio(25,0);
 RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 RF24Gateway gw(radio,network,mesh);
 
+uint8_t nodeID = 0;
+int interruptPin = 24;
 /******************************************************************/
 
 WINDOW * win;
@@ -78,7 +80,10 @@ WINDOW * renewPad;
  unsigned long updateRate = 1000;
   
  uint32_t meshInfoTimer = 0;
+ uint32_t fifoTimer;
+ uint32_t fifoClears;
  uint32_t mesh_timer = 0;
+ size_t networkPacketsRX = 0;
  std::string subIP;
  std::string tunStr ("tun_nrf24");
  bool showConnPad;
@@ -96,8 +101,9 @@ void intHandler(){
 
 int main() {	
   
-  gw.begin();
-  
+  gw.begin(nodeID);
+  //mesh.setStaticAddress(8,1);
+
   //uint8_t nodeID = 22;
   //gw.begin(nodeID,3,RF24_2MBPS);
   
@@ -111,6 +117,7 @@ int main() {
   noecho();
   getmaxyx(win,maxX,maxY);
   
+  keypad(win, TRUE);
   start_color();
   curs_set(0);   
   init_pair(1, COLOR_GREEN, COLOR_BLACK);
@@ -130,11 +137,16 @@ int main() {
   scrollok(rf24Pad,true);
   timeout(0);
   
+
+  //MANUAL IP
+  //char ip[] = "10.10.3.1";
+  //char subnet[] = "255.255.255.0";
+  //gw.setIP(ip,subnet);
+
   drawMain();
   
   radio.maskIRQ(1,1,0);
-  attachInterrupt(23, INT_EDGE_FALLING, intHandler);
-
+  attachInterrupt(interruptPin, INT_EDGE_FALLING, intHandler);
   
 /******************************************************************/ 
 /***********************LOOP***************************************/  
@@ -145,7 +157,6 @@ bool ok = true;
   
     
   if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
-    mesh_timer = millis();
     if( ! mesh.checkConnection() ){
         wclear(renewPad);
         mvwprintw(renewPad,0,0,"*Renewing Address*");
@@ -153,12 +164,14 @@ bool ok = true;
         radio.maskIRQ(1,1,1); //Use polling only for address renewal       
         if( (ok = mesh.renewAddress()) ){
             wclear(renewPad);
-            prefresh(renewPad,0,0, 3,26, 3, 55);
+            prefresh(renewPad,0,0, 3,26, 4, 55);
         }
         radio.maskIRQ(1,1,0);
      }
-  } 
-  if(ok){
+     mesh_timer = millis();
+  }
+  
+  if(ok){ //Non-master nodes need an active connection to the mesh in order to handle data
   
 	/**
 	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
@@ -168,32 +181,34 @@ bool ok = true;
   
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
-	if( network.available() ){
+    rfNoInterrupts();
+    if( network.available() ){
+	  ++networkPacketsRX;
 	  RF24NetworkHeader header;
 	  size_t size = network.peek(header);
 	  uint8_t buf[size];
 
-         if(header.type == 1){
-	  struct timeStruct{
-	   uint8_t hr;
-	   uint8_t min;
-	  }myTime;
+      if(header.type == 1){
+	    struct timeStruct{
+	     uint8_t hr;
+	     uint8_t min;
+	    }myTime;
 
-	  time_t mTime;
-	  time(&mTime);
-	  struct tm* tm = localtime(&mTime);
+	    time_t mTime;
+	    time(&mTime);
+	    struct tm* tm = localtime(&mTime);
 
-          myTime.hr = tm->tm_hour;
-          myTime.min = tm->tm_min;
-         RF24NetworkHeader hdr(header.from_node,1); 
-         network.write(hdr,&myTime,sizeof(myTime));
+        myTime.hr = tm->tm_hour;
+        myTime.min = tm->tm_min;
+        RF24NetworkHeader hdr(header.from_node,1); 
+        network.write(hdr,&myTime,sizeof(myTime));
 
-   	}
-          network.read(header,&buf,size);
+   	  }
+      network.read(header,&buf,size);
 	}
-
-  
-
+    rfInterrupts();
+  }else{
+      delay(100); //Big delay if connection to RF24Mesh is failing
   }
   /** Mesh address/id printout **/
   /*******************************/
@@ -238,10 +253,11 @@ bool ok = true;
 		// h: Display help menu
 		case 'h' : drawHelp(); break;
 		case 'x' : clear(); endwin(); return 0; break;
-	    case 'A': if(padSelection == 0){meshScroll++;}else if(padSelection == 1){connScroll++;} break;
-		case 'B': if(padSelection == 0){meshScroll--;}else if(padSelection == 1){connScroll--;} break;
-		case 'C': padSelection++; padSelection= std::min(padSelection,1); break; //right
-		case 'D': padSelection--; padSelection= std::max(padSelection,0); break; //left
+	    case KEY_UP: if(padSelection == 0){meshScroll++;}else if(padSelection == 1){connScroll++;} break;
+		case KEY_DOWN: if(padSelection == 0){meshScroll--;}else if(padSelection == 1){connScroll--;} break;
+		case KEY_RIGHT: padSelection++; padSelection= std::min(padSelection,1); break; //right
+		case KEY_LEFT: padSelection--; padSelection= std::max(padSelection,0); break; //left
+		case 'Q': clear(); endwin(); return 0; break;
         meshScroll = std::max(meshScroll,0);
         connScroll = std::max(connScroll,0);
         meshInfoTimer = 0;
@@ -291,7 +307,7 @@ retryIF:
 		if ( tunStr.compare(ifa->ifa_name) != 0 || ifa->ifa_addr == NULL){
 			
 			if(ifa->ifa_next == NULL ){
-				drawCfg(0);
+                drawCfg(0);
 				goto retryIF;
 			}else{
 			  continue;
@@ -464,18 +480,26 @@ void drawRF24Pad(){
    mvwprintw(rf24Pad,1,0,"Address: 0%o\n",mesh.mesh_address);
    wprintw(rf24Pad,"nodeID: %d\n",mesh.getNodeID());
    wprintw(rf24Pad,"En Mesh: %s\n", gw.meshEnabled() ? "True" : "False");
+   rfNoInterrupts();
    int dr = radio.getDataRate();
-   wprintw(rf24Pad,"Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS" : dr == 2 ? "250KBPS" : "ERROR" ); 
    int pa = radio.getPALevel();
+   rfInterrupts();
+   wprintw(rf24Pad,"Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS" : dr == 2 ? "250KBPS" : "ERROR" ); 
    wprintw(rf24Pad,"PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW" : pa == 2 ? "HIGH" : pa == 3 ? "MAX" : "ERROR" );
    wprintw(rf24Pad,"IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP" );
    wprintw(rf24Pad,"IF Drops: %u\n", gw.ifDropped() );
    #if defined (ENABLE_NETWORK_STATS)
      uint32_t ok,fail;
 	 network.failures(&fail,&ok);
-     wprintw(rf24Pad,"TX Packets: %u\n", ok );
+     wprintw(rf24Pad,"TX Packets(sys): %u\n", ok );
 	 wprintw(rf24Pad,"TX Drops: %u\n", fail );
    #endif
+   wprintw(rf24Pad,"RX Packets(user): %u\n",networkPacketsRX);
+   if(gw.fifoCleared){
+      ++fifoClears;
+      gw.fifoCleared=false;
+   }
+   wprintw(rf24Pad,"Interrupt Errors: %u",fifoClears);
    
    if(padSelection == 1){
 	 wattron(rf24Pad,COLOR_PAIR(1));

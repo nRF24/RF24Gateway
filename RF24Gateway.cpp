@@ -260,6 +260,11 @@ void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
     rfNoInterrupts();
+    //gateway.poll() is called manually when using interrupts, so if the radio RX buffer is full, or interrupts have been missed, check for it here.
+    if(radio.rxFifoFull()){
+      fifoCleared=true;
+      update(true); //Clear the radio RX buffer & interrupt flags before relying on interrupts
+    }
     handleRadioOut();
     rfInterrupts();
 }

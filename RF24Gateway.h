@@ -115,6 +115,7 @@ public:
   
   bool meshEnabled(); /**< Is RF24Mesh enabled? */
   bool config_TUN; /**< Using a TAP(false) or TUN(true) interface */
+  bool fifoCleared;
   
   uint32_t ifDropped(){
     return droppedIncoming;
