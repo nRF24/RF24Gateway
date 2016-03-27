@@ -46,7 +46,7 @@
 
 /******************************************************************/
 //User Configuration
-RF24 radio(25,0);
+RF24 radio(22,0);
 RF24Network network(radio);
 RF24Mesh mesh(radio,network);
 RF24Gateway gw(radio,network,mesh);
@@ -170,14 +170,14 @@ bool ok = true;
      }
      mesh_timer = millis();
   }
-  
-  if(ok){ //Non-master nodes need an active connection to the mesh in order to handle data
-  
 	/**
 	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	* RF24Network user payloads are loaded into the user cache		
 	*/
     gw.poll(10);
+    
+  if(ok){ //Non-master nodes need an active connection to the mesh in order to handle data
+
   
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
