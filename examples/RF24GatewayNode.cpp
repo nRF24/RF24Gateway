@@ -45,6 +45,10 @@ int main(int argc, char** argv) {
 		uint8_t buf[size];
 	    network.read(header,&buf,size);
 	  printf("Received Network Message, type: %d id %d from %d\n",header.type,header.id,mesh.getNodeID(header.from_node));
+      
+      RF24NetworkFrame frame = RF24NetworkFrame(header,buf,size); 
+      gw.sendUDP(mesh.getNodeID(header.from_node),frame);
+      
 	}
     delay(2);
     

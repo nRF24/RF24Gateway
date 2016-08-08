@@ -80,6 +80,8 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
     //#if (DEBUG >= 1)
         radio.printDetails();
     //#endif
+    
+    setupSocket();
 	
 	return true;
 }
@@ -522,3 +524,45 @@ void printPayload(char *buffer, int nread, std::string debugMsg = "") {
 }
 
 /***************************************************************************************/
+   
+void RF24Gateway::setupSocket(){
+    
+  int ret;
+  const char* myAddr = "127.0.0.1";
+  
+  addr.sin_family = AF_INET;
+  ret = inet_aton(myAddr, &addr.sin_addr);
+  if (ret == 0) { perror("inet_aton"); exit(1); }
+  addr.sin_port = htons(32001);
+  //buf = "Hello UDP";
+  s = socket(PF_INET, SOCK_DGRAM, 0);
+  if (s == -1) { perror("socket"); exit(1); }
+}
+
+/***************************************************************************************/
+
+void RF24Gateway::sendUDP(uint8_t nodeID,RF24NetworkFrame frame){
+    
+  uint8_t buffer[MAX_PAYLOAD_SIZE+11];
+  
+  memcpy(&buffer[0], &nodeID,1);
+  memcpy(&buffer[1],&frame.header,8);
+  memcpy(&buffer[9],&frame.message_size,2);
+  memcpy(&buffer[11],&frame.message_buffer,frame.message_size);
+
+  int ret = sendto(s, &buffer, frame.message_size+11, 0, (struct sockaddr *)&addr, sizeof(addr));
+  if (ret == -1) { perror("sendto"); exit(1); }
+}
+
+/***************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+

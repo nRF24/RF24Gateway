@@ -15,12 +15,14 @@
   #include <iostream>
   #include <string>
   #include <sys/socket.h>
+  #include <netinet/in.h>
   #include <linux/if.h>
   #include <linux/if_tun.h>
   #include <arpa/inet.h>
   #include <fcntl.h>
   #include <unistd.h>
   #include <sys/ioctl.h>
+  #include <netdb.h>
   
   #include <RF24/RF24.h>
   #include <RF24Network/RF24Network.h>
@@ -31,6 +33,8 @@
 #endif  
 
 #define DEBUG 0
+
+#define BACKLOG     10  /* Passed to listen() */
   
   class RF24;
   class RF24Network;
@@ -121,6 +125,9 @@ public:
     return droppedIncoming;
   }
   
+  int s;  //Socket variable for sending UDP
+  void sendUDP(uint8_t nodeID,RF24NetworkFrame frame);
+  
 private:
   RF24& radio;
   RF24Network& network;
@@ -157,6 +164,10 @@ private:
   
   void printPayload(std::string buffer, std::string debugMsg = "");
   void printPayload(char *buffer, int nread, std::string debugMsg = "");
+  
+  void setupSocket();
+  struct sockaddr_in addr;  
+  
 };
   
   
