@@ -18,11 +18,13 @@
   #include <netinet/in.h>
   #include <linux/if.h>
   #include <linux/if_tun.h>
+  #include <ifaddrs.h>
   #include <arpa/inet.h>
   #include <fcntl.h>
   #include <unistd.h>
   #include <sys/ioctl.h>
   #include <netdb.h>
+  #include <fstream>
   
   #include <RF24/RF24.h>
   #include <RF24Network/RF24Network.h>
@@ -166,7 +168,17 @@ private:
   void printPayload(char *buffer, int nread, std::string debugMsg = "");
   
   void setupSocket();
-  struct sockaddr_in addr;  
+  struct sockaddr_in addr;
+  struct in_addr getLocalIP();
+  
+  struct routeStruct{
+      struct in_addr ip;
+      struct in_addr mask;
+      struct in_addr gw;
+  }routingStruct[255];
+  
+  uint8_t routingTableSize;
+  void loadRoutingTable();
   
 };
   

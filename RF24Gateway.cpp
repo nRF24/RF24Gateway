@@ -82,8 +82,51 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
     //#endif
     
     setupSocket();
+    loadRoutingTable();
 	
 	return true;
+}
+
+/***************************************************************************************/
+
+void RF24Gateway::loadRoutingTable(){
+    std::ifstream infile ("routing.txt",std::ifstream::in);
+	if(!infile){ return; }    
+        
+    std::string str;
+    std::string ip, mask, gw;
+    int8_t count = 0;
+    std::string space = " ";
+    
+    while (std::getline(infile, str)) {
+        size_t startLen = 0;
+        size_t subLen = str.find(space);
+        if (subLen!=std::string::npos){
+          ip = str.substr(0,subLen);
+        }else{ continue; }        
+        startLen = subLen;
+        subLen = str.find(space,startLen+1);
+        if (subLen!=std::string::npos){
+          subLen -= (startLen+1);
+          mask = str.substr(startLen+1,subLen);
+        }else{ continue; }  
+        startLen = startLen + subLen;
+        subLen = str.length() - (startLen + 2);
+        gw = str.substr(startLen+2, subLen);
+        
+        routingStruct[count].ip.s_addr = ntohl(inet_network(ip.c_str()));
+        routingStruct[count].mask.s_addr = ntohl(inet_network(mask.c_str()));
+        routingStruct[count].gw.s_addr = ntohl(inet_network(gw.c_str()));
+
+        count++;
+    }
+    routingTableSize = count;
+    
+    //for(int i=0; i<count; i++){
+    //    std::cout << inet_ntoa(routingStruct[i].ip) << ";" << inet_ntoa(routingStruct[i].mask) << ";" << inet_ntoa(routingStruct[i].gw) << std::endl;
+    //}
+    
+    
 }
 
 /***************************************************************************************/
@@ -258,6 +301,8 @@ void RF24Gateway::update(bool interrupts){
   }  
 }
 
+/***************************************************************************************/
+
 void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
@@ -275,10 +320,10 @@ void RF24Gateway::poll(uint32_t waitDelay){
 void RF24Gateway::handleRadioIn(){
     
     if(mesh_enabled){
-      while(mesh.update());
+      while(mesh.update()){};
         if(!thisNodeAddress){
             mesh.DHCP();
-    }
+        }
     }else{
         while(network.update());
     }
@@ -319,6 +364,40 @@ void RF24Gateway::handleRadioIn(){
         }
 }
 
+/***************************************************************************************/
+
+struct in_addr RF24Gateway::getLocalIP(){
+    
+  struct ifaddrs *ifap, *ifa;
+  int family,s,n;
+  char host[NI_MAXHOST];
+  struct in_addr myNet;
+             
+  getifaddrs (&ifap);
+  for (ifa = ifap, n=0; ifa != NULL; ifa = ifa->ifa_next, n++) { 
+    if ( std::string("tun_nrf24").compare(ifa->ifa_name) != 0 || ifa->ifa_addr == NULL){
+	  if(ifa->ifa_next == NULL ){
+		break;
+      }else{
+        continue;
+      }
+    }		
+		
+    family = ifa->ifa_addr->sa_family;
+       
+    //This is an IP interface, get the IP
+    if (family == AF_INET) {
+	  s = getnameinfo(ifa->ifa_addr, (family == AF_INET) ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+      if (s == 0) {
+        myNet.s_addr = ntohl(inet_network(host));
+        return myNet;
+	  }
+	}
+  }
+  return myNet;
+}
+
+/***************************************************************************************/
 
 void RF24Gateway::handleRadioOut(){
 
@@ -328,7 +407,7 @@ void RF24Gateway::handleRadioOut(){
 			
             
             msgStruct *msgTx = &txQueue.front();
-			
+
             #if (DEBUG >= 1)
                 std::cout << "Radio: Sending " << msgTx->size << " bytes ... ";
 				std::cout << std::endl;
@@ -385,17 +464,50 @@ void RF24Gateway::handleRadioOut(){
 		  }else{ // TUN always needs to use RF24Mesh for address assignment AND resolution
 
 			   uint8_t lastOctet = tmp[19];
-			   uint16_t meshAddr;
+			   int16_t meshAddr;
 
-			  if ( (meshAddr = mesh.getAddress(lastOctet)) > 0 || thisNodeID) {
-				RF24NetworkHeader header(meshAddr, EXTERNAL_DATA_TYPE);
-			    if(thisNodeID){ //If not the master node, send to master (00)
-				  header.to_node = 00;				
-				}
-			    ok = network.write(header, msgTx->message, msgTx->size);
-			  }else{
-				//printf("Could not find matching mesh nodeID for IP ending in %d\n",lastOctet);
-			  }
+              RF24NetworkHeader header(00, EXTERNAL_DATA_TYPE); 
+              bool sendData = false;
+              
+              struct in_addr ipDestination;
+              memcpy(&ipDestination.s_addr,&tmp[16],4);
+
+              if( thisNodeID > 0 ){ //Is a child node
+                sendData = true;
+              }else
+              if( (getLocalIP().s_addr & 0x00FFFFFF) == (ipDestination.s_addr & 0x00FFFFFF)){ //Is inside the RF24Mesh network
+                if ( (meshAddr = mesh.getAddress(lastOctet)) > 0 ) {
+                  header.to_node = meshAddr;
+			      sendData = true;
+			    }else{
+				  //printf("Could not find matching mesh nodeID for IP ending in %d\n",lastOctet);
+			    }
+              }else
+              if(routingTableSize > 0){
+                for(int i=0; i<routingTableSize; i++){
+                  struct in_addr network;
+                  network.s_addr = routingStruct[i].ip.s_addr & routingStruct[i].mask.s_addr;                 
+                  struct in_addr destNet;
+                  destNet.s_addr = ipDestination.s_addr & routingStruct[i].mask.s_addr;
+                  //printf("network %s destNet: %s\n",inet_ntoa(network),inet_ntoa(destNet));
+                  if( destNet.s_addr == network.s_addr){ 
+                    uint8_t toNode = routingStruct[i].gw.s_addr >> 24 & 255;
+                    int16_t netAddr = 0;
+                    if( (netAddr = mesh.getAddress(toNode)) > 0 ){
+                      header.to_node = netAddr;
+                      sendData = true;
+                      break;
+                    }
+                    
+                  }
+                }  
+              }
+              
+              if(sendData){
+                ok = network.write(header, msgTx->message, msgTx->size);
+                //std::cout << "SendData " << header.to_node << std::endl;
+              }
+
 		  
 		  }
           //delay( rf24_min(msgTx->size/48,20));
