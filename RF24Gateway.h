@@ -271,7 +271,84 @@ private:
  * Linux devices running RF24Gateway can establish network links using the built-in TCP/IP stack, and users can include Arduino/AVR devices or additional RPi devices to automatically
  * extend the wireless range.<br>
  * Arduino/AVR devices, etc must utilize a software IP stack such as uIP.
+ *
+ *
+ * @section SimpleConfig Simple Configuration
  * 
+ * In the standard configuration, a single Linux/RF24Gateway node is used to provide connectivity to one or more 
+ * Arduino nodes running RF24Ethernet. 
+ * In this case the master node could be configured with IP 10.1.3.1 netmask 255.255.255.0 and nodeID 0
+ * The remaining Arduino nodes can used nodeIDs 2-253, and would be assigned IP addresses 10.1.3.2-253 and netmask 255.255.255.0
+ *
+ * If there are problems starting the examples, the following commands can be run to configure the interface:
+ *
+ * @code
+ * ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
+ * ifconfig tun_nrf24 10.10.3.1/24 @endcode
+ *
+ * To enable nat and routing, the following commands can also be run:
+ *
+ * @code
+ * sudo sysctl -w net.ipv4.ip_forward=1
+ * sudo iptables -t nat -A POSTROUTING -j MASQUERADE @endcode
+ *
+ * See http://tmrh20.github.io/RF24Ethernet/ConfigAndSetup.html for more info
+ *
+ * @section AdvConfig Advanced Configuration
+ *
+ * In a more advanced configuration, users can use two or more nodes running RF24Gateway together, along with Arduino Nodes
+ * running RF24Ethernet
+ * In this case the master node could be configured differently with IP 10.1.3.1 netmask 255.255.0.0 and nodeID 0
+ * The child RPi2 node could be assigned IP 10.1.3.33 netmask 255.255.0.0 and nodeID 33
+ * Another device, lets say usb0 connected to the child RPi2 node is assigned IP 10.1.5.1 netmask 255.255.255.0
+ * 
+ * In this configuration, connectivity between all nodes in the mesh would be established, but a routing table is
+ * needed to include attached and internet devices.
+ * 
+ * To fully enable routing beyond the RPi devices, a routing table needs to be added to the Master node:
+ * 1. Rename the file RF24Gateway/examples/routing.txx to routing.txt
+ * 2. Edit the file accordingly
+ * 3. Restart the gateway example to reload routing info
+ * 
+ * @section NetCfg Network Configuration Example
+ * Local WiFi/Ethernet Network (Windows,Linux,RPi devices etc) - 10.10.1.0 - 255.255.255.0 ( 10.10.1.x network ) <br>
+ * RPi devices (tun_nrf24 interfaces & all connected devices) - 10.1.0.0 - 255.255.0.0 ( 10.1.x.x network )<br>
+ *
+ * Explanation: The RF24Gateway/RF24Mesh network supports about 253 hosts. I setup the RF24Gateway and all associated
+ * devices with a much larger subnet in this config to encompass all devices directly accessible via the RF24Gateway network.
+ *
+ * ie: RPi master 10.1.3.1/16, RPi2 child 10.1.3.33/16, RPi2 child usb0 10.1.5.1/24
+ *
+ * Routing Configuration:
+ *
+ * In the RF24Gateway example working directory, create a file "routing.txt" <br>
+ * Add routing entries in a standard kind of format: <br>
+ * ie: IP<space>NetMask<space>Gateway <br>
+ * Example routing.txt file: 
+ * 
+ * 10.1.5.0 255.255.255.0 10.1.3.33 <br>
+ * 10.1.4.0 255.255.255.0 10.1.3.34 <br>
+ * 0.0.0.0 0.0.0.0 10.10.3.33 <br>
+ *
+ * First entry: Traffic for 10.1.5.x will use 10.1.3.33 as the gateway <br>
+ * 2nd entry: Traffic for 10.1.4.x will use 10.1.3.34 as the gateway <br>
+ * 3rd entry: Traffic not in the RF24Gateway network will be sent via 10.10.3.33 by default 
+ * 
+ * Additional Routing Configuration:<br>
+ * You can specify any combination of IP/Netmask in the routing.txt file to create unique subnets for routing traffic:
+ * 
+ * 10.1.5.0 255.255.255.224 10.1.3.33 <br>
+ * 10.1.5.32 255.255.255.224 10.1.3.34 <br>
+ * 10.1.5.64 255.255.255.224 10.1.3.35 <br>
+ * 0.0.0.0 0.0.0.0 10.10.3.32 <br>
+ *
+ * First entry: Traffic for 10.1.5.(1-30) will use 10.1.3.33 as the gateway <br>
+ * 2nd entry: Traffic for 10.1.5.(33-62) will use 10.1.3.34 as the gateway <br>
+ * 3rd entry: Traffic for 10.1.5.(65-94) will use 10.1.3.35 as the gateway <br>
+ * 3rd entry: Traffic not in the RF24Gateway network will be sent via 10.10.3.32 by default <br>
+ * 
+ *
+ *
  */
  
  
