@@ -306,14 +306,14 @@ void RF24Gateway::update(bool interrupts){
 void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
-    rfNoInterrupts();
+    radio.maskIRQ(1,1,1);
     //gateway.poll() is called manually when using interrupts, so if the radio RX buffer is full, or interrupts have been missed, check for it here.
     if(radio.rxFifoFull()){
       fifoCleared=true;
       update(true); //Clear the radio RX buffer & interrupt flags before relying on interrupts
     }
     handleRadioOut();
-    rfInterrupts();
+    radio.maskIRQ(1,1,0);
 }
 /***************************************************************************************/
 
@@ -557,7 +557,7 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			  }
 			std::cout <<  std::endl;
             #endif
-            rfNoInterrupts();
+            radio.maskIRQ(1,1,1);
 		    msgStruct msg;
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
@@ -566,7 +566,7 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			}else{
 			  droppedIncoming++;
 			}
-            rfInterrupts();
+            radio.maskIRQ(1,1,0);
 		} else{
           #if (DEBUG >= 1)
 	      std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
@@ -582,13 +582,13 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
  void RF24Gateway::handleTX(){
 
 		if(rxQueue.size() < 1){
-          rfInterrupts();
+          radio.maskIRQ(1,1,0);
 		  return;
 		}
 		msgStruct *msg = &rxQueue.front();
 
         if(msg->size > MAX_PAYLOAD_SIZE){
-            rfInterrupts();
+            radio.maskIRQ(1,1,0);
 			//printf("*****WTF OVER *****");
 			rxQueue.pop();
 			return;
