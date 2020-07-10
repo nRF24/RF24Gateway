@@ -284,7 +284,7 @@ private:
  *
  * @code
  * ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
- * ifconfig tun_nrf24 10.10.3.1/24 @endcode
+ * ifconfig tun_nrf24 10.1.3.1/24 @endcode
  *
  * To enable nat and routing, the following commands can also be run:
  *
