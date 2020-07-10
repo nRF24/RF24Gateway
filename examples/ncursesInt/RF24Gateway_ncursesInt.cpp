@@ -181,7 +181,7 @@ bool ok = true;
   
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
-    rfNoInterrupts();
+    radio.maskIRQ(1,1,1);
     if( network.available() ){
 	  ++networkPacketsRX;
 	  RF24NetworkHeader header;
@@ -206,7 +206,7 @@ bool ok = true;
    	  }
       network.read(header,&buf,size);
 	}
-    rfInterrupts();
+    radio.maskIRQ(1,1,0);
   }else{
       delay(100); //Big delay if connection to RF24Mesh is failing
   }
@@ -480,10 +480,10 @@ void drawRF24Pad(){
    mvwprintw(rf24Pad,1,0,"Address: 0%o\n",mesh.mesh_address);
    wprintw(rf24Pad,"nodeID: %d\n",mesh.getNodeID());
    wprintw(rf24Pad,"En Mesh: %s\n", gw.meshEnabled() ? "True" : "False");
-   rfNoInterrupts();
+   radio.maskIRQ(1,1,1);
    int dr = radio.getDataRate();
    int pa = radio.getPALevel();
-   rfInterrupts();
+   radio.maskIRQ(1,1,0);
    wprintw(rf24Pad,"Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS" : dr == 2 ? "250KBPS" : "ERROR" ); 
    wprintw(rf24Pad,"PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW" : pa == 2 ? "HIGH" : pa == 3 ? "MAX" : "ERROR" );
    wprintw(rf24Pad,"IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP" );
