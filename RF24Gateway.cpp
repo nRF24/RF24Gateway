@@ -95,7 +95,7 @@ void RF24Gateway::loadRoutingTable(){
         
     std::string str;
     std::string ip, mask, gw;
-    uint8_t count = 0;
+    uint16_t count = 0;
     std::string space = " ";
     
     while (std::getline(infile, str)) {
