@@ -95,7 +95,7 @@ void RF24Gateway::loadRoutingTable(){
         
     std::string str;
     std::string ip, mask, gw;
-    int8_t count = 0;
+    uint8_t count = 0;
     std::string space = " ";
     
     while (std::getline(infile, str)) {
@@ -104,21 +104,22 @@ void RF24Gateway::loadRoutingTable(){
         if (subLen!=std::string::npos){
           ip = str.substr(0,subLen);
         }else{ continue; }        
-        startLen = subLen;
-        subLen = str.find(space,startLen+1);
+        startLen = subLen + 1;
+        subLen = str.find(space,startLen);
         if (subLen!=std::string::npos){
-          subLen -= (startLen+1);
-          mask = str.substr(startLen+1,subLen);
+          subLen -= (startLen);
+          mask = str.substr(startLen,subLen);
         }else{ continue; }  
-        startLen = startLen + subLen;
-        subLen = str.length() - (startLen + 2);
-        gw = str.substr(startLen+2, subLen);
+        startLen = startLen + subLen + 2;
+        subLen = str.length() - (startLen);
+        gw = str.substr(startLen, subLen);
         
         routingStruct[count].ip.s_addr = ntohl(inet_network(ip.c_str()));
         routingStruct[count].mask.s_addr = ntohl(inet_network(mask.c_str()));
         routingStruct[count].gw.s_addr = ntohl(inet_network(gw.c_str()));
 
         count++;
+        if(count >= 256){ break;}
     }
     routingTableSize = count;
     
@@ -385,9 +386,9 @@ struct in_addr RF24Gateway::getLocalIP(){
 		
     family = ifa->ifa_addr->sa_family;
        
-    //This is an IP interface, get the IP
+    //This is an IPv4 interface, get the IP
     if (family == AF_INET) {
-	  s = getnameinfo(ifa->ifa_addr, (family == AF_INET) ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+	  s = getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
       if (s == 0) {
         myNet.s_addr = ntohl(inet_network(host));
         return myNet;
@@ -491,14 +492,13 @@ void RF24Gateway::handleRadioOut(){
                   destNet.s_addr = ipDestination.s_addr & routingStruct[i].mask.s_addr;
                   //printf("network %s destNet: %s\n",inet_ntoa(network),inet_ntoa(destNet));
                   if( destNet.s_addr == network.s_addr){ 
-                    uint8_t toNode = routingStruct[i].gw.s_addr >> 24 & 255;
+                    uint8_t toNode = routingStruct[i].gw.s_addr >> 24;
                     int16_t netAddr = 0;
                     if( (netAddr = mesh.getAddress(toNode)) > 0 ){
                       header.to_node = netAddr;
                       sendData = true;
                       break;
-                    }
-                    
+                    }                    
                   }
                 }  
               }

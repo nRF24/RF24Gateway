@@ -175,7 +175,7 @@ private:
       struct in_addr ip;
       struct in_addr mask;
       struct in_addr gw;
-  }routingStruct[255];
+  }routingStruct[256];
   
   uint8_t routingTableSize;
   void loadRoutingTable();
