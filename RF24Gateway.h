@@ -115,6 +115,14 @@ public:
    */
   void poll(uint32_t waitDelay=3); 
   
+    /**@}*/
+    /**
+     * @name Advanced Operation
+     *
+     *  More advanced methods and options
+     */
+    /**@{*/  
+  
   uint16_t thisNodeAddress; /**< Address of our node in Octal format (01,021, etc) */
   uint8_t thisNodeID;  /**< NodeID (0-255) */
   
@@ -126,9 +134,61 @@ public:
   uint32_t ifDropped(){
     return droppedIncoming;
   }
-  
-  int s;  //Socket variable for sending UDP
+    
   void sendUDP(uint8_t nodeID,RF24NetworkFrame frame);
+  
+    /**@}*/
+    /**
+     * @name Routing Table
+     *
+     *  Utilizing a routing table to provide complete connectivity
+     */
+    /**@{*/  
+    
+  /**
+   * If a user has created a file "routing.txt" in the RF24Gateway working directory, it will be loaded <br>
+   * at startup into the routing table. The file should contain standard routing table entries as follows: <br>
+   * IP<space>NetMask<space>Gateway <br>
+   * ie: routing.txt
+   * @code
+   * 10.1.4.0 255.255.255.0 10.1.3.33
+   * 0.0.0.0 0.0.0.0 10.1.3.34 @endcode
+   *
+   * The first example entry would route all traffic to the 10.1.4.x subnet to 10.1.3.33 <br>
+   * All other traffic not destined for the RF24 nodes will use 10.1.3.34 as the gateway
+   *
+   * Data can be accessed using standard linux Internet address manipulation routines as follows:
+   * @code
+   * printf("**IP\t\tMask\t\tGateway**\n");
+   * for(int i=0; i<gw.routingTableSize; i++){      
+   *   printf("%s \t",inet_ntoa(gw.routingStruct[i].ip));//inet_ntoa uses a statically assigned buffer, so the printf calls need to be done separately
+   *   printf("%s \t",inet_ntoa(gw.routingStruct[i].mask));
+   *   printf("%s\n", inet_ntoa(gw.routingStruct[i].gw));
+   *   //std::cout << inet_ntoa(gw.routingStruct[i].ip) << " \t" << inet_ntoa(gw.routingStruct[i].mask) << " \t" << inet_ntoa(gw.routingStruct[i].gw) << std::endl;
+   * }
+   * printf("*****\n");
+   *
+   * Users can modify the routing table as desired, but changes made in code will not currently be saved to file
+   *
+   * @endcode
+   *
+   */
+   struct routeStruct{
+      struct in_addr ip;
+      struct in_addr mask;
+      struct in_addr gw;
+   };
+   
+   /**
+   * The array that holds the routing structure data. See routeStruct
+   */
+   routeStruct routingStruct[256];
+  
+  /**
+   * The size of the existing routing table loaded into memory. See routeStruct
+   */
+  uint8_t routingTableSize;
+  
   
 private:
   RF24& radio;
@@ -167,17 +227,11 @@ private:
   void printPayload(std::string buffer, std::string debugMsg = "");
   void printPayload(char *buffer, int nread, std::string debugMsg = "");
   
+  int s;  //Socket variable for sending UDP
   void setupSocket();
   struct sockaddr_in addr;
   struct in_addr getLocalIP();
   
-  struct routeStruct{
-      struct in_addr ip;
-      struct in_addr mask;
-      struct in_addr gw;
-  }routingStruct[256];
-  
-  uint8_t routingTableSize;
   void loadRoutingTable();
   
 };

@@ -110,7 +110,7 @@ void RF24Gateway::loadRoutingTable(){
           subLen -= (startLen);
           mask = str.substr(startLen,subLen);
         }else{ continue; }  
-        startLen = startLen + subLen + 2;
+        startLen = startLen + subLen + 1;
         subLen = str.length() - (startLen);
         gw = str.substr(startLen, subLen);
         
