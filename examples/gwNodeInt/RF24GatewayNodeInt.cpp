@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
        myFile.close();
      }
      delay(500);
-     mesh.begin(1);
+     mesh.begin();
      radio.maskIRQ(1,1,0);
    }
 
