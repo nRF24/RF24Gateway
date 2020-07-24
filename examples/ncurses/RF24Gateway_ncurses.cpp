@@ -134,6 +134,7 @@ int main() {
 /******************************************************************/ 
 /***********************LOOP***************************************/  
 bool ok = true;
+uint32_t failCounter = 0;
 
  while(1){
 	
@@ -241,6 +242,25 @@ bool ok = true;
 
 	
 	}
+	
+    //This section checks for failures detected by RF24 & RF24Network as well as
+    //checking for deviations from the default configuration (1MBPS data rate)
+    //The mesh is restarted on failure and failure count logged to failLog.txt
+    //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
+    if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
+      radio.failureDetected = 0;
+      radio.maskIRQ(1,1,1);
+      std::ofstream myFile;
+      myFile.open ("failLog.txt");
+      if (myFile.is_open()){
+        myFile << ++failCounter << "\n";
+        myFile.close();
+      }
+      delay(500);
+      mesh.begin(1);
+      radio.maskIRQ(1,1,0);
+    }
+	
     delay(2);
  }//while 1
 

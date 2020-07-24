@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
   radio.maskIRQ(1,1,0);
   attachInterrupt(23, INT_EDGE_FALLING, intHandler);
   
+  uint32_t failCounter = 0;
   
  while(1){
     
@@ -60,15 +61,33 @@ int main(int argc, char** argv) {
    //The function will perform a delayed wait of max 3ms unless otherwise specified.
    gw.poll(3);
    
-  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
-    mesh_timer = millis();
-    if( ! mesh.checkConnection() ){
-        //refresh the network address
-        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
-        mesh.renewAddress();
-        radio.maskIRQ(1,1,0);
+   if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+     mesh_timer = millis();
+     if( ! mesh.checkConnection() ){
+       //refresh the network address
+       radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+       mesh.renewAddress();
+       radio.maskIRQ(1,1,0);
      }
-  }    
+   }    
+
+   //This section checks for failures detected by RF24 & RF24Network as well as
+   //checking for deviations from the default configuration (1MBPS data rate)
+   //The mesh is restarted on failure and failure count logged to failLog.txt
+   //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
+   if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
+     radio.failureDetected = 0;
+     radio.maskIRQ(1,1,1);
+     std::ofstream myFile;
+     myFile.open ("failLog.txt");
+     if (myFile.is_open()){
+       myFile << ++failCounter << "\n";
+       myFile.close();
+     }
+     delay(500);
+     mesh.begin(1);
+     radio.maskIRQ(1,1,0);
+   }
 
   }
   return 0;
