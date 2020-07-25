@@ -9,6 +9,8 @@
 RF24Gateway::RF24Gateway(RF24& _radio,RF24Network& _network, RF24Mesh& _mesh):
 	radio(_radio),network(_network),mesh(_mesh)
 {
+    interruptInProgress = 0;
+    interruptsEnabled = 1;
 }
 
 /***************************************************************************************/
@@ -63,6 +65,7 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 	  }
 	  mesh.begin(channel,data_rate);
 	  thisNodeAddress = mesh.mesh_address;
+      
 	}else{
 	  radio.begin();
       delay(5);
@@ -271,7 +274,6 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
     return -1;
   }            
 
-
    inet_aton(mask, &sin.sin_addr);
    memcpy(&ifr.ifr_addr, &sin, sizeof(struct sockaddr));
 
@@ -282,9 +284,22 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
      return -1;
    }
  
- 
    #undef IRFFLAGS
 	return 0;
+}
+
+/***************************************************************************************/
+void RF24Gateway::interrupts(bool enable){
+  if(enable){
+    while(interruptInProgress){ delay(1); }  
+    interruptsEnabled = enable;
+    radio.maskIRQ(1,1,0);    
+  }else{
+    interruptsEnabled = 0;
+    while(interruptInProgress){ delay(1); }    
+    radio.maskIRQ(1,1,1);
+        
+  }
 }
 
 /***************************************************************************************/
@@ -292,8 +307,19 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 void RF24Gateway::update(bool interrupts){
   
   if(interrupts){   
+    uint32_t intTimer = millis();
+    while(!interruptsEnabled){
+      delay(1);
+      if(millis()-intTimer>100){ //Wait up to 100ms for interrupts to be re-enabled
+        return;
+      }
+    }
+    interruptInProgress = 1;
+    radio.maskIRQ(1,1,1);
     handleRadioIn();
     handleTX();
+    radio.maskIRQ(1,1,0);
+    interruptInProgress = 0;
   }else{
     handleRadioIn();
     handleTX();
@@ -307,11 +333,14 @@ void RF24Gateway::update(bool interrupts){
 void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
+
+    if(interruptInProgress){return;}
     radio.maskIRQ(1,1,1);
     //gateway.poll() is called manually when using interrupts, so if the radio RX buffer is full, or interrupts have been missed, check for it here.
     if(radio.rxFifoFull()){
       fifoCleared=true;
-      update(true); //Clear the radio RX buffer & interrupt flags before relying on interrupts
+      handleRadioIn();
+      handleTX();
     }
     handleRadioOut();
     radio.maskIRQ(1,1,0);
@@ -472,17 +501,20 @@ void RF24Gateway::handleRadioOut(){
               
               struct in_addr ipDestination;
               memcpy(&ipDestination.s_addr,&tmp[16],4);
-
-              if( thisNodeID > 0 ){ //Is a child node
-                sendData = true;
-              }else
+              
               if( (getLocalIP().s_addr & 0x00FFFFFF) == (ipDestination.s_addr & 0x00FFFFFF)){ //Is inside the RF24Mesh network
                 if ( (meshAddr = mesh.getAddress(lastOctet)) > 0 ) {
                   header.to_node = meshAddr;
 			      sendData = true;
 			    }else{
+                  if(thisNodeID > 0){//If IP is in mesh range, address lookup fails, and this is not master, 
+                    sendData = true; //send to 00 anyway in case destination is master, or the lookup just failed
+                  }
 				  //printf("Could not find matching mesh nodeID for IP ending in %d\n",lastOctet);
 			    }
+              }else
+              if( thisNodeID > 0 ){ //If not master, send to master for routing etc. if target not within mesh
+                sendData = true;
               }else
               if(routingTableSize > 0){
                 for(int i=0; i<routingTableSize; i++){
@@ -557,7 +589,6 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			  }
 			std::cout <<  std::endl;
             #endif
-            radio.maskIRQ(1,1,1);
 		    msgStruct msg;
 		    memcpy(&msg.message,&buffer,nread);
 		    msg.size = nread;
@@ -566,7 +597,6 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 			}else{
 			  droppedIncoming++;
 			}
-            radio.maskIRQ(1,1,0);
 		} else{
           #if (DEBUG >= 1)
 	      std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
@@ -582,13 +612,11 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
  void RF24Gateway::handleTX(){
 
 		if(rxQueue.size() < 1){
-          radio.maskIRQ(1,1,0);
 		  return;
 		}
 		msgStruct *msg = &rxQueue.front();
 
         if(msg->size > MAX_PAYLOAD_SIZE){
-            radio.maskIRQ(1,1,0);
 			//printf("*****WTF OVER *****");
 			rxQueue.pop();
 			return;

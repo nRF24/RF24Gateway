@@ -115,6 +115,15 @@ public:
    */
   void poll(uint32_t waitDelay=3); 
   
+  /**
+  * When using interrupts (gwNodeInt, ncursesInt examples) users need to call
+  * this function to disable interrupts before accessing the radio and again to
+  * re-enable interrupts when complete
+  * @param enable 0 to disable interrupts and access the radio, 1 to re-enable
+  */
+  
+  void interrupts(bool enable = 1);
+  
     /**@}*/
     /**
      * @name Advanced Operation
@@ -212,6 +221,8 @@ private:
   void handleRadioIn();
   void handleRX(uint32_t waitDelay=0);
   void handleTX();
+  bool interruptInProgress;
+  bool interruptsEnabled;
    
   int configDevice(uint16_t address);  
   int allocateTunDevice(char *dev, int flags, uint16_t address);
