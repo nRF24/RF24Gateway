@@ -282,7 +282,7 @@ uint32_t failCounter = 0;
         myFile << ++failCounter << "\n";
       }
       myFile.close();
-      mesh.begin(1);
+      mesh.begin();
       delay(1000);
       radio.failureDetected = 0;
     }
