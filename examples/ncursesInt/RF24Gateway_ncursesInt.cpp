@@ -221,14 +221,14 @@ uint32_t failCounter = 0;
 
 	  // Draw the pads on screen
       drawDevPad();
-	  prefresh(devPad,0,0, 4,1, 15,25);
+	  prefresh(devPad,0,0, 4,1, 14,25);
 	  
       drawMeshPad(); 
 	  wscrl(meshPad,meshScroll);
-	  prefresh(meshPad,0,0, 4,26, 15,47);
+	  prefresh(meshPad,0,0, 4,26, 14,47);
 	  
 	  drawRF24Pad();
-	  prefresh(rf24Pad,0,0, 4,51, 15, 73);
+	  prefresh(rf24Pad,0,0, 4,51, 14, 73);
 	  
 	  if(showConnPad){
 	    drawConnPad();
