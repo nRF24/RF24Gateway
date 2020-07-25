@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
     //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
     if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
       radio.failureDetected = 0;
-      radio.maskIRQ(1,1,1);
       std::ofstream myFile;
       myFile.open ("failLog.txt");
       if (myFile.is_open()){
@@ -75,7 +74,6 @@ int main(int argc, char** argv) {
       }
       delay(500);
       mesh.begin();
-      radio.maskIRQ(1,1,0);
     }
   
   }

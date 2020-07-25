@@ -148,13 +148,11 @@ uint32_t failCounter = 0;
     if( ! mesh.checkConnection() ){
         wclear(renewPad);
         mvwprintw(renewPad,0,0,"*Renewing Address*");
-        prefresh(renewPad,0,0, 3,26, 4, 55);
-        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+        prefresh(renewPad,0,0, 3,26, 4, 55); 
         if( (ok = mesh.renewAddress()) ){
             wclear(renewPad);
             prefresh(renewPad,0,0, 3,26, 3, 55);
         }
-        radio.maskIRQ(1,1,0);
      }
   } 
   if(ok){
@@ -249,7 +247,6 @@ uint32_t failCounter = 0;
     //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
     if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
       radio.failureDetected = 0;
-      radio.maskIRQ(1,1,1);
       std::ofstream myFile;
       myFile.open ("failLog.txt");
       if (myFile.is_open()){
@@ -258,7 +255,6 @@ uint32_t failCounter = 0;
       }
       delay(500);
       mesh.begin();
-      radio.maskIRQ(1,1,0);
     }
 	
     delay(2);

@@ -49,25 +49,22 @@ int main(int argc, char** argv) {
     
 	// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
 	// RF24Network user payloads are loaded into the user cache
-	if( network.available() ){
+	gw.interrupts(0); // Disable interrupts while accessing the radio
+    
+    if( network.available() ){
 	  RF24NetworkHeader header;
 		size_t size = network.peek(header);
 		uint8_t buf[size];
 	    network.read(header,&buf,size);
 	  printf("Received Network Message, type: %d id %d from %d\n",header.type,header.id,mesh.getNodeID(header.from_node));
 	}
+
    
-   //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
-   //The function will perform a delayed wait of max 3ms unless otherwise specified.
-   gw.poll(3);
-   
-   if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+   if(millis()-mesh_timer > 30000 && mesh.getNodeID() > 0){ //Every 30 seconds, test mesh connectivity
      mesh_timer = millis();
      if( ! mesh.checkConnection() ){
-       //refresh the network address
-       radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+       //refresh the network address 
        mesh.renewAddress();
-       radio.maskIRQ(1,1,0);
      }
    }    
 
@@ -77,7 +74,6 @@ int main(int argc, char** argv) {
    //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
    if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
      radio.failureDetected = 0;
-     radio.maskIRQ(1,1,1);
      std::ofstream myFile;
      myFile.open ("failLog.txt");
      if (myFile.is_open()){
@@ -86,8 +82,14 @@ int main(int argc, char** argv) {
      }
      delay(500);
      mesh.begin();
-     radio.maskIRQ(1,1,0);
    }
+   
+   gw.interrupts(); // Re-enable interrupts when done accessing the radio
+   
+      
+   //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
+   //The function will perform a delayed wait of max 3ms unless otherwise specified.
+   gw.poll(3);
 
   }
   return 0;

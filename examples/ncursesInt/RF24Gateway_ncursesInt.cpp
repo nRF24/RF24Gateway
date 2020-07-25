@@ -154,33 +154,29 @@ bool ok = true;
 uint32_t failCounter = 0;
 
  while(1){
+
+   
+  gw.interrupts(0); //Disable interrupts before accessing the radio
   
-  if(millis()-mesh_timer > 30000 && mesh.getNodeID()){ //Every 30 seconds, test mesh connectivity
+  if(millis()-mesh_timer > 30000 && mesh.getNodeID() > 0){ //Every 30 seconds, test mesh connectivity
     if( ! mesh.checkConnection() ){
         wclear(renewPad);
         mvwprintw(renewPad,0,0,"*Renewing Address*");
-        prefresh(renewPad,0,0, 3,26, 4, 55);
-        radio.maskIRQ(1,1,1); //Use polling only for address renewal       
+        prefresh(renewPad,0,0, 3,26, 4, 55);      
         if( (ok = mesh.renewAddress()) ){
             wclear(renewPad);
             prefresh(renewPad,0,0, 3,26, 4, 55);
         }
-        radio.maskIRQ(1,1,0);
      }
      mesh_timer = millis();
   }
-	/**
-	* The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
-	* RF24Network user payloads are loaded into the user cache		
-	*/
-    gw.poll(10);
     
   if(ok){ //Non-master nodes need an active connection to the mesh in order to handle data
 
   
   /** Read RF24Network Payloads (Do nothing with them currently) **/
   /*******************************/
-    radio.maskIRQ(1,1,1);
+    gw.interrupts(0);
     if( network.available() ){
 	  ++networkPacketsRX;
 	  RF24NetworkHeader header;
@@ -203,12 +199,20 @@ uint32_t failCounter = 0;
         network.write(hdr,&myTime,sizeof(myTime));
 
    	  }
-      network.read(header,&buf,size);
+      network.read(header,0,0);
 	}
-    radio.maskIRQ(1,1,0);
+    gw.interrupts(); //Re-enable interrupts when done accessing the radio
+    
   }else{
-      delay(100); //Big delay if connection to RF24Mesh is failing
+    delay(100); //Big delay if connection to RF24Mesh is failing
   }
+  
+  /**
+  * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
+  * RF24Network user payloads are loaded into the user cache		
+  */
+  gw.poll(10);  
+  
   /** Mesh address/id printout **/
   /*******************************/
     if(millis() - meshInfoTimer > updateRate){
@@ -269,19 +273,20 @@ uint32_t failCounter = 0;
     //checking for deviations from the default configuration (1MBPS data rate)
     //The mesh is restarted on failure and failure count logged to failLog.txt
     //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
+    gw.interrupts(0);
     if(radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS){
-      radio.failureDetected = 0;
-      radio.maskIRQ(1,1,1);
+
       std::ofstream myFile;
       myFile.open ("failLog.txt");
       if (myFile.is_open()){
         myFile << ++failCounter << "\n";
-        myFile.close();
       }
-      delay(500);
-      mesh.begin();
-      radio.maskIRQ(1,1,0);
+      myFile.close();
+      mesh.begin(1);
+      delay(1000);
+      radio.failureDetected = 0;
     }
+    gw.interrupts(1);
 	
  }//while 1
 
