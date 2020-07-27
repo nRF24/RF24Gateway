@@ -221,8 +221,8 @@ private:
   void handleRadioIn();
   void handleRX(uint32_t waitDelay=0);
   void handleTX();
-  bool interruptInProgress;
-  bool interruptsEnabled;
+  volatile bool interruptInProgress;
+  volatile bool interruptsEnabled;
    
   int configDevice(uint16_t address);  
   int allocateTunDevice(char *dev, int flags, uint16_t address);

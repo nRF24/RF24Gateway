@@ -291,14 +291,11 @@ int RF24Gateway::setIP( char *ip_addr, char *mask) {
 /***************************************************************************************/
 void RF24Gateway::interrupts(bool enable){
   if(enable){
-    while(interruptInProgress){ delay(1); }  
     interruptsEnabled = enable;
-    radio.maskIRQ(1,1,0);    
-  }else{
+  }else{    
+    while(interruptInProgress){ usleep(100); }
     interruptsEnabled = 0;
-    while(interruptInProgress){ delay(1); }    
-    radio.maskIRQ(1,1,1);
-        
+    while(interruptInProgress){ usleep(500); }        
   }
 }
 
@@ -307,18 +304,17 @@ void RF24Gateway::interrupts(bool enable){
 void RF24Gateway::update(bool interrupts){
   
   if(interrupts){   
+    interruptInProgress = 1;  
     uint32_t intTimer = millis();
     while(!interruptsEnabled){
-      delay(1);
-      if(millis()-intTimer>100){ //Wait up to 100ms for interrupts to be re-enabled
+      usleep(750);
+      if(millis()-intTimer>1000){ //Wait up to 1s for interrupts to be re-enabled
+        interruptInProgress = 0;
         return;
       }
     }
-    interruptInProgress = 1;
-    radio.maskIRQ(1,1,1);
     handleRadioIn();
     handleTX();
-    radio.maskIRQ(1,1,0);
     interruptInProgress = 0;
   }else{
     handleRadioIn();
@@ -334,16 +330,19 @@ void RF24Gateway::poll(uint32_t waitDelay){
 
     handleRX(waitDelay);
 
-    if(interruptInProgress){return;}
-    radio.maskIRQ(1,1,1);
+    while(interruptInProgress){ usleep(100); }
+    interruptsEnabled = 0;
+    while(interruptInProgress){ usleep(500); }
+
     //gateway.poll() is called manually when using interrupts, so if the radio RX buffer is full, or interrupts have been missed, check for it here.
     if(radio.rxFifoFull()){
       fifoCleared=true;
       handleRadioIn();
-      handleTX();
+      interruptsEnabled = 1;
+      return;
     }
     handleRadioOut();
-    radio.maskIRQ(1,1,0);
+    interruptsEnabled = 1;
 }
 /***************************************************************************************/
 
@@ -645,9 +644,9 @@ void RF24Gateway::handleRX(uint32_t waitDelay){
 				}
 				std::cout <<  std::endl;				
             #endif
-		rxQueue.pop();
         }
 
+        rxQueue.pop();
 }
 
 /***************************************************************************************/
