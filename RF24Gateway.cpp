@@ -419,10 +419,12 @@ struct in_addr RF24Gateway::getLocalIP(){
 	  s = getnameinfo(ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
       if (s == 0) {
         myNet.s_addr = ntohl(inet_network(host));
+        freeifaddrs(ifap);
         return myNet;
 	  }
 	}
   }
+  freeifaddrs(ifap);
   return myNet;
 }
 
