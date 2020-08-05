@@ -349,10 +349,11 @@ void RF24Gateway::poll(uint32_t waitDelay){
 void RF24Gateway::handleRadioIn(){
     
     if(mesh_enabled){
-      while(mesh.update()){};
+      while(mesh.update()){
         if(!thisNodeAddress){
             mesh.DHCP();
         }
+      }
     }else{
         while(network.update());
     }

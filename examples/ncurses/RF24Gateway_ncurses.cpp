@@ -116,7 +116,7 @@ int main() {
   /** Setup Pads**/
   /*******************************/
   devPad = newpad(11,40);  
-  meshPad = newpad(11,50);  
+  meshPad = newpad(50,50);  
   rf24Pad = newpad(11,40);  
   connPad = newpad(21,150);
   cfgPad = newpad(10,40);
