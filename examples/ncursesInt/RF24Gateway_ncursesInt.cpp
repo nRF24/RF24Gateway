@@ -170,7 +170,8 @@ uint32_t failCounter = 0;
      }
      mesh_timer = millis();
   }
-    
+  gw.interrupts();
+
   if(ok){ //Non-master nodes need an active connection to the mesh in order to handle data
 
   
