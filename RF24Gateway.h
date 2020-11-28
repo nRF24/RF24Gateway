@@ -317,14 +317,14 @@ private:
  *
  * @section Installation Installation
  *
- * See http://tmrh20.github.io/RF24 for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
+ * See http://nRF24.github.io/RF24 for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
  *
  * After running the installer, RF24Gateway will be installed at rf24libs/RF24Gateway. <b><a href="examples.html">Examples</a></b> are included for operating the gateway
  * as well as client scripts & programs to control nodes via http requests.
  *
  * Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh or be statically assigned within RF24Mesh.
  *
- * See http://tmrh20.github.io/RF24Ethernet/ for related documentation for use with RF24Gateway.
+ * See http://nRF24.github.io/RF24Ethernet/ for related documentation for use with RF24Gateway.
  *
  * @section HowItWorks How It Works
  *
@@ -356,7 +356,7 @@ private:
  * sudo sysctl -w net.ipv4.ip_forward=1
  * sudo iptables -t nat -A POSTROUTING -j MASQUERADE @endcode
  *
- * See http://tmrh20.github.io/RF24Ethernet/ConfigAndSetup.html for more info
+ * See http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html for more info
  *
  * @section AdvConfig Advanced Configuration
  *
