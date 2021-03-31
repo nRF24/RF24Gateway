@@ -1,2 +1,3 @@
-# ignore docs folder
-docs/
+# ignore doxygen generated files
+docs/html/
+docs/xml/
