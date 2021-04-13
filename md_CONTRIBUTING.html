@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RF24Gateway - TCP/IP over RF24Network: bClient.sh</title>
+<title>RF24Gateway - TCP/IP over RF24Network: CONTRIBUTING</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -48,7 +48,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -63,48 +62,24 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+</div><!-- top -->
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">bClient.sh</div>  </div>
+<div class="title">CONTRIBUTING </div>  </div>
 </div><!--header-->
 <div class="contents">
-<p>Once <a class="el" href="classRF24Gateway.html">RF24Gateway</a> and RF24Ethernet are configured, standard tools can be used to interact with the sensor nodes. <br  />
-Example of on demand LED/Lighting control using a Bash script.</p>
-<div class="fragment"><div class="line">#!/bin/bash</div>
-<div class="line"> </div>
-<div class="line"> </div>
-<div class="line">if (( $# != 2 ))</div>
-<div class="line">then</div>
-<div class="line">  echo &quot;Usage: ... ./bClient.sh &lt;IP&gt; &lt;ON/OFF&gt;&quot;</div>
-<div class="line">  exit 1</div>
-<div class="line">fi</div>
-<div class="line"> </div>
-<div class="line">IP=$1</div>
-<div class="line">PAGE=$2</div>
-<div class="line"> </div>
-<div class="line">URL=&quot;:1000/&quot;</div>
-<div class="line">SUFFIX=&quot;&lt;/td*&quot;</div>
-<div class="line"> </div>
-<div class="line">#Build a request ( http://10.10.2.4:1000/ON )</div>
-<div class="line">REQUEST=&quot;http://&quot;$IP$URL$PAGE</div>
-<div class="line"> </div>
-<div class="line">#Make the request, with 1 retry and a timeout of 10 seconds per retry (max 20 seconds per request)</div>
-<div class="line">RESULT=$(wget -q --tries=1 --timeout=10 -O- $REQUEST | grep &#39;LED is&#39;)</div>
-<div class="line"> </div>
-<div class="line">#Trim the HTML from the result</div>
-<div class="line">RESULT=${RESULT%$SUFFIX}</div>
-<div class="line"> </div>
-<div class="line">#If succesful, print status, else indicate failure</div>
-<div class="line">if [ ${#RESULT} -ne 0 ]</div>
-<div class="line">then</div>
-<div class="line">  echo $RESULT</div>
-<div class="line">else</div>
-<div class="line">  echo &quot;Request Failed&quot;</div>
-<div class="line">fi</div>
-</div><!-- fragment --> </div><!-- contents -->
+<div class="textblock"><p>These are the current requirements for getting your code included in RF24:</p>
+<ul>
+<li>Try your best to follow the rest of the code, if you're unsure then the NASA C style can help as it's closest to the current style: <a href="https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19950022400.pdf">https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19950022400.pdf</a></li>
+<li>Definetly follow <a href="https://www.python.org/dev/peps/pep-0008/">PEP-8</a> if it's Python code.</li>
+<li>Follow the <a href="https://www.arduino.cc/en/Reference/StyleGuide">Arduino IDE formatting style</a> for Arduino examples</li>
+<li>Add <a href="https://www.doxygen.nl/manual/docblocks.html">doxygen-compatible documentation</a> to any new functions you add, or update existing documentation if you change behaviour </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 01:13:06 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 01:13:07 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
