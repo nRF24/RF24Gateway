@@ -1,7 +1,7 @@
 # get lib info from the git cmds
 execute_process(COMMAND git config --get remote.origin.url OUTPUT_VARIABLE CMAKE_PROJECT_HOMEPAGE_URL)
 string(STRIP CMAKE_PROJECT_HOMEPAGE_URL ${CMAKE_PROJECT_HOMEPAGE_URL})
-
+message("URL = ${CMAKE_PROJECT_HOMEPAGE_URL}")
 # use URL to get repo owner as Contact/Maintainer name
 string(REGEX REPLACE "^http[s]?://github.com/(.+)/.+\\.git" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
 string(STRIP "${CPACK_PACKAGE_CONTACT}" CPACK_PACKAGE_CONTACT)
