@@ -106,6 +106,8 @@ jobs:
 
       - name: checkout RF24Gateway
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: create CMake build environment
         run: cmake -E make_directory ${{ github.workspace }}/build
