@@ -17,7 +17,7 @@ string(TOLOWER ${LibName} LibTargetName)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "TCP/IP (RF24Ethernet) and RF24Network Gateway")
 
 # Use repo README.md to get the project description
-file(READ "README.md" CPACK_PACKAGE_DESCRIPTION)
+file(READ "Readme.md" CPACK_PACKAGE_DESCRIPTION)
 string(FIND "${CPACK_PACKAGE_DESCRIPTION}" "## RF24Gateway" README_TITLE)
 math(EXPR README_TITLE "${README_TITLE} + 15") # compensates for '\n' char
 string(FIND "${CPACK_PACKAGE_DESCRIPTION}" "### Documentation" DOC_LINK_TITLE)
