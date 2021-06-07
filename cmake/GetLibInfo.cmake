@@ -3,7 +3,7 @@ execute_process(COMMAND git config --get remote.origin.url OUTPUT_VARIABLE CMAKE
 string(STRIP CMAKE_PROJECT_HOMEPAGE_URL ${CMAKE_PROJECT_HOMEPAGE_URL})
 
 # use URL to get repo owner as Contact/Maintainer name
-string(REGEX REPLACE "^http[s]?:\/\/github.com\/(.+)\/.+[\\.git]?.*" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
+string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/(.+)\/.+[\\.git]?.*" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
 string(STRIP "${CPACK_PACKAGE_CONTACT}" CPACK_PACKAGE_CONTACT)
 
 # use URL to get the repo name as the Lib Name. Note that we don't use the folder name for this
@@ -25,7 +25,15 @@ math(EXPR DESCRIPTION_LENGTH "${DOC_LINK_TITLE} - ${README_TITLE}")
 string(SUBSTRING "${CPACK_PACKAGE_DESCRIPTION}" ${README_TITLE} ${DESCRIPTION_LENGTH} CPACK_PACKAGE_DESCRIPTION)
 
 # parse the version information into pieces.
-execute_process(COMMAND git describe --tags OUTPUT_VARIABLE VERSION)
+execute_process(COMMAND git describe --tags
+    OUTPUT_VARIABLE VERSION
+    ERROR_VARIABLE GIT_DESCRIBE_FAIL
+    )
+if(${GIT_DESCRIBE_FAIL})
+    message(FATAL "`git describe --tags` failed with: ${GIT_DESCRIBE_FAIL}")
+else()
+    message("git describes the version tag as ${VERSION}")
+endif()
 string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
 string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
 string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
