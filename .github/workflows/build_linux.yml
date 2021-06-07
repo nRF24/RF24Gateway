@@ -91,6 +91,8 @@ jobs:
 
       - name: checkout RF24Mesh
         uses: actions/checkout@v2
+          repository: nRF24/RF24Mesh
+          ref: CMake-4-Linux
 
       - name: build & install RF24Mesh
         run: |
