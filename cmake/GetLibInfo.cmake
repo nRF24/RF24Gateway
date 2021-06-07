@@ -25,15 +25,7 @@ math(EXPR DESCRIPTION_LENGTH "${DOC_LINK_TITLE} - ${README_TITLE}")
 string(SUBSTRING "${CPACK_PACKAGE_DESCRIPTION}" ${README_TITLE} ${DESCRIPTION_LENGTH} CPACK_PACKAGE_DESCRIPTION)
 
 # parse the version information into pieces.
-execute_process(COMMAND git describe --tags
-    OUTPUT_VARIABLE VERSION
-    ERROR_VARIABLE GIT_DESCRIBE_FAIL
-    )
-if(${GIT_DESCRIBE_FAIL})
-    message(FATAL "`git describe --tags` failed with: ${GIT_DESCRIBE_FAIL}")
-else()
-    message("git describes the version tag as ${VERSION}")
-endif()
+execute_process(COMMAND git describe --tags OUTPUT_VARIABLE VERSION)
 string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
 string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
 string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
