@@ -10,11 +10,9 @@ endif()
 
 # use URL to get repo owner as Contact/Maintainer name
 string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/(.+)\/.+$" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
-# string(STRIP "${CPACK_PACKAGE_CONTACT}" CPACK_PACKAGE_CONTACT)
 
 # use URL to get the repo name as the Lib Name. Note that we don't use the folder name for this
 string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/.+\/(.+)$" "\\1" LibName "${CMAKE_PROJECT_HOMEPAGE_URL}")
-# string(STRIP "${LibName}" LibName)
 
 # convert the LibName to lower case
 string(TOLOWER ${LibName} LibTargetName)
