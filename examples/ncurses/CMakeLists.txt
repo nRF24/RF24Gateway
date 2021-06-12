@@ -1,3 +1,7 @@
+# this example needs the ncurses package installed
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+
 set(example RF24Gateway_ncurses)
 
 # make a target
@@ -10,4 +14,5 @@ target_link_libraries(${example} PUBLIC
     ${RF24Network}
     ${RF24Mesh}
     ${RF24Gateway}
-    )
+    ${CURSES_LIBRARIES}
+)

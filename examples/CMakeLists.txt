@@ -29,9 +29,13 @@ target_link_libraries(${example} PUBLIC
     ${RF24Network}
     ${RF24Mesh}
     ${RF24Gateway}
-    )
+)
 
-add_subdirectory(ncurses)
-add_subdirectory(ncursesInt)
 add_subdirectory(gwNodeInt)
 add_subdirectory(addons/Sniffer)
+
+include(../cmake/enableNcursesExample.cmake)
+if(BUILD_NCURSES_EXAMPLE)
+    add_subdirectory(ncurses)
+    add_subdirectory(ncursesInt)
+endif()

@@ -1,14 +1,20 @@
 # get lib info from the git cmds
-execute_process(COMMAND git config --get remote.origin.url OUTPUT_VARIABLE CMAKE_PROJECT_HOMEPAGE_URL)
-string(STRIP CMAKE_PROJECT_HOMEPAGE_URL ${CMAKE_PROJECT_HOMEPAGE_URL})
+execute_process(COMMAND git config --get remote.origin.url
+    OUTPUT_VARIABLE CMAKE_PROJECT_HOMEPAGE_URL
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(FIND "${CMAKE_PROJECT_HOMEPAGE_URL}" ".git" has_git_ext REVERSE)
+if(has_git_ext GREATER -1)
+    string(SUBSTRING "${CMAKE_PROJECT_HOMEPAGE_URL}" 0 ${has_git_ext} CMAKE_PROJECT_HOMEPAGE_URL)
+endif()
 
 # use URL to get repo owner as Contact/Maintainer name
-string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/(.+)\/.+[\\.git]?.*" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
-string(STRIP "${CPACK_PACKAGE_CONTACT}" CPACK_PACKAGE_CONTACT)
+string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/(.+)\/.+$" "\\1" CPACK_PACKAGE_CONTACT "${CMAKE_PROJECT_HOMEPAGE_URL}")
+# string(STRIP "${CPACK_PACKAGE_CONTACT}" CPACK_PACKAGE_CONTACT)
 
 # use URL to get the repo name as the Lib Name. Note that we don't use the folder name for this
-string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/.+\/(.+)[\\.git]?.*" "\\1" LibName "${CMAKE_PROJECT_HOMEPAGE_URL}")
-string(STRIP "${LibName}" LibName)
+string(REGEX REPLACE "^http[s]?:\/\/github\\.com\/.+\/(.+)$" "\\1" LibName "${CMAKE_PROJECT_HOMEPAGE_URL}")
+# string(STRIP "${LibName}" LibName)
 
 # convert the LibName to lower case
 string(TOLOWER ${LibName} LibTargetName)
@@ -17,7 +23,7 @@ string(TOLOWER ${LibName} LibTargetName)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "TCP/IP (RF24Ethernet) and RF24Network Gateway")
 
 # Use repo README.md to get the project description
-file(READ "Readme.md" CPACK_PACKAGE_DESCRIPTION)
+file(READ "README.md" CPACK_PACKAGE_DESCRIPTION)
 string(FIND "${CPACK_PACKAGE_DESCRIPTION}" "## RF24Gateway" README_TITLE)
 math(EXPR README_TITLE "${README_TITLE} + 15") # compensates for '\n' char
 string(FIND "${CPACK_PACKAGE_DESCRIPTION}" "### Documentation" DOC_LINK_TITLE)

@@ -48,12 +48,8 @@ message(STATUS "using RF24Mesh library: ${RF24Mesh}")
 ###########################
 # create target for bulding the RF24Log lib
 ###########################
-add_library(${LibTargetName} SHARED
-    RF24Gateway.cpp
-    )
-target_include_directories(${LibTargetName} PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}
-    )
+add_library(${LibTargetName} SHARED RF24Gateway.cpp)
+target_include_directories(${LibTargetName} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
 target_link_libraries(${LibTargetName} INTERFACE
     project_options
@@ -61,26 +57,24 @@ target_link_libraries(${LibTargetName} INTERFACE
     SHARED ${RF24}
     SHARED ${RF24Network}
     SHARED ${RF24Mesh}
-    )
+)
 
 set_target_properties(
     ${LibTargetName}
     PROPERTIES
     SOVERSION ${${LibName}_VERSION_MAJOR}
     VERSION ${${LibName}_VERSION_STRING}
-    )
+)
 
 ###########################
 # target install rules for the RF24Log lib
 ###########################
-install(TARGETS ${LibTargetName}
-    DESTINATION lib
-    )
+install(TARGETS ${LibTargetName} DESTINATION lib)
 
 install(FILES
         RF24Gateway.h
     DESTINATION include/RF24Gateway
-    )
+)
 
 # CMAKE_CROSSCOMPILING is only TRUE when CMAKE_TOOLCHAIN_FILE is specified via CLI
 if(CMAKE_HOST_UNIX AND "${CMAKE_CROSSCOMPILING}" STREQUAL "FALSE")

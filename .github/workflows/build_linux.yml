@@ -3,7 +3,23 @@ name: Linux build
 on:
   pull_request:
     types: [opened, reopened]
+    paths:
+      - '*.h'
+      - '*.cpp'
+      - 'CMakeLists.txt'
+      - 'cmake/**'
+      - 'examples/**.cpp'
+      - '!**Makefile' # old build system is not tested in this workflow
+      - '.github/workflows/build_linux.yml'
   push:
+    paths:
+      - '*.h'
+      - '*.cpp'
+      - 'CMakeLists.txt'
+      - 'cmake/**'
+      - 'examples/**.cpp'
+      - '!**Makefile' # old build system is not tested in this workflow
+      - '.github/workflows/build_linux.yml'
   release:
     types: [published, edited]
 
