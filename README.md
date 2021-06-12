@@ -1,3 +1,5 @@
+[![Linux build](https://github.com/nRF24/RF24Gateway/actions/workflows/build_linux.yml/badge.svg)](https://github.com/nRF24/RF24Gateway/actions/workflows/build_linux.yml)
+
 ## RF24Gateway
 A complimentary library to RF24Ethernet, for RPi/Linux devices.
 
