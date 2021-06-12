@@ -48,9 +48,6 @@ jobs:
             usr_dir: "local"
 
     steps:
-      - name: install rpmbuild
-        run: sudo apt-get install rpm
-
       # - name: provide toolchain (for x86_64)
       #   if: ${{ matrix.toolchain.compiler == 'x86_64' }}
       #   run: |
@@ -129,12 +126,6 @@ jobs:
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: configure lib
-        if: ${{ matrix.toolchain.compiler == 'default' }}
-        working-directory: ${{ github.workspace }}/build
-        run: cmake .. -D CMAKE_BUILD_TYPE=$BUILD_TYPE
-
-      - name: configure lib (with toolchain compilers)
-        if: ${{ matrix.toolchain.compiler != 'default' }}
         working-directory: ${{ github.workspace }}/build
         run: |
           cmake .. -D CMAKE_BUILD_TYPE=$BUILD_TYPE \
@@ -178,8 +169,8 @@ jobs:
           cmake ../examples \
           -D CMAKE_TOOLCHAIN_FILE=../cmake/toolchains/${{ matrix.toolchain.compiler }}.cmake
 
-      - name: build examples (none that use ncurses)
+      - name: build examples
         working-directory: ${{ github.workspace }}/build
         run: |
-          cmake --build . --target RF24GatewayNode --target Sniffer --target RF24GatewayNodeInt
+          cmake --build .
           file ./RF24GatewayNode
