@@ -45,7 +45,7 @@ jobs:
           # - compiler: "i686"
           #   usr_dir: "i686-linux-gnu"
           - compiler: "default" # github runner is hosted on a "amd64"
-            usr_dir: "local"
+            usr_dir: "local" # use default compiler to test build all examples (including the ncurses ones)
 
     steps:
       # - name: provide toolchain (for x86_64)
