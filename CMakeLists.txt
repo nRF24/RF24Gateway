@@ -10,6 +10,9 @@ add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
 add_compile_options(-Ofast -Wall)
 
+# allow using CMake options to adjust RF24Network_config.h without modiying source code
+option(DEBUG_LEVEL "adjust the verbosity of the debugging messages" 0)
+
 # detect CPU and add compiler flags accordingly
 include(cmake/detectCPU.cmake)
 
@@ -65,6 +68,12 @@ set_target_properties(
     SOVERSION ${${LibName}_VERSION_MAJOR}
     VERSION ${${LibName}_VERSION_STRING}
 )
+
+# assert the appropriate preprocessor macros for RF24Network_config.h
+if(DEBUG_LEVEL GREATER 0)
+    message(STATUS "DEBUG_LEVEL set to ${DEBUG_LEVEL}")
+    target_compile_definitions(${LibTargetName} PUBLIC DEBUG_LEVEL=${DEBUG_LEVEL})
+endif()
 
 ###########################
 # target install rules for the RF24Log lib
