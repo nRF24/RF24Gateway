@@ -7,12 +7,16 @@
 Simple MQTT data logger, listens for UDP output from RF24Gateway & logs to an MQTT topic
 For use with RF24Mesh nodes that are not able to communicate directly via TCP/IP etc
 See RF24Gateway examples:
-                           RF24NetworkFrame frame = RF24NetworkFrame(header,buf,size);
-                           gw.sendUDP(mesh.getNodeID(header.from_node),frame);
+                           RF24NetworkFrame frame = RF24NetworkFrame(header, buf, size);
+                           gw.sendUDP(mesh.getNodeID(header.from_node), frame);
 """
 import paho.mqtt.client as mqtt
 import socket
-import sys
+
+try: #python 2 to 3 hack
+    unicode("")  # all strings are unicode in python3
+except NameError:
+    unicode = str  # does the same thing as python2's builtin unicode()
 
 ### Setup the MQTT host IP & topic to publish to
 mqttHost = "10.10.2.2"
