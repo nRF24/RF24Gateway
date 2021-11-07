@@ -38,7 +38,7 @@ SOURCES = ${PROGRAMS2:=.cpp}
 all: ${PROGRAMS}
 
 ${PROGRAMS}: ${SOURCES}
-	g++ ${CCFLAGS} -Wall -I../ -lncurses -lrf24-bcm -lrf24network -lrf24mesh -lrf24gateway $@.cpp -o $@
+	g++ ${CCFLAGS} -Wall -I../ $@.cpp -lncurses -lrf24-bcm -lrf24network -lrf24mesh -lrf24gateway -o $@
 
 clean:
 	rm -rf $(PROGRAMS)
