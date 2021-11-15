@@ -34,7 +34,9 @@
     #define IFF_MULTI_QUEUE 0x0100
 #endif
 
-#define DEBUG 0
+#ifndef DEBUG_LEVEL
+    #define DEBUG_LEVEL 0
+#endif // DEBUG_LEVEL
 
 #define BACKLOG     10  /* Passed to listen() */
 
