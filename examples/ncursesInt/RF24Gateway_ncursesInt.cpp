@@ -232,10 +232,10 @@ int main()
 
             drawMeshPad();
             wscrl(meshPad, meshScroll);
-            prefresh(meshPad, 0, 0, 4, 26, 14, 47);
+            prefresh(meshPad, 0, 0, 4, 26, 14, 48);
 
             drawRF24Pad();
-            prefresh(rf24Pad, 0, 0, 4, 51, 14, 73);
+            prefresh(rf24Pad, 0, 0, 4, 52, 14, 74);
 
             if (showConnPad)
             {
