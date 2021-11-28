@@ -23,7 +23,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RF24Gateway - TCP/IP over RF24Network
-   &#160;<span id="projectnumber">v1.0.2</span>
+   &#160;<span id="projectnumber">v1.0.3</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -69,92 +69,93 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <p>A simple example of using <a class="el" href="classRF24Gateway.html">RF24Gateway</a> node to forward IP traffic automatically to a network interface, while managing standard RF24Network user payloads independently.</p>
-<div class="fragment"><div class="line"> </div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;RF24/RF24.h&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;RF24/RF24.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;RF24Network/RF24Network.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;RF24Mesh/RF24Mesh.h&gt;</span>  </div>
+<div class="line"><span class="preprocessor">#include &lt;RF24Mesh/RF24Mesh.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;RF24Gateway/RF24Gateway.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">//RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ); </span></div>
-<div class="line">RF24 radio(22,0);</div>
+<div class="line">RF24 radio(22, 0);</div>
 <div class="line">RF24Network network(radio);</div>
-<div class="line">RF24Mesh mesh(radio,network);</div>
-<div class="line"><a name="_a0"></a><a class="code" href="classRF24Gateway.html">RF24Gateway</a> gw(radio,network,mesh);</div>
+<div class="line">RF24Mesh mesh(radio, network);</div>
+<div class="line"><a name="_a0"></a><a class="code" href="classRF24Gateway.html">RF24Gateway</a> gw(radio, network, mesh);</div>
 <div class="line"> </div>
 <div class="line">uint32_t mesh_timer = 0;</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line">{</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">//Config for use with RF24Mesh as Master Node</span></div>
-<div class="line">  <span class="comment">//uint8_t nodeID=0;</span></div>
-<div class="line">   gw.begin();</div>
+<div class="line">    <span class="comment">//Config for use with RF24Mesh as Master Node</span></div>
+<div class="line">    <span class="comment">//uint8_t nodeID=0;</span></div>
+<div class="line">    gw.begin();</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">//Config for use with RF24Mesh as child Node</span></div>
-<div class="line">  <span class="comment">// uint8_t nodeID = 2;</span></div>
-<div class="line">  <span class="comment">// gw.begin(nodeID);</span></div>
+<div class="line">    <span class="comment">//Config for use with RF24Mesh as child Node</span></div>
+<div class="line">    <span class="comment">// uint8_t nodeID = 2;</span></div>
+<div class="line">    <span class="comment">// gw.begin(nodeID);</span></div>
 <div class="line"> </div>
+<div class="line">    <span class="comment">//Config for use without RF24Mesh</span></div>
+<div class="line">    <span class="comment">// uint16_t RF24NetworkAddress = 0;</span></div>
+<div class="line">    <span class="comment">// gw.begin(RF24NetworkAddress);</span></div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">//Config for use without RF24Mesh</span></div>
-<div class="line">  <span class="comment">// uint16_t RF24NetworkAddress = 0; </span></div>
-<div class="line">  <span class="comment">// gw.begin(RF24NetworkAddress);</span></div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">//Set this to your chosen IP/Subnet</span></div>
-<div class="line">  <span class="keywordtype">char</span> ip[] = <span class="stringliteral">&quot;10.10.2.2&quot;</span>;</div>
-<div class="line">  <span class="keywordtype">char</span> subnet[] = <span class="stringliteral">&quot;255.255.255.0&quot;</span>;</div>
-<div class="line">  </div>
-<div class="line">  gw.setIP(ip,subnet);</div>
-<div class="line">  uint32_t failCounter = 0;</div>
-<div class="line">  </div>
-<div class="line"> <span class="keywordflow">while</span>(1){</div>
-<div class="line">    </div>
-<div class="line">    <span class="comment">// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface</span></div>
-<div class="line">    <span class="comment">// RF24Network user payloads are loaded into the user cache</span></div>
-<div class="line">    gw.update();</div>
-<div class="line">    <span class="keywordflow">if</span>( network.available() ){</div>
-<div class="line">      RF24NetworkHeader header;</div>
-<div class="line">        <span class="keywordtype">size_t</span> size = network.peek(header);</div>
-<div class="line">        uint8_t buf[size];</div>
-<div class="line">        network.read(header,&amp;buf,size);</div>
-<div class="line">      printf(<span class="stringliteral">&quot;Received Network Message, type: %d id %d from %d\n&quot;</span>,header.type,header.id,mesh.getNodeID(header.from_node));</div>
-<div class="line">      </div>
-<div class="line">      RF24NetworkFrame frame = RF24NetworkFrame(header,buf,size); </div>
-<div class="line">      gw.sendUDP(mesh.getNodeID(header.from_node),frame);</div>
-<div class="line">      </div>
+<div class="line">    <span class="comment">//Set this to your chosen IP/Subnet</span></div>
+<div class="line">    <span class="keywordtype">char</span> ip[] = <span class="stringliteral">&quot;10.10.2.2&quot;</span>;</div>
+<div class="line">    <span class="keywordtype">char</span> subnet[] = <span class="stringliteral">&quot;255.255.255.0&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line">    gw.setIP(ip, subnet);</div>
+<div class="line">    uint32_t failCounter = 0;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (1)</div>
+<div class="line">    {</div>
+<div class="line"> </div>
+<div class="line">        <span class="comment">// The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface</span></div>
+<div class="line">        <span class="comment">// RF24Network user payloads are loaded into the user cache</span></div>
+<div class="line">        gw.update();</div>
+<div class="line">        <span class="keywordflow">if</span> (network.available())</div>
+<div class="line">        {</div>
+<div class="line">            RF24NetworkHeader header;</div>
+<div class="line">            <span class="keywordtype">size_t</span> size = network.peek(header);</div>
+<div class="line">            uint8_t buf[size];</div>
+<div class="line">            network.read(header, &amp;buf, size);</div>
+<div class="line">            printf(<span class="stringliteral">&quot;Received Network Message, type: %d id %d from %d\n&quot;</span>, header.type, header.id, mesh.getNodeID(header.from_node));</div>
+<div class="line"> </div>
+<div class="line">            RF24NetworkFrame frame = RF24NetworkFrame(header, buf, size);</div>
+<div class="line">            gw.sendUDP(mesh.getNodeID(header.from_node), frame);</div>
+<div class="line">        }</div>
+<div class="line">        delay(2);</div>
+<div class="line"> </div>
+<div class="line">        <span class="keywordflow">if</span> (millis() - mesh_timer &gt; 30000 &amp;&amp; mesh.getNodeID())</div>
+<div class="line">        { <span class="comment">//Every 30 seconds, test mesh connectivity</span></div>
+<div class="line">            mesh_timer = millis();</div>
+<div class="line">            <span class="keywordflow">if</span> (!mesh.checkConnection())</div>
+<div class="line">            {</div>
+<div class="line">                <span class="comment">//refresh the network address</span></div>
+<div class="line">                mesh.renewAddress();</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">        <span class="comment">//This section checks for failures detected by RF24 &amp; RF24Network as well as</span></div>
+<div class="line">        <span class="comment">//checking for deviations from the default configuration (1MBPS data rate)</span></div>
+<div class="line">        <span class="comment">//The mesh is restarted on failure and failure count logged to failLog.txt</span></div>
+<div class="line">        <span class="comment">//This makes the radios hot-swappable, disconnect &amp; reconnect as desired, it should come up automatically</span></div>
+<div class="line">        <span class="keywordflow">if</span> (radio.failureDetected &gt; 0 || radio.getDataRate() != RF24_1MBPS)</div>
+<div class="line">        {</div>
+<div class="line">            radio.failureDetected = 0;</div>
+<div class="line">            std::ofstream myFile;</div>
+<div class="line">            myFile.open(<span class="stringliteral">&quot;failLog.txt&quot;</span>);</div>
+<div class="line">            <span class="keywordflow">if</span> (myFile.is_open())</div>
+<div class="line">            {</div>
+<div class="line">                myFile &lt;&lt; ++failCounter &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line">                myFile.close();</div>
+<div class="line">            }</div>
+<div class="line">            delay(500);</div>
+<div class="line">            mesh.begin();</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
-<div class="line">    delay(2);</div>
-<div class="line">    </div>
-<div class="line">    <span class="keywordflow">if</span>(millis()-mesh_timer &gt; 30000 &amp;&amp; mesh.getNodeID()){ <span class="comment">//Every 30 seconds, test mesh connectivity</span></div>
-<div class="line">      mesh_timer = millis();</div>
-<div class="line">      <span class="keywordflow">if</span>( ! mesh.checkConnection() ){</div>
-<div class="line">        <span class="comment">//refresh the network address</span></div>
-<div class="line">        mesh.renewAddress();</div>
-<div class="line">      }</div>
-<div class="line">    }</div>
-<div class="line">    <span class="comment">//This section checks for failures detected by RF24 &amp; RF24Network as well as</span></div>
-<div class="line">    <span class="comment">//checking for deviations from the default configuration (1MBPS data rate)</span></div>
-<div class="line">    <span class="comment">//The mesh is restarted on failure and failure count logged to failLog.txt</span></div>
-<div class="line">    <span class="comment">//This makes the radios hot-swappable, disconnect &amp; reconnect as desired, it should come up automatically</span></div>
-<div class="line">    <span class="keywordflow">if</span>(radio.failureDetected &gt; 0 || radio.getDataRate() != RF24_1MBPS){</div>
-<div class="line">      radio.failureDetected = 0;</div>
-<div class="line">      std::ofstream myFile;</div>
-<div class="line">      myFile.open (<span class="stringliteral">&quot;failLog.txt&quot;</span>);</div>
-<div class="line">      <span class="keywordflow">if</span> (myFile.is_open()){</div>
-<div class="line">        myFile &lt;&lt; ++failCounter &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line">        myFile.close();</div>
-<div class="line">      }</div>
-<div class="line">      delay(500);</div>
-<div class="line">      mesh.begin();</div>
-<div class="line">    }</div>
-<div class="line">  </div>
-<div class="line">  }</div>
-<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassRF24Gateway_html"><div class="ttname"><a href="classRF24Gateway.html">RF24Gateway</a></div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00045">RF24Gateway.h:45</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html"><div class="ttname"><a href="classRF24Gateway.html">RF24Gateway</a></div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00047">RF24Gateway.h:47</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 01:13:06 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Sun Nov 28 2021 13:37:40 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>

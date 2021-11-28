@@ -23,7 +23,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RF24Gateway - TCP/IP over RF24Network
-   &#160;<span id="projectnumber">v1.0.2</span>
+   &#160;<span id="projectnumber">v1.0.3</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">RF24Gateway::begin</a>(<span class="keywordtype">bool</span> configTUN, <span class="keywordtype">bool</span> meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel)</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    printf(<span class="stringliteral">&quot;GW Begin\n&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    printf(<span class="stringliteral">&quot;Config Device address 0%o nodeID %d\n&quot;</span>, address, mesh_nodeID);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">    #endif</span></div>
@@ -151,7 +151,7 @@ $(function() {
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    network.multicastRelay = 1;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//#if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">//#if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    radio.printDetails();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">//#endif</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
@@ -235,7 +235,7 @@ $(function() {
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        flags = IFF_TAP | IFF_NO_PI | IFF_MULTI_QUEUE;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    }</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    tunFd = allocateTunDevice(tunName, flags, address);</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">    #if DEBUG &gt;= 1</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">    #if DEBUG_LEVEL &gt;= 1</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">if</span> (tunFd &gt;= 0) {</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;RF24Gw: Successfully attached to tun/tap device &quot;</span> &lt;&lt; tunTapDevice &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
@@ -270,7 +270,7 @@ $(function() {
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Create device</span></div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">if</span> (ioctl(fd, TUNSETIFF, (<span class="keywordtype">void</span> *)&amp;ifr) &lt; 0) {</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="comment">//close(fd);</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="comment">//#if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="comment">//#if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        std::cerr &lt;&lt; <span class="stringliteral">&quot;RF24Gw: Error: enabling TUNSETIFF&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        std::cerr &lt;&lt; <span class="stringliteral">&quot;RF24Gw: If changing from TAP/TUN, run &#39;sudo ip link delete tun_nrf24&#39; to remove the interface&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">return</span> -1;</div>
@@ -279,7 +279,7 @@ $(function() {
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="comment">//Make persistent</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">if</span> (ioctl(fd, TUNSETPERSIST, 1) &lt; 0) {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">        #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">        #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        std::cerr &lt;&lt; <span class="stringliteral">&quot;RF24Gw: Error: enabling TUNSETPERSIST&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">return</span> -1;</div>
@@ -299,7 +299,7 @@ $(function() {
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        memcpy((<span class="keywordtype">char</span> *)&amp;ifr.ifr_hwaddr, (<span class="keywordtype">char</span> *)&amp;sap, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr));</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">if</span> (ioctl(fd, SIOCSIFHWADDR, &amp;ifr) &lt; 0) {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">            #if DEBUG &gt;= 1</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">            #if DEBUG_LEVEL &gt;= 1</span></div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            fprintf(stderr, <span class="stringliteral">&quot;RF24Gw: Failed to set MAC address\n&quot;</span>);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="preprocessor">            #endif</span></div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
@@ -466,10 +466,10 @@ $(function() {
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            memcpy(&amp;msg.message, &amp;f.message_buffer, bytesRead);</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;            msg.size = bytesRead;</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="preprocessor">            #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="preprocessor">            #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;Radio: Received &quot;</span> &lt;&lt; bytesRead &lt;&lt; <span class="stringliteral">&quot; bytes ... &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">            #endif</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="preprocessor">            #if (DEBUG &gt;= 3)</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="preprocessor">            #if (DEBUG_LEVEL &gt;= 3)</span></div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="comment">//printPayload(msg.getPayloadStr(),&quot;radio RX&quot;);</span></div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;TunRead: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; msg.size; i++) {</div>
@@ -535,11 +535,11 @@ $(function() {
 <div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        msgStruct *msgTx = &amp;txQueue.front();</div>
 <div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160; </div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="preprocessor">        #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="preprocessor">        #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Radio: Sending &quot;</span> &lt;&lt; msgTx-&gt;size &lt;&lt; <span class="stringliteral">&quot; bytes ... &quot;</span>;</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        std::cout &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="preprocessor">        #if (DEBUG &gt;= 3)</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="preprocessor">        #if (DEBUG_LEVEL &gt;= 3)</span></div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;        <span class="comment">//PrintDebug == 1 does not have an endline.</span></div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;        <span class="comment">//printPayload(msg.getPayloadStr(),&quot;radio TX&quot;);</span></div>
 <div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="preprocessor">        #endif</span></div>
@@ -672,10 +672,10 @@ $(function() {
 <div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        <span class="keywordflow">if</span> (FD_ISSET(tunFd, &amp;socketSet)) {</div>
 <div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;            <span class="keywordflow">if</span> ((nread = read(tunFd, buffer, MAX_PAYLOAD_SIZE)) &gt;= 0) {</div>
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160; </div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;<span class="preprocessor">                #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;<span class="preprocessor">                #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;                std::cout &lt;&lt; <span class="stringliteral">&quot;Tun: Successfully read &quot;</span> &lt;&lt; nread &lt;&lt; <span class="stringliteral">&quot; bytes from tun device&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="preprocessor">                #endif</span></div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;<span class="preprocessor">                #if (DEBUG &gt;= 3)</span></div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;<span class="preprocessor">                #if (DEBUG_LEVEL &gt;= 3)</span></div>
 <div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;                std::cout &lt;&lt; <span class="stringliteral">&quot;TunRead: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nread; i++)</div>
 <div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;                {</div>
@@ -694,7 +694,7 @@ $(function() {
 <div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                }</div>
 <div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            }</div>
 <div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;            <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;<span class="preprocessor">                #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;<span class="preprocessor">                #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;                std::cerr &lt;&lt; <span class="stringliteral">&quot;Tun: Error while reading from tun/tap interface.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;<span class="preprocessor">                #endif</span></div>
 <div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            }</div>
@@ -727,18 +727,18 @@ $(function() {
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <span class="keywordflow">if</span> (writtenBytes != msg-&gt;size)</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        {</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;            <span class="comment">//std::cerr &lt;&lt; &quot;Tun: Less bytes written to tun/tap device then requested.&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="preprocessor">            #if DEBUG &gt;= 1</span></div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="preprocessor">            #if DEBUG_LEVEL &gt;= 1</span></div>
 <div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;            printf(<span class="stringliteral">&quot;Tun: Less bytes written %d to tun/tap device then requested %d.&quot;</span>, writtenBytes, msg-&gt;size);</div>
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="preprocessor">            #endif</span></div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        }</div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        {</div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="preprocessor">            #if (DEBUG &gt;= 1)</span></div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="preprocessor">            #if (DEBUG_LEVEL &gt;= 1)</span></div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;Tun: Successfully wrote &quot;</span> &lt;&lt; writtenBytes &lt;&lt; <span class="stringliteral">&quot; bytes to tun device&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="preprocessor">            #endif</span></div>
 <div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        }</div>
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160; </div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="preprocessor">        #if (DEBUG &gt;= 3)</span></div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="preprocessor">        #if (DEBUG_LEVEL &gt;= 3)</span></div>
 <div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        <span class="comment">//printPayload(msg.message,&quot;tun write&quot;);</span></div>
 <div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;TunRead: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; msg-&gt;size; i++) {</div>
@@ -804,28 +804,28 @@ $(function() {
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        exit(1);</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    }</div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;}</div>
-<div class="ttc" id="aclassRF24Gateway_html"><div class="ttname"><a href="classRF24Gateway.html">RF24Gateway</a></div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00045">RF24Gateway.h:45</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_a1312aa864c8edbd44f7af75081e25caf"><div class="ttname"><a href="classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf">RF24Gateway::thisNodeAddress</a></div><div class="ttdeci">uint16_t thisNodeAddress</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00133">RF24Gateway.h:133</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html"><div class="ttname"><a href="classRF24Gateway.html">RF24Gateway</a></div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00047">RF24Gateway.h:47</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a1312aa864c8edbd44f7af75081e25caf"><div class="ttname"><a href="classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf">RF24Gateway::thisNodeAddress</a></div><div class="ttdeci">uint16_t thisNodeAddress</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00135">RF24Gateway.h:135</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a1dcb8921636e754ae4a7f21d59fcfb3e"><div class="ttname"><a href="classRF24Gateway.html#a1dcb8921636e754ae4a7f21d59fcfb3e">RF24Gateway::setIP</a></div><div class="ttdeci">int setIP(char *ip_addr, char *mask)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00244">RF24Gateway.cpp:244</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a318c35eb1ecce02e12062822e714d38c"><div class="ttname"><a href="classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c">RF24Gateway::interrupts</a></div><div class="ttdeci">void interrupts(bool enable=1)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00304">RF24Gateway.cpp:304</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_a33c259fdc8989208a39a2eeb5a1761de"><div class="ttname"><a href="classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de">RF24Gateway::thisNodeID</a></div><div class="ttdeci">uint8_t thisNodeID</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00134">RF24Gateway.h:134</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a33c259fdc8989208a39a2eeb5a1761de"><div class="ttname"><a href="classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de">RF24Gateway::thisNodeID</a></div><div class="ttdeci">uint8_t thisNodeID</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00136">RF24Gateway.h:136</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a7dad81701804d1fb5cd55d0370d1a2df"><div class="ttname"><a href="classRF24Gateway.html#a7dad81701804d1fb5cd55d0370d1a2df">RF24Gateway::meshEnabled</a></div><div class="ttdeci">bool meshEnabled()</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00148">RF24Gateway.cpp:148</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_a8f8bcb7aad7a40d882268cfb3d6a3090"><div class="ttname"><a href="classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090">RF24Gateway::routingTableSize</a></div><div class="ttdeci">uint8_t routingTableSize</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00197">RF24Gateway.h:197</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a8f8bcb7aad7a40d882268cfb3d6a3090"><div class="ttname"><a href="classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090">RF24Gateway::routingTableSize</a></div><div class="ttdeci">uint8_t routingTableSize</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00199">RF24Gateway.h:199</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a9005d67e041ab3352cdd57ac358b6024"><div class="ttname"><a href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">RF24Gateway::begin</a></div><div class="ttdeci">void begin(uint8_t nodeID=0, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00020">RF24Gateway.cpp:20</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a9128f60a993cc25b5abe89757b06350e"><div class="ttname"><a href="classRF24Gateway.html#a9128f60a993cc25b5abe89757b06350e">RF24Gateway::sendUDP</a></div><div class="ttdeci">void sendUDP(uint8_t nodeID, RF24NetworkFrame frame)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00720">RF24Gateway.cpp:720</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a91c25cc30c580baa4afac301fd9a0f00"><div class="ttname"><a href="classRF24Gateway.html#a91c25cc30c580baa4afac301fd9a0f00">RF24Gateway::update</a></div><div class="ttdeci">void update(bool interrupts=0)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00322">RF24Gateway.cpp:322</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_a939a9d63e37fb627847ebe70d4fb6043"><div class="ttname"><a href="classRF24Gateway.html#a939a9d63e37fb627847ebe70d4fb6043">RF24Gateway::RF24Gateway</a></div><div class="ttdeci">RF24Gateway(RF24 &amp;_radio, RF24Network &amp;_network, RF24Mesh &amp;_mesh)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00012">RF24Gateway.cpp:12</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_aaac15d895072ec085e051ee9f4d60b48"><div class="ttname"><a href="classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48">RF24Gateway::routingStruct</a></div><div class="ttdeci">routeStruct routingStruct[256]</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00192">RF24Gateway.h:192</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_ab1c6dca6e041f4b53d505be6ceedee76"><div class="ttname"><a href="classRF24Gateway.html#ab1c6dca6e041f4b53d505be6ceedee76">RF24Gateway::fifoCleared</a></div><div class="ttdeci">bool fifoCleared</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00139">RF24Gateway.h:139</a></div></div>
-<div class="ttc" id="aclassRF24Gateway_html_ab5845650441bbb0e6dc6d46581a8defd"><div class="ttname"><a href="classRF24Gateway.html#ab5845650441bbb0e6dc6d46581a8defd">RF24Gateway::config_TUN</a></div><div class="ttdeci">bool config_TUN</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00138">RF24Gateway.h:138</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_aaac15d895072ec085e051ee9f4d60b48"><div class="ttname"><a href="classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48">RF24Gateway::routingStruct</a></div><div class="ttdeci">routeStruct routingStruct[256]</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00194">RF24Gateway.h:194</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_ab1c6dca6e041f4b53d505be6ceedee76"><div class="ttname"><a href="classRF24Gateway.html#ab1c6dca6e041f4b53d505be6ceedee76">RF24Gateway::fifoCleared</a></div><div class="ttdeci">bool fifoCleared</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00141">RF24Gateway.h:141</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_ab5845650441bbb0e6dc6d46581a8defd"><div class="ttname"><a href="classRF24Gateway.html#ab5845650441bbb0e6dc6d46581a8defd">RF24Gateway::config_TUN</a></div><div class="ttdeci">bool config_TUN</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00140">RF24Gateway.h:140</a></div></div>
 <div class="ttc" id="aclassRF24Gateway_html_afd57521e1958f45b210888c9a957adb3"><div class="ttname"><a href="classRF24Gateway.html#afd57521e1958f45b210888c9a957adb3">RF24Gateway::poll</a></div><div class="ttdeci">void poll(uint32_t waitDelay=3)</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8cpp_source.html#l00349">RF24Gateway.cpp:349</a></div></div>
-<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_a7742cff2aabb92931ee8828cbee2d68c"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c">RF24Gateway::routeStruct::mask</a></div><div class="ttdeci">struct in_addr mask</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00244">RF24Gateway.h:185</a></div></div>
-<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_ab026ce6c7ca06f9d299065b5ca36b245"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245">RF24Gateway::routeStruct::gw</a></div><div class="ttdeci">struct in_addr gw</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00244">RF24Gateway.h:186</a></div></div>
-<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_acc7b96511f6e94f2afef69a4c63679e0"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0">RF24Gateway::routeStruct::ip</a></div><div class="ttdeci">struct in_addr ip</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00244">RF24Gateway.h:184</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_a7742cff2aabb92931ee8828cbee2d68c"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c">RF24Gateway::routeStruct::mask</a></div><div class="ttdeci">struct in_addr mask</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00246">RF24Gateway.h:187</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_ab026ce6c7ca06f9d299065b5ca36b245"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245">RF24Gateway::routeStruct::gw</a></div><div class="ttdeci">struct in_addr gw</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00246">RF24Gateway.h:188</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_acc7b96511f6e94f2afef69a4c63679e0"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0">RF24Gateway::routeStruct::ip</a></div><div class="ttdeci">struct in_addr ip</div><div class="ttdef"><b>Definition:</b> <a href="RF24Gateway_8h_source.html#l00246">RF24Gateway.h:186</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 01:13:07 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Sun Nov 28 2021 13:37:40 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
