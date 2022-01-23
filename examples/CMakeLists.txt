@@ -18,18 +18,34 @@ message(STATUS "using RF24Mesh library: ${RF24Mesh}")
 find_library(RF24Gateway rf24gateway REQUIRED)
 message(STATUS "using RF24Gateway library: ${RF24Gateway}")
 
+find_library(LibPIGPIO pigpio)
+if (NOT "${LibPIGPIO}" STREQUAL "LibPIGPIO-NOTFOUND")
+    message(STATUS "linking to ${LibPIGPIO} for interrupt support")
+endif()
+
 set(example RF24GatewayNode)
 # make a target
 add_executable(${example} ${example}.cpp)
 
 # link the RF24 lib to the target. Notice we specify pthread as a linked lib here
-target_link_libraries(${example} PUBLIC
-    ${RF24}
-    pthread
-    ${RF24Network}
-    ${RF24Mesh}
-    ${RF24Gateway}
-)
+if("${LibPIGPIO}" STREQUAL "LibPIGPIO-NOTFOUND")
+    target_link_libraries(${example} PUBLIC
+        ${RF24}
+        pthread
+        ${RF24Network}
+        ${RF24Mesh}
+        ${RF24Gateway}
+    )
+else()
+    target_link_libraries(${example} PUBLIC
+        ${RF24}
+        pthread
+        ${RF24Network}
+        ${RF24Mesh}
+        ${RF24Gateway}
+        ${LibPIGPIO}
+    )
+endif()
 
 add_subdirectory(gwNodeInt)
 add_subdirectory(addons/Sniffer)
