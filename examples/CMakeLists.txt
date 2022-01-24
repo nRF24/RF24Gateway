@@ -62,11 +62,20 @@ target_link_libraries(${example} PUBLIC
     ${linked_libs}
 )
 
-add_subdirectory(gwNodeInt)
+if("${RF24_DRIVER}" STREQUAL "MRAA" OR "${RF24_DRIVER}" STREQUAL "wiringPi")
+    message(STATUS "skipping gwNodeInt example because it is incompatible with selected driver")
+else()
+    add_subdirectory(gwNodeInt)
+endif()
+
 add_subdirectory(addons/Sniffer)
 
 include(../cmake/enableNcursesExample.cmake)
 if(BUILD_NCURSES_EXAMPLE)
     add_subdirectory(ncurses)
-    add_subdirectory(ncursesInt)
+    if("${RF24_DRIVER}" STREQUAL "MRAA" OR "${RF24_DRIVER}" STREQUAL "wiringPi")
+        message(STATUS "skipping ncursesInt example because it is incompatible with selected driver")
+    else()
+        add_subdirectory(ncursesInt)
+    endif()
 endif()
