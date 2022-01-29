@@ -235,7 +235,7 @@ int main()
             prefresh(meshPad, 0, 0, 4, 26, 14, 48);
 
             drawRF24Pad();
-            prefresh(rf24Pad, 0, 0, 4, 52, 14, 74);
+            prefresh(rf24Pad, 0, 0, 4, 52, 14, 78);
 
             if (showConnPad)
             {
