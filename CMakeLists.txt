@@ -39,6 +39,9 @@ include(cmake/GetLibInfo.cmake) # sets the variable LibTargetName
 # setup CPack options
 include(cmake/CPackInfo.cmake)
 
+# detect any applicable external libs (like pigpio)
+include(cmake/AutoConfig_RF24_DRIVER.cmake)
+
 find_library(RF24 rf24 REQUIRED)
 message(STATUS "using RF24 library: ${RF24}")
 
@@ -49,7 +52,7 @@ find_library(RF24Mesh rf24mesh REQUIRED)
 message(STATUS "using RF24Mesh library: ${RF24Mesh}")
 
 ###########################
-# create target for bulding the RF24Log lib
+# create target for bulding the RF24Gateway lib
 ###########################
 add_library(${LibTargetName} SHARED RF24Gateway.cpp)
 target_include_directories(${LibTargetName} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
@@ -69,6 +72,12 @@ set_target_properties(
     VERSION ${${LibName}_VERSION_STRING}
 )
 
+# conditionally disable interruot support (a pigpio specific feature)
+if("${LibPIGPIO}" STREQUAL "LibPIGPIO-NOTFOUND" OR DEFINED RF24_NO_INTERRUPT)
+    message(STATUS "Disabling IRQ pin support")
+    target_compile_definitions(${LibTargetName} PUBLIC RF24_NO_INTERRUPT)
+endif()
+
 # assert the appropriate preprocessor macros for RF24Network_config.h
 if(DEBUG_LEVEL GREATER 0)
     message(STATUS "DEBUG_LEVEL set to ${DEBUG_LEVEL}")
@@ -76,7 +85,7 @@ if(DEBUG_LEVEL GREATER 0)
 endif()
 
 ###########################
-# target install rules for the RF24Log lib
+# target install rules for the RF24Gateway lib
 ###########################
 install(TARGETS ${LibTargetName} DESTINATION lib)
 
