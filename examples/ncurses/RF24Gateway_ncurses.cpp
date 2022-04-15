@@ -77,6 +77,7 @@ unsigned long updateRate = 1000;
 
 uint32_t meshInfoTimer = 0;
 uint32_t mesh_timer = 0;
+size_t networkPacketsRX = 0;
 std::string subIP;
 std::string tunStr("tun_nrf24");
 bool showConnPad;
@@ -163,6 +164,7 @@ int main()
             /*******************************/
             if (network.available())
             {
+                ++networkPacketsRX;
                 RF24NetworkHeader header;
                 size_t size = network.peek(header);
                 uint8_t buf[size];
@@ -558,6 +560,7 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Packets: %u\n", ok);
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
+    wprintw(rf24Pad, "RX Packets(user): %u\n", networkPacketsRX);
 
     if (padSelection == 1)
     {
