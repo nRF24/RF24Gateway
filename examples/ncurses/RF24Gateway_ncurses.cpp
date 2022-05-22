@@ -232,7 +232,7 @@ int main()
             // a: En/Disable display of active connections
             case 'a':                
                 if(topo){
-                    showConnPad == true;
+                    showConnPad = true;
                 }else{
                   showConnPad = !showConnPad;
                 }
@@ -346,6 +346,8 @@ int main()
 void drawTopology(){
    wclear(connPad);
    wattron(connPad,COLOR_PAIR(1));
+   int connPadmaxX;
+   connPadmaxX = getmaxx(connPad);
    for (int i = 01; i < 06; i++){
        
      for (int j = 0; j < mesh.addrListTop; j++){
@@ -358,13 +360,15 @@ void drawTopology(){
   wprintw(connPad,"\n");
   wattron(connPad,COLOR_PAIR(3)); 
   uint16_t g = 051; 
-  char slash = ' ';
   for(int h = 011; h <= 015; h++){
    
    for (int i = h; i <= g; i+=010){
        
      for (int j = 0; j < mesh.addrListTop; j++){
        if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad,y,x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }
          wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
        }
      }
@@ -381,6 +385,9 @@ void drawTopology(){
        
      for (int j = 0; j < mesh.addrListTop; j++){
        if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad, y, x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
          wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
        }
      }
@@ -398,6 +405,9 @@ void drawTopology(){
        
      for (int j = 0; j < mesh.addrListTop; j++){
        if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad,y,x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
          wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
        }
      }
@@ -481,6 +491,7 @@ void drawHelp()
     wprintw(win, " ARROW_UP/DOWN: Scroll up/down in supported menus\n");
     wprintw(win, " ARROW_LEFT/RIGHT: Scroll between supported menus\n");
     wprintw(win, " 'c' key: Open IP configuration menu\n");
+    wprintw(win, " 't' key: Display topology of mesh\n");
     wprintw(win, " 'w' key: Increase frame-rate of display\n");
     wprintw(win, " 's' key: Decrease frame-rate of display\n");
     wprintw(win, " 'a' key: Display active IP connections\n");
@@ -702,6 +713,7 @@ void drawConnPad()
     }
     else
     {
+        wattroff(connPad, COLOR_PAIR(1));
         mvwprintw(connPad, connScroll, 5, " Active IP Connections: ");
     }
 }
