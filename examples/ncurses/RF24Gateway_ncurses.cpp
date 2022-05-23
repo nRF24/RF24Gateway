@@ -680,7 +680,8 @@ void drawConnPad()
       drawTopology();
       return;
     }
-    int ctr = 2;
+    wattroff(connPad, COLOR_PAIR(2));
+    int ctr = 0;
     size_t lCtr = 1;
     std::string line;
     wclear(connPad);
