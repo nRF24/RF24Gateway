@@ -67,6 +67,7 @@ void drawDevPad(void);
 void drawMeshPad(void);
 void drawConnPad(void);
 void drawRF24Pad(void);
+void drawTopology();
 
 int maxX, maxY;
 int padSelection = 0;
@@ -81,6 +82,7 @@ size_t networkPacketsRX = 0;
 std::string subIP;
 std::string tunStr("tun_nrf24");
 bool showConnPad;
+bool topo = true;
 
 size_t bRX;
 size_t bTX;
@@ -110,7 +112,9 @@ int main()
     start_color();
     curs_set(0);
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
-    init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);
 
     /** Setup Pads**/
     /*******************************/
@@ -212,7 +216,7 @@ int main()
             {
                 drawConnPad();
                 wscrl(connPad, connScroll);
-                prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
+                prefresh(connPad, 0, 0, 16, 1, maxX - 1, maxY - 2);
             }
         } //MeshInfo Timer
 
@@ -226,8 +230,13 @@ int main()
             switch (myChar)
             {
             // a: En/Disable display of active connections
-            case 'a':
-                showConnPad = !showConnPad;
+            case 'a':                
+                if(topo){
+                    showConnPad = true;
+                }else{
+                  showConnPad = !showConnPad;
+                }
+                topo = false;
                 if (!showConnPad)
                 {
                     wclear(connPad);
@@ -294,6 +303,11 @@ int main()
                 meshScroll = std::max(meshScroll, 0);
                 connScroll = std::max(connScroll, 0);
                 meshInfoTimer = 0;
+             case 't':
+                //drawTopology();
+                topo = true;
+                showConnPad = true;
+                break;
             }
         }
 
@@ -329,13 +343,93 @@ int main()
 /******************************************************************/
 /******************Main Drawing Functions**************************/
 
+void drawTopology(){
+   wclear(connPad);
+   wattroff(connPad, COLOR_PAIR(1));
+   mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+   mvwprintw(win,15,10,"Mesh Topology");
+   
+   wattron(connPad,COLOR_PAIR(1));
+   int connPadmaxX;
+   connPadmaxX = getmaxx(connPad);
+ 
+   for (int i = 01; i < 06; i++){
+       
+     for (int j = 0; j < mesh.addrListTop; j++){
+       if(mesh.addrList[j].address == i){
+         wprintw(connPad,"0%o[%d]   |    ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+       }
+
+     }
+   }
+  wprintw(connPad,"\n");
+  wattron(connPad,COLOR_PAIR(3)); 
+  uint16_t g = 051; 
+  for(int h = 011; h <= 015; h++){
+   
+   for (int i = h; i <= g; i+=010){
+       
+     for (int j = 0; j < mesh.addrListTop; j++){
+       if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad,y,x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }
+         wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+       }
+     }
+   }
+   g++;
+   wprintw(connPad, "| ");
+  }
+  wprintw(connPad,"\n");
+  wattron(connPad,COLOR_PAIR(4)); 
+  g = 0411; 
+  for(int h = 0111; h <= 0145; h++){
+   
+   for (int i = h; i <= g; i+=0100){
+       
+     for (int j = 0; j < mesh.addrListTop; j++){
+       if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad, y, x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
+         wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+       }
+     }
+   }
+   g++;
+
+  }
+  wprintw(connPad,"\n");
+  wattron(connPad,COLOR_PAIR(2));
+  g = 04111; 
+  
+  for(int h = 01111; h <= 01445; h++){
+   
+   for (int i = h; i <= g; i+=01000){
+       
+     for (int j = 0; j < mesh.addrListTop; j++){
+       if(mesh.addrList[j].address == i){
+         int y=0; int x=0;
+         getyx(connPad,y,x);
+         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
+         wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+       }
+     }
+   }
+   g++;
+
+  }
+
+}
+
 void drawMain()
 {
 
     clear();
 
     attron(COLOR_PAIR(1));
-    wprintw(win, "RF24Gateway Ncurses Interface by TMRh20 - 2015\n");
+    wprintw(win, "RF24Gateway Ncurses Interface by TMRh20 - 2015-2022\n");
     whline(win, ACS_HLINE, maxY - 2);
     attroff(COLOR_PAIR(1));
     refresh();
@@ -402,6 +496,7 @@ void drawHelp()
     wprintw(win, " ARROW_UP/DOWN: Scroll up/down in supported menus\n");
     wprintw(win, " ARROW_LEFT/RIGHT: Scroll between supported menus\n");
     wprintw(win, " 'c' key: Open IP configuration menu\n");
+    wprintw(win, " 't' key: Display topology of mesh\n");
     wprintw(win, " 'w' key: Increase frame-rate of display\n");
     wprintw(win, " 's' key: Decrease frame-rate of display\n");
     wprintw(win, " 'a' key: Display active IP connections\n");
@@ -581,8 +676,12 @@ void drawRF24Pad()
 
 void drawConnPad()
 {
-
-    int ctr = 2;
+    if( topo ){
+      drawTopology();
+      return;
+    }
+    wattroff(connPad, COLOR_PAIR(2));
+    int ctr = 0;
     size_t lCtr = 1;
     std::string line;
     wclear(connPad);
@@ -613,20 +712,9 @@ void drawConnPad()
     }
 
     inFile.close();
+    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+    mvwprintw(win,15,10,"Active IP Connections:");
 
-    if (padSelection == 2)
-    {
-        wattron(connPad, COLOR_PAIR(1));
-        mvwhline(connPad, connScroll, 0, ACS_HLINE, maxY);
-        wattroff(connPad, COLOR_PAIR(1));
-        mvwprintw(connPad, connScroll, 5, " Active IP Connections: ");
-    }
-    else
-    {
-        wattroff(connPad, COLOR_PAIR(1));
-        mvwhline(connPad, connScroll, 0, ACS_HLINE, maxY);
-        mvwprintw(connPad, connScroll, 5, " Active IP Connections: ");
-    }
 }
 
 /******************************************************************/
