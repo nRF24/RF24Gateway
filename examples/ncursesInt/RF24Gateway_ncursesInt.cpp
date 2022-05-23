@@ -532,6 +532,7 @@ void drawHelp()
     wprintw(win, " ARROW_UP/DOWN: Scroll up/down in supported menus\n");
     wprintw(win, " ARROW_LEFT/RIGHT: Scroll between supported menus\n");
     wprintw(win, " 'c' key: Open IP configuration menu\n");
+    wprintw(win, " 't' key: Display topology of mesh\n");
     wprintw(win, " 'w' key: Increase frame-rate of display\n");
     wprintw(win, " 's' key: Decrease frame-rate of display\n");
     wprintw(win, " 'a' key: Display active IP connections\n");
