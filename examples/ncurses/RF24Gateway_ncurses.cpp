@@ -345,9 +345,14 @@ int main()
 
 void drawTopology(){
    wclear(connPad);
+   wattroff(connPad, COLOR_PAIR(1));
+   mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+   mvwprintw(win,15,10,"Mesh Topology");
+   
    wattron(connPad,COLOR_PAIR(1));
    int connPadmaxX;
    connPadmaxX = getmaxx(connPad);
+ 
    for (int i = 01; i < 06; i++){
        
      for (int j = 0; j < mesh.addrListTop; j++){
@@ -706,16 +711,9 @@ void drawConnPad()
     }
 
     inFile.close();
+    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+    mvwprintw(win,15,10,"Active IP Connections:");
 
-    if (padSelection == 2)
-    {
-        mvwprintw(connPad, connScroll, 5, " Active IP Connections: ");
-    }
-    else
-    {
-        wattroff(connPad, COLOR_PAIR(1));
-        mvwprintw(connPad, connScroll, 5, " Active IP Connections: ");
-    }
 }
 
 /******************************************************************/
