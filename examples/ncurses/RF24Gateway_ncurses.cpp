@@ -646,14 +646,16 @@ void drawRF24Pad()
     wprintw(rf24Pad, "nodeID: %d\n", mesh.getNodeID());
     wprintw(rf24Pad, "En Mesh: %s\n", gw.meshEnabled() ? "True" : "False");
     int dr = radio.getDataRate();
-    wprintw(rf24Pad, "Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS"
-                : dr == 2                                           ? "250KBPS"
-                                                                    : "ERROR");
     int pa = radio.getPALevel();
+    // clang-format off
+    wprintw(rf24Pad, "Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS"
+                                                          : dr == 2	? "250KBPS"
+                                                                    : "ERROR");
     wprintw(rf24Pad, "PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW"
-                : pa == 2                                        ? "HIGH"
-                : pa == 3                                        ? "MAX"
+                                                       : pa == 2 ? "HIGH"
+                                                       : pa == 3 ? "MAX"
                                                                  : "ERROR");
+    // clang-format on
     wprintw(rf24Pad, "IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP");
     wprintw(rf24Pad, "IF Drops: %u\n", gw.ifDropped());
 #if defined(ENABLE_NETWORK_STATS)

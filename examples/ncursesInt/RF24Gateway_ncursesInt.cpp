@@ -684,13 +684,15 @@ void drawRF24Pad()
     int dr = radio.getDataRate();
     int pa = radio.getPALevel();
     radio.maskIRQ(1, 1, 0);
+    // clang-format off
     wprintw(rf24Pad, "Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS"
-                : dr == 2                                           ? "250KBPS"
+                                                          : dr == 2 ? "250KBPS"
                                                                     : "ERROR");
     wprintw(rf24Pad, "PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW"
-                : pa == 2                                        ? "HIGH"
-                : pa == 3                                        ? "MAX"
+                                                       : pa == 2 ? "HIGH"
+                                                       : pa == 3 ? "MAX"
                                                                  : "ERROR");
+    // clang-format on
     wprintw(rf24Pad, "IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP");
     wprintw(rf24Pad, "IF Drops: %u\n", gw.ifDropped());
 #if defined(ENABLE_NETWORK_STATS)
