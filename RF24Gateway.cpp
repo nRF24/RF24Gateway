@@ -9,7 +9,7 @@
 
 /***************************************************************************************/
 
-RF24Gateway::RF24Gateway(RF24 &_radio, RF24Network &_network, RF24Mesh &_mesh) : radio(_radio), network(_network), mesh(_mesh)
+RF24Gateway::RF24Gateway(RF24& _radio, RF24Network& _network, RF24Mesh& _mesh) : radio(_radio), network(_network), mesh(_mesh)
 {
     interruptInProgress = 0;
     interruptsEnabled = 1;
@@ -34,10 +34,10 @@ void RF24Gateway::begin(uint16_t address, uint8_t _channel, rf24_datarate_e data
 
 bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel)
 {
-    #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
     printf("GW Begin\n");
     printf("Config Device address 0%o nodeID %d\n", address, mesh_nodeID);
-    #endif
+#endif
     config_TUN = configTUN;
 
     ///FIX
@@ -165,7 +165,7 @@ int RF24Gateway::configDevice(uint16_t address)
         flags = IFF_TAP | IFF_NO_PI | IFF_MULTI_QUEUE;
     }
     tunFd = allocateTunDevice(tunName, flags, address);
-    #if DEBUG_LEVEL >= 1
+#if DEBUG_LEVEL >= 1
     if (tunFd >= 0) {
         std::cout << "RF24Gw: Successfully attached to tun/tap device " << tunTapDevice << std::endl;
     }
@@ -173,13 +173,13 @@ int RF24Gateway::configDevice(uint16_t address)
         std::cerr << "RF24Gw: Error allocating tun/tap interface: " << tunFd << std::endl;
         exit(1);
     }
-    #endif
+#endif
     return tunFd;
 }
 
 /***************************************************************************************/
 
-int RF24Gateway::allocateTunDevice(char *dev, int flags, uint16_t address)
+int RF24Gateway::allocateTunDevice(char* dev, int flags, uint16_t address)
 {
     struct ifreq ifr;
     int fd;
@@ -198,7 +198,7 @@ int RF24Gateway::allocateTunDevice(char *dev, int flags, uint16_t address)
     }
 
     // Create device
-    if (ioctl(fd, TUNSETIFF, (void *)&ifr) < 0) {
+    if (ioctl(fd, TUNSETIFF, (void*)&ifr) < 0) {
         //close(fd);
         //#if (DEBUG_LEVEL >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETIFF" << std::endl;
@@ -209,29 +209,29 @@ int RF24Gateway::allocateTunDevice(char *dev, int flags, uint16_t address)
 
     //Make persistent
     if (ioctl(fd, TUNSETPERSIST, 1) < 0) {
-        #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETPERSIST" << std::endl;
-        #endif
+#endif
         return -1;
     }
 
     if (!config_TUN) {
         struct sockaddr sap;
         sap.sa_family = ARPHRD_ETHER;
-        ((char *)sap.sa_data)[4] = address;
-        ((char *)sap.sa_data)[5] = address >> 8;
-        ((char *)sap.sa_data)[0] = 0x52;
-        ((char *)sap.sa_data)[1] = 0x46;
-        ((char *)sap.sa_data)[2] = 0x32;
-        ((char *)sap.sa_data)[3] = 0x34;
+        ((char*)sap.sa_data)[4] = address;
+        ((char*)sap.sa_data)[5] = address >> 8;
+        ((char*)sap.sa_data)[0] = 0x52;
+        ((char*)sap.sa_data)[1] = 0x46;
+        ((char*)sap.sa_data)[2] = 0x32;
+        ((char*)sap.sa_data)[3] = 0x34;
 
         //printf("Address 0%o first %u last %u\n",address,sap.sa_data[0],sap.sa_data[1]);
-        memcpy((char *)&ifr.ifr_hwaddr, (char *)&sap, sizeof(struct sockaddr));
+        memcpy((char*)&ifr.ifr_hwaddr, (char*)&sap, sizeof(struct sockaddr));
 
         if (ioctl(fd, SIOCSIFHWADDR, &ifr) < 0) {
-            #if DEBUG_LEVEL >= 1
+#if DEBUG_LEVEL >= 1
             fprintf(stderr, "RF24Gw: Failed to set MAC address\n");
-            #endif
+#endif
         }
     }
 
@@ -241,7 +241,7 @@ int RF24Gateway::allocateTunDevice(char *dev, int flags, uint16_t address)
 
 /***************************************************************************************/
 
-int RF24Gateway::setIP(char *ip_addr, char *mask)
+int RF24Gateway::setIP(char* ip_addr, char* mask)
 {
     struct ifreq ifr;
     struct sockaddr_in sin;
@@ -263,13 +263,13 @@ int RF24Gateway::setIP(char *ip_addr, char *mask)
     }
 
 #ifdef ifr_flags
-#define IRFFLAGS ifr_flags
+    #define IRFFLAGS ifr_flags
 #else /* Present on kFreeBSD */
-#define IRFFLAGS ifr_flagshigh
+    #define IRFFLAGS ifr_flagshigh
 #endif
 
     if (!(ifr.IRFFLAGS & IFF_UP)) {
-        //fprintf(stdout, "Device is currently down..setting up.-- %u\n",ifr.IRFFLAGS);
+        //fprintf(stdout, "Device is currently down..setting up.-- %u\n", ifr.IRFFLAGS);
         ifr.IRFFLAGS |= IFF_UP;
         if (ioctl(sockfd, SIOCSIFFLAGS, &ifr) < 0) {
             fprintf(stderr, "ifup: failed ");
@@ -381,7 +381,8 @@ void RF24Gateway::handleRadioIn()
         }
     }
     else {
-        while (network.update()) {}
+        while (network.update()) {
+        }
     }
 
     RF24NetworkFrame f;
@@ -396,10 +397,10 @@ void RF24Gateway::handleRadioIn()
             memcpy(&msg.message, &f.message_buffer, bytesRead);
             msg.size = bytesRead;
 
-            #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
             std::cout << "Radio: Received " << bytesRead << " bytes ... " << std::endl;
-            #endif
-            #if (DEBUG_LEVEL >= 3)
+#endif
+#if (DEBUG_LEVEL >= 3)
             //printPayload(msg.getPayloadStr(),"radio RX");
             std::cout << "TunRead: " << std::endl;
             for (size_t i = 0; i < msg.size; i++) {
@@ -408,7 +409,7 @@ void RF24Gateway::handleRadioIn()
             }
             std::cout << std::endl;
 
-            #endif
+#endif
 
             rxQueue.push(msg);
         }
@@ -463,24 +464,26 @@ void RF24Gateway::handleRadioOut()
 
     while (!txQueue.empty() && network.external_queue.size() == 0) {
 
-        msgStruct *msgTx = &txQueue.front();
+        msgStruct* msgTx = &txQueue.front();
 
-        #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
         std::cout << "Radio: Sending " << msgTx->size << " bytes ... ";
         std::cout << std::endl;
-        #endif
-        #if (DEBUG_LEVEL >= 3)
+#endif
+#if (DEBUG_LEVEL >= 3)
+
         //PrintDebug == 1 does not have an endline.
         //printPayload(msg.getPayloadStr(),"radio TX");
-        #endif
+#endif
 
-        std::uint8_t *tmp = msgTx->message;
+        std::uint8_t* tmp = msgTx->message;
 
         if (!config_TUN) { //TAP can use RF24Mesh for address assignment, but will still use ARP for address resolution
 
             uint32_t RF24_STR = 0x34324652; //Identifies the mac as an RF24 mac
             uint32_t ARP_BC = 0xFFFFFFFF;   //Broadcast address
-            struct macStruct {
+            struct macStruct
+            {
                 uint32_t rf24_Verification;
                 uint16_t rf24_Addr;
             };
@@ -602,17 +605,17 @@ void RF24Gateway::handleRX(uint32_t waitDelay)
         if (FD_ISSET(tunFd, &socketSet)) {
             if ((nread = read(tunFd, buffer, MAX_PAYLOAD_SIZE)) >= 0) {
 
-                #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
                 std::cout << "Tun: Successfully read " << nread << " bytes from tun device" << std::endl;
-                #endif
-                #if (DEBUG_LEVEL >= 3)
+#endif
+#if (DEBUG_LEVEL >= 3)
                 std::cout << "TunRead: " << std::endl;
                 for (int i = 0; i < nread; i++)
                 {
                     printf(":%0x :", buffer[i]);
                 }
                 std::cout << std::endl;
-                #endif
+#endif
                 msgStruct msg;
                 memcpy(&msg.message, &buffer, nread);
                 msg.size = nread;
@@ -624,9 +627,9 @@ void RF24Gateway::handleRX(uint32_t waitDelay)
                 }
             }
             else {
-                #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
                 std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
-                #endif
+#endif
             }
         }
     }
@@ -641,7 +644,7 @@ void RF24Gateway::handleTX()
     {
         return;
     }
-    msgStruct *msg = &rxQueue.front();
+    msgStruct* msg = &rxQueue.front();
 
     if (msg->size > MAX_PAYLOAD_SIZE)
     {
@@ -656,26 +659,26 @@ void RF24Gateway::handleTX()
         size_t writtenBytes = write(tunFd, &msg->message, msg->size);
         if (writtenBytes != msg->size)
         {
-            //std::cerr << "Tun: Less bytes written to tun/tap device then requested." << std::endl;
-            #if DEBUG_LEVEL >= 1
+//std::cerr << "Tun: Less bytes written to tun/tap device then requested." << std::endl;
+#if DEBUG_LEVEL >= 1
             printf("Tun: Less bytes written %d to tun/tap device then requested %d.", writtenBytes, msg->size);
-            #endif
+#endif
         }
         else
         {
-            #if (DEBUG_LEVEL >= 1)
+#if (DEBUG_LEVEL >= 1)
             std::cout << "Tun: Successfully wrote " << writtenBytes << " bytes to tun device" << std::endl;
-            #endif
+#endif
         }
 
-        #if (DEBUG_LEVEL >= 3)
+#if (DEBUG_LEVEL >= 3)
         //printPayload(msg.message,"tun write");
         std::cout << "TunRead: " << std::endl;
         for (size_t i = 0; i < msg->size; i++) {
             //printf(":%0x :",msg->message[i]);
         }
         std::cout << std::endl;
-        #endif
+#endif
     }
 
     rxQueue.pop();
@@ -689,7 +692,7 @@ void printPayload(std::string buffer, std::string debugMsg = "")
 
 /***************************************************************************************/
 
-void printPayload(char *buffer, int nread, std::string debugMsg = "")
+void printPayload(char* buffer, int nread, std::string debugMsg = "")
 {
 }
 
@@ -698,7 +701,7 @@ void printPayload(char *buffer, int nread, std::string debugMsg = "")
 void RF24Gateway::setupSocket()
 {
     int ret;
-    const char *myAddr = "127.0.0.1";
+    const char* myAddr = "127.0.0.1";
 
     addr.sin_family = AF_INET;
     ret = inet_aton(myAddr, &addr.sin_addr);
@@ -727,7 +730,7 @@ void RF24Gateway::sendUDP(uint8_t nodeID, RF24NetworkFrame frame)
     memcpy(&buffer[9], &frame.message_size, 2);
     memcpy(&buffer[11], &frame.message_buffer, frame.message_size);
 
-    int ret = sendto(s, &buffer, frame.message_size + 11, 0, (struct sockaddr *)&addr, sizeof(addr));
+    int ret = sendto(s, &buffer, frame.message_size + 11, 0, (struct sockaddr*)&addr, sizeof(addr));
     if (ret == -1)
     {
         perror("sendto");
