@@ -10,7 +10,7 @@ RF24Gateway gw(radio, network, mesh);
 
 uint32_t mesh_timer = 0;
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 
     //Config for use with RF24Mesh as Master Node

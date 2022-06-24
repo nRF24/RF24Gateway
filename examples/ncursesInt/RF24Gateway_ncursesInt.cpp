@@ -53,13 +53,13 @@ uint8_t nodeID = 0;
 int interruptPin = 24;
 /******************************************************************/
 
-WINDOW *win;
-WINDOW *meshPad;
-WINDOW *connPad;
-WINDOW *devPad;
-WINDOW *rf24Pad;
-WINDOW *cfgPad;
-WINDOW *renewPad;
+WINDOW* win;
+WINDOW* meshPad;
+WINDOW* connPad;
+WINDOW* devPad;
+WINDOW* rf24Pad;
+WINDOW* cfgPad;
+WINDOW* renewPad;
 
 void drawMain(void);
 void drawHelp(void);
@@ -201,7 +201,7 @@ int main()
 
                     time_t mTime;
                     time(&mTime);
-                    struct tm *tm = localtime(&mTime);
+                    struct tm* tm = localtime(&mTime);
 
                     myTime.hr = tm->tm_hour;
                     myTime.min = tm->tm_min;
@@ -258,89 +258,90 @@ int main()
             //cout << myChar << endl;
             switch (myChar)
             {
-            // a: En/Disable display of active connections
-            case 'a':
-                if(topo){
+                // a: En/Disable display of active connections
+                case 'a':
+                    if (topo) {
+                        showConnPad = true;
+                    }
+                    else {
+                        showConnPad = !showConnPad;
+                    }
+                    topo = false;
+                    if (!showConnPad)
+                    {
+                        wclear(connPad);
+                        prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
+                        drawMain();
+                    }
+                    break;
+                // w: Increase frame-rate of curses display
+                case 'w':
+                    if (updateRate > 100)
+                    {
+                        updateRate -= 100;
+                    }
+                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
+                    refresh();
+                    break;
+                // s: Decrease frame-rate of curses display
+                case 's':
+                    updateRate += 100;
+                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
+                    refresh();
+                    break;
+                // c: Display IP configuration menu
+                case 'c':
+                    drawCfg(1);
+                    break;
+                // h: Display help menu
+                case 'h':
+                    drawHelp();
+                    break;
+                case 'x':
+                    clear();
+                    endwin();
+                    return 0;
+                    break;
+                case KEY_UP:
+                    if (padSelection == 0)
+                    {
+                        meshScroll++;
+                    }
+                    else if (padSelection == 1)
+                    {
+                        connScroll++;
+                    }
+                    break;
+                case KEY_DOWN:
+                    if (padSelection == 0)
+                    {
+                        meshScroll--;
+                    }
+                    else if (padSelection == 1)
+                    {
+                        connScroll--;
+                    }
+                    break;
+                case KEY_RIGHT:
+                    padSelection++;
+                    padSelection = std::min(padSelection, 1);
+                    break; //right
+                case KEY_LEFT:
+                    padSelection--;
+                    padSelection = std::max(padSelection, 0);
+                    break; //left
+                case 'Q':
+                    clear();
+                    endwin();
+                    return 0;
+                    break;
+                    meshScroll = std::max(meshScroll, 0);
+                    connScroll = std::max(connScroll, 0);
+                    meshInfoTimer = 0;
+                case 't':
+                    topo = true;
                     showConnPad = true;
-                }else{
-                  showConnPad = !showConnPad;
-                }
-                topo = false;
-                if (!showConnPad)
-                {
-                    wclear(connPad);
-                    prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
-                    drawMain();
-                }
-                break;
-            // w: Increase frame-rate of curses display
-            case 'w':
-                if (updateRate > 100)
-                {
-                    updateRate -= 100;
-                }
-                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
-                refresh();
-                break;
-            // s: Decrease frame-rate of curses display
-            case 's':
-                updateRate += 100;
-                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
-                refresh();
-                break;
-            // c: Display IP configuration menu
-            case 'c':
-                drawCfg(1);
-                break;
-            // h: Display help menu
-            case 'h':
-                drawHelp();
-                break;
-            case 'x':
-                clear();
-                endwin();
-                return 0;
-                break;
-            case KEY_UP:
-                if (padSelection == 0)
-                {
-                    meshScroll++;
-                }
-                else if (padSelection == 1)
-                {
-                    connScroll++;
-                }
-                break;
-            case KEY_DOWN:
-                if (padSelection == 0)
-                {
-                    meshScroll--;
-                }
-                else if (padSelection == 1)
-                {
-                    connScroll--;
-                }
-                break;
-            case KEY_RIGHT:
-                padSelection++;
-                padSelection = std::min(padSelection, 1);
-                break; //right
-            case KEY_LEFT:
-                padSelection--;
-                padSelection = std::max(padSelection, 0);
-                break; //left
-            case 'Q':
-                clear();
-                endwin();
-                return 0;
-                break;
-                meshScroll = std::max(meshScroll, 0);
-                connScroll = std::max(connScroll, 0);
-                meshInfoTimer = 0;
-             case 't':
-                topo = true;
-                showConnPad = true;
-                break;
+                    break;
             }
         }
 
@@ -378,85 +379,90 @@ int main()
 /******************************************************************/
 /******************Main Drawing Functions**************************/
 
+void drawTopology()
+{
+    wclear(connPad);
+    wattroff(connPad, COLOR_PAIR(1));
+    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+    mvwprintw(win, 15, 10, "Mesh Topology");
 
-void drawTopology(){
-   wclear(connPad);
-   wattroff(connPad, COLOR_PAIR(1));
-   mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
-   mvwprintw(win,15,10,"Mesh Topology");
-   
-   wattron(connPad,COLOR_PAIR(1));
-   int connPadmaxX;
-   connPadmaxX = getmaxx(connPad);
- 
-   for (int i = 01; i < 06; i++){
-       
-     for (int j = 0; j < mesh.addrListTop; j++){
-       if(mesh.addrList[j].address == i){
-         wprintw(connPad,"0%o[%d]   |    ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
-       }
+    wattron(connPad, COLOR_PAIR(1));
+    int connPadmaxX;
+    connPadmaxX = getmaxx(connPad);
 
-     }
-   }
-  wprintw(connPad,"\n");
-  wattron(connPad,COLOR_PAIR(3)); 
-  uint16_t g = 051; 
-  for(int h = 011; h <= 015; h++){
-   
-   for (int i = h; i <= g; i+=010){
-       
-     for (int j = 0; j < mesh.addrListTop; j++){
-       if(mesh.addrList[j].address == i){
-         int y=0; int x=0;
-         getyx(connPad,y,x);
-         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }
-         wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
-       }
-     }
-   }
-   g++;
-   wprintw(connPad, "| ");
-  }
-  wprintw(connPad,"\n");
-  wattron(connPad,COLOR_PAIR(4)); 
-  g = 0411; 
-  for(int h = 0111; h <= 0145; h++){
-   
-   for (int i = h; i <= g; i+=0100){
-       
-     for (int j = 0; j < mesh.addrListTop; j++){
-       if(mesh.addrList[j].address == i){
-         int y=0; int x=0;
-         getyx(connPad, y, x);
-         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
-         wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
-       }
-     }
-   }
-   g++;
+    for (int i = 01; i < 06; i++) {
 
-  }
-  wprintw(connPad,"\n");
-  wattron(connPad,COLOR_PAIR(2));
-  g = 04111; 
-  
-  for(int h = 01111; h <= 01445; h++){
-   
-   for (int i = h; i <= g; i+=01000){
-       
-     for (int j = 0; j < mesh.addrListTop; j++){
-       if(mesh.addrList[j].address == i){
-         int y=0; int x=0;
-         getyx(connPad,y,x);
-         if(x > connPadmaxX-77){ wprintw(connPad,"\n"); }         
-         wprintw(connPad,"0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
-       }
-     }
-   }
-   g++;
+        for (int j = 0; j < mesh.addrListTop; j++) {
+            if (mesh.addrList[j].address == i) {
+                wprintw(connPad, "0%o[%d]   |    ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+            }
+        }
+    }
+    wprintw(connPad, "\n");
+    wattron(connPad, COLOR_PAIR(3));
+    uint16_t g = 051;
+    for (int h = 011; h <= 015; h++) {
 
-  }
+        for (int i = h; i <= g; i += 010) {
 
+            for (int j = 0; j < mesh.addrListTop; j++) {
+                if (mesh.addrList[j].address == i) {
+                    int y = 0;
+                    int x = 0;
+                    getyx(connPad, y, x);
+                    if (x > connPadmaxX - 77) {
+                        wprintw(connPad, "\n");
+                    }
+                    wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+                }
+            }
+        }
+        g++;
+        wprintw(connPad, "| ");
+    }
+    wprintw(connPad, "\n");
+    wattron(connPad, COLOR_PAIR(4));
+    g = 0411;
+    for (int h = 0111; h <= 0145; h++) {
+
+        for (int i = h; i <= g; i += 0100) {
+
+            for (int j = 0; j < mesh.addrListTop; j++) {
+                if (mesh.addrList[j].address == i) {
+                    int y = 0;
+                    int x = 0;
+                    getyx(connPad, y, x);
+                    if (x > connPadmaxX - 77) {
+                        wprintw(connPad, "\n");
+                    }
+                    wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+                }
+            }
+        }
+        g++;
+    }
+    wprintw(connPad, "\n");
+    wattron(connPad, COLOR_PAIR(2));
+    g = 04111;
+
+    for (int h = 01111; h <= 01445; h++) {
+
+        for (int i = h; i <= g; i += 01000) {
+
+            for (int j = 0; j < mesh.addrListTop; j++) {
+                if (mesh.addrList[j].address == i) {
+                    int y = 0;
+                    int x = 0;
+                    getyx(connPad, y, x);
+                    if (x > connPadmaxX - 77) {
+                        wprintw(connPad, "\n");
+                    }
+                    wprintw(connPad, "0%o[%d] ", mesh.addrList[j].address, mesh.addrList[j].nodeID);
+                }
+            }
+        }
+        g++;
+    }
 }
 
 void drawMain()
@@ -678,8 +684,15 @@ void drawRF24Pad()
     int dr = radio.getDataRate();
     int pa = radio.getPALevel();
     radio.maskIRQ(1, 1, 0);
-    wprintw(rf24Pad, "Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS" : dr == 2   ? "250KBPS" : "ERROR");
-    wprintw(rf24Pad, "PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW" : pa == 2   ? "HIGH" : pa == 3   ? "MAX" : "ERROR");
+    // clang-format off
+    wprintw(rf24Pad, "Data-Rate: %s\n", dr == 0 ? "1MBPS" : dr == 1 ? "2MBPS"
+                                                          : dr == 2 ? "250KBPS"
+                                                                    : "ERROR");
+    wprintw(rf24Pad, "PA Level: %s\n", pa == 0 ? "MIN" : pa == 1 ? "LOW"
+                                                       : pa == 2 ? "HIGH"
+                                                       : pa == 3 ? "MAX"
+                                                                 : "ERROR");
+    // clang-format on
     wprintw(rf24Pad, "IF Type: %s\n", gw.config_TUN == 1 ? "TUN" : "TAP");
     wprintw(rf24Pad, "IF Drops: %u\n", gw.ifDropped());
 #if defined(ENABLE_NETWORK_STATS)
@@ -715,9 +728,9 @@ void drawRF24Pad()
 
 void drawConnPad()
 {
-    if( topo ){
-      drawTopology();
-      return;
+    if (topo) {
+        drawTopology();
+        return;
     }
     wattroff(connPad, COLOR_PAIR(2));
     int ctr = 0;
@@ -752,7 +765,7 @@ void drawConnPad()
 
     inFile.close();
     mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
-    mvwprintw(win,15,10,"Active IP Connections:");
+    mvwprintw(win, 15, 10, "Active IP Connections:");
 }
 
 /******************************************************************/

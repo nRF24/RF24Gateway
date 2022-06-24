@@ -3,7 +3,6 @@
 #ifndef __RF24GATEWAY_H__
 #define __RF24GATEWAY_H__
 
-
 /**
  * @file RF24Gateway.h
  *
@@ -38,13 +37,14 @@
     #define DEBUG_LEVEL 0
 #endif // DEBUG_LEVEL
 
-#define BACKLOG     10  /* Passed to listen() */
+#define BACKLOG 10 /* Passed to listen() */
 
 class RF24;
 class RF24Network;
 class RF24Mesh;
 
-class RF24Gateway {
+class RF24Gateway
+{
 
     /**
      * @name RF24Gateway (RPi/Linux)
@@ -54,11 +54,10 @@ class RF24Gateway {
     /**@{*/
 
 public:
-
     /**
      * RF24Gateway constructor.
      */
-    RF24Gateway(RF24& _radio,RF24Network& _network, RF24Mesh& _mesh);
+    RF24Gateway(RF24& _radio, RF24Network& _network, RF24Mesh& _mesh);
 
     /**
      * Begin function for use with RF24Mesh (TUN interface)
@@ -70,7 +69,7 @@ public:
      * @code gw.begin(); //Start the gateway using RF24Mesh, with nodeID 0 (Master) @endcode
      * @code uint8_t nodeID; gw.begin(nodeID); //Start the gateway using RF24Mesh, with nodeID 1 (Child node) @endcode
      */
-    void begin(uint8_t nodeID=0, uint8_t channel=97,rf24_datarate_e data_rate=RF24_1MBPS);
+    void begin(uint8_t nodeID = 0, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS);
 
     /**
      * Begin function for use with a TAP (Ethernet) interface. RF24Mesh can be used for address assignment, but
@@ -85,7 +84,7 @@ public:
      * @code uint16_t address=00; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 00 (Master) @endcode
      * @code uint16_t address=01; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 01 (Child) @endcode
      */
-    void begin(uint16_t address, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS, bool meshEnable=0, uint8_t nodeID=0 );
+    void begin(uint16_t address, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS, bool meshEnable = 0, uint8_t nodeID = 0);
 
     /**
      * Once the Gateway has been started via begin() , call setIP to configure the IP and
@@ -95,7 +94,7 @@ public:
      * @param mask A character array containing the subnet mask ie: 255.255.255.0
      * @return -1 if failed, 0 on success
      */
-    int setIP(char *ip_addr, char *mask);
+    int setIP(char* ip_addr, char* mask);
 
     /**
      * Calling update() keeps the network and mesh layers active and processing data. This needs to be called regularly.
@@ -107,14 +106,14 @@ public:
      * @endcode
      * @param interrupts Set true if called from an interrupt handler & call poll() from the main loop or a thread.
      */
-    void update(bool interrupts=0);
+    void update(bool interrupts = 0);
 
     /**
      * gw.poll(); needs to be called to handle incoming data from the network interface.
      * The function will perform a delayed wait of max 3ms unless otherwise specified.
      * @param waitDelay How long in milliseconds this function will wait for incoming data.
      */
-    void poll(uint32_t waitDelay=3);
+    void poll(uint32_t waitDelay = 3);
 
     /**
      * When using interrupts (gwNodeInt, ncursesInt examples) users need to call
@@ -133,18 +132,18 @@ public:
     /**@{*/
 
     uint16_t thisNodeAddress; /**< Address of our node in Octal format (01,021, etc) */
-    uint8_t thisNodeID;  /**< NodeID (0-255) */
-
+    uint8_t thisNodeID;       /**< NodeID (0-255) */
 
     bool meshEnabled(); /**< Is RF24Mesh enabled? */
-    bool config_TUN; /**< Using a TAP(false) or TUN(true) interface */
+    bool config_TUN;    /**< Using a TAP(false) or TUN(true) interface */
     bool fifoCleared;
 
-    uint32_t ifDropped(){
+    uint32_t ifDropped()
+    {
         return droppedIncoming;
     }
 
-    void sendUDP(uint8_t nodeID,RF24NetworkFrame frame);
+    void sendUDP(uint8_t nodeID, RF24NetworkFrame frame);
 
     /**@}*/
     /**
@@ -182,7 +181,8 @@ public:
      * @endcode
      *
      */
-    struct routeStruct{
+    struct routeStruct
+    {
         struct in_addr ip;
         struct in_addr mask;
         struct in_addr gw;
@@ -197,7 +197,6 @@ public:
      * The size of the existing routing table loaded into memory. See routeStruct
      */
     uint8_t routingTableSize;
-
 
 private:
     RF24& radio;
@@ -214,37 +213,37 @@ private:
     char tunName[IFNAMSIZ];
     int tunFd;
 
-    unsigned long packets_sent;  /**< How many have we sent already */
+    unsigned long packets_sent; /**< How many have we sent already */
     uint32_t interfaceInTimer;
 
     void handleRadioOut();
     void handleRadioIn();
-    void handleRX(uint32_t waitDelay=0);
+    void handleRX(uint32_t waitDelay = 0);
     void handleTX();
     volatile bool interruptInProgress;
     volatile bool interruptsEnabled;
 
     int configDevice(uint16_t address);
-    int allocateTunDevice(char *dev, int flags, uint16_t address);
+    int allocateTunDevice(char* dev, int flags, uint16_t address);
 
-    struct msgStruct{
+    struct msgStruct
+    {
         std::uint8_t message[MAX_PAYLOAD_SIZE];
-    std::size_t size;
+        std::size_t size;
     };
 
-    std::queue<msgStruct>rxQueue;
-    std::queue<msgStruct>txQueue;
+    std::queue<msgStruct> rxQueue;
+    std::queue<msgStruct> txQueue;
 
     void printPayload(std::string buffer, std::string debugMsg = "");
-    void printPayload(char *buffer, int nread, std::string debugMsg = "");
+    void printPayload(char* buffer, int nread, std::string debugMsg = "");
 
-    int s;  //Socket variable for sending UDP
+    int s; //Socket variable for sending UDP
     void setupSocket();
     struct sockaddr_in addr;
     struct in_addr getLocalIP();
 
     void loadRoutingTable();
-
 };
 
 /**
