@@ -21,7 +21,7 @@ int sizes[1000];
 int buffCtr = 0;
 uint32_t mesh_timer = 0;
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     radio.begin();
     radio.setAutoAck(0);
