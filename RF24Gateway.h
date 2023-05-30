@@ -40,8 +40,12 @@
 #define BACKLOG 10 /* Passed to listen() */
 
 class RF24;
-class RF24Network;
-class RF24Mesh;
+
+template<class ESB_Radio>
+class ESB_Network;
+
+template<class network_t, class radio_t>
+class ESB_Mesh;
 
 class RF24Gateway
 {
