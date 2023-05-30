@@ -9,7 +9,8 @@
 
 /***************************************************************************************/
 
-RF24Gateway::RF24Gateway(RF24& _radio, RF24Network& _network, RF24Mesh& _mesh) : radio(_radio), network(_network), mesh(_mesh)
+template<class mesh_t, class network_t, class radio_t>
+ESBGateway<mesh_t, network_t, radio_t>::ESBGateway(radio_t& _radio, network_t& _network, mesh_t& _mesh) : radio(_radio), network(_network), mesh(_mesh)
 {
     interruptInProgress = 0;
     interruptsEnabled = 1;
@@ -17,7 +18,8 @@ RF24Gateway::RF24Gateway(RF24& _radio, RF24Network& _network, RF24Mesh& _mesh) :
 
 /***************************************************************************************/
 
-void RF24Gateway::begin(uint8_t nodeID, uint8_t _channel, rf24_datarate_e data_rate)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::begin(uint8_t nodeID, uint8_t _channel, rf24_datarate_e data_rate)
 {
     mesh_enabled = true;
     begin(true, mesh_enabled, 0, nodeID, data_rate, _channel);
@@ -25,14 +27,16 @@ void RF24Gateway::begin(uint8_t nodeID, uint8_t _channel, rf24_datarate_e data_r
 
 /***************************************************************************************/
 
-void RF24Gateway::begin(uint16_t address, uint8_t _channel, rf24_datarate_e data_rate, bool meshEnable, uint8_t nodeID)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::begin(uint16_t address, uint8_t _channel, rf24_datarate_e data_rate, bool meshEnable, uint8_t nodeID)
 {
     begin(0, mesh_enabled, address, nodeID, data_rate, _channel);
 }
 
 /***************************************************************************************/
 
-bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel)
+template<class mesh_t, class network_t, class radio_t>
+bool ESBGateway<mesh_t, network_t, radio_t>::begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel)
 {
 #if (DEBUG_LEVEL >= 1)
     printf("GW Begin\n");
@@ -93,7 +97,8 @@ bool RF24Gateway::begin(bool configTUN, bool meshEnable, uint16_t address, uint8
 
 /***************************************************************************************/
 
-void RF24Gateway::loadRoutingTable()
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::loadRoutingTable()
 {
     std::ifstream infile("routing.txt", std::ifstream::in);
     if (!infile) {
@@ -145,14 +150,16 @@ void RF24Gateway::loadRoutingTable()
 
 /***************************************************************************************/
 
-bool RF24Gateway::meshEnabled()
+template<class mesh_t, class network_t, class radio_t>
+bool ESBGateway<mesh_t, network_t, radio_t>::meshEnabled()
 {
     return mesh_enabled;
 }
 
 /***************************************************************************************/
 
-int RF24Gateway::configDevice(uint16_t address)
+template<class mesh_t, class network_t, class radio_t>
+int ESBGateway<mesh_t, network_t, radio_t>::configDevice(uint16_t address)
 {
     std::string tunTapDevice = "tun_nrf24";
     strcpy(tunName, tunTapDevice.c_str());
@@ -179,7 +186,8 @@ int RF24Gateway::configDevice(uint16_t address)
 
 /***************************************************************************************/
 
-int RF24Gateway::allocateTunDevice(char* dev, int flags, uint16_t address)
+template<class mesh_t, class network_t, class radio_t>
+int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int flags, uint16_t address)
 {
     struct ifreq ifr;
     int fd;
@@ -241,7 +249,8 @@ int RF24Gateway::allocateTunDevice(char* dev, int flags, uint16_t address)
 
 /***************************************************************************************/
 
-int RF24Gateway::setIP(char* ip_addr, char* mask)
+template<class mesh_t, class network_t, class radio_t>
+int ESBGateway<mesh_t, network_t, radio_t>::setIP(char* ip_addr, char* mask)
 {
     struct ifreq ifr;
     struct sockaddr_in sin;
@@ -301,7 +310,9 @@ int RF24Gateway::setIP(char* ip_addr, char* mask)
 }
 
 /***************************************************************************************/
-void RF24Gateway::interrupts(bool enable)
+
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::interrupts(bool enable)
 {
     if (enable) {
         interruptsEnabled = enable;
@@ -319,7 +330,8 @@ void RF24Gateway::interrupts(bool enable)
 
 /***************************************************************************************/
 
-void RF24Gateway::update(bool interrupts)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::update(bool interrupts)
 {
 
     if (interrupts) {
@@ -346,7 +358,8 @@ void RF24Gateway::update(bool interrupts)
 
 /***************************************************************************************/
 
-void RF24Gateway::poll(uint32_t waitDelay)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
 {
 
     handleRX(waitDelay);
@@ -369,9 +382,11 @@ void RF24Gateway::poll(uint32_t waitDelay)
     handleRadioOut();
     interruptsEnabled = 1;
 }
+
 /***************************************************************************************/
 
-void RF24Gateway::handleRadioIn()
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
 {
     if (mesh_enabled) {
         while (mesh.update()) {
@@ -422,7 +437,8 @@ void RF24Gateway::handleRadioIn()
 
 /***************************************************************************************/
 
-struct in_addr RF24Gateway::getLocalIP()
+template<class mesh_t, class network_t, class radio_t>
+struct in_addr ESBGateway<mesh_t, network_t, radio_t>::getLocalIP()
 {
     struct ifaddrs *ifap, *ifa;
     int family, s, n;
@@ -458,7 +474,8 @@ struct in_addr RF24Gateway::getLocalIP()
 
 /***************************************************************************************/
 
-void RF24Gateway::handleRadioOut()
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 {
     bool ok = 0;
 
@@ -588,7 +605,8 @@ void RF24Gateway::handleRadioOut()
 
 /***************************************************************************************/
 
-void RF24Gateway::handleRX(uint32_t waitDelay)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
 {
     fd_set socketSet;
     struct timeval selectTimeout;
@@ -637,7 +655,8 @@ void RF24Gateway::handleRX(uint32_t waitDelay)
 
 /***************************************************************************************/
 
-void RF24Gateway::handleTX()
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::handleTX()
 {
 
     if (rxQueue.size() < 1)
@@ -684,21 +703,24 @@ void RF24Gateway::handleTX()
     rxQueue.pop();
 }
 
-/***************************************************************************************/
+/***************************************************************************************
 
-void printPayload(std::string buffer, std::string debugMsg = "")
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::printPayload(std::string buffer, std::string debugMsg)
+{
+}
+
+/***************************************************************************************
+
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::printPayload(char* buffer, int nread, std::string debugMsg)
 {
 }
 
 /***************************************************************************************/
 
-void printPayload(char* buffer, int nread, std::string debugMsg = "")
-{
-}
-
-/***************************************************************************************/
-
-void RF24Gateway::setupSocket()
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::setupSocket()
 {
     int ret;
     const char* myAddr = "127.0.0.1";
@@ -720,7 +742,8 @@ void RF24Gateway::setupSocket()
 
 /***************************************************************************************/
 
-void RF24Gateway::sendUDP(uint8_t nodeID, RF24NetworkFrame frame)
+template<class mesh_t, class network_t, class radio_t>
+void ESBGateway<mesh_t, network_t, radio_t>::sendUDP(uint8_t nodeID, RF24NetworkFrame frame)
 {
 
     uint8_t buffer[MAX_PAYLOAD_SIZE + 11];
@@ -737,3 +760,6 @@ void RF24Gateway::sendUDP(uint8_t nodeID, RF24NetworkFrame frame)
         exit(1);
     }
 }
+
+// ensure the compiler is aware of the possible datatype for the template class
+template class ESBGateway<ESBMesh<ESBNetwork<RF24>, RF24>, ESBNetwork<RF24>, RF24>;
