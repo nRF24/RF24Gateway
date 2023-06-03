@@ -75,6 +75,12 @@ class ESBGateway
 public:
     /**
      * ESBGateway constructor.
+     * @code
+     * RF24 radio(7,8);
+     * RF24Network network(radio);
+     * RF24Mesh mesh(radio,network);
+     * RF24Gateway gateway(radio,network,mesh);
+     * @endcode
      */
     ESBGateway(radio_t& _radio, network_t& _network, mesh_t& _mesh);
 
