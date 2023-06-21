@@ -40,10 +40,29 @@
 #define BACKLOG 10 /* Passed to listen() */
 
 class RF24;
-class RF24Network;
-class RF24Mesh;
 
-class RF24Gateway
+template<class radio_t>
+class ESBNetwork;
+
+template<class network_t, class radio_t>
+class ESBMesh;
+
+/**
+ * @tparam mesh_t The `mesh` object's type. Defaults to `RF24Mesh` for legacy behavior.
+ * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement
+ * for the nRF24L01 radio. For more detail, see the
+ * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).
+ * @tparam network_t The `network` object's type. Defaults to `RF24Network` for legacy behavior.
+ * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement
+ * for the nRF24L01 radio. For more detail, see the
+ * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).
+ * @tparam radio_t The `radio` object's type. Defaults to `RF24` for legacy behavior.
+ * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement
+ * for the nRF24L01 radio. For more detail, see the
+ * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).
+ */
+template<class mesh_t = ESBMesh<ESBNetwork<RF24>, RF24>, class network_t = ESBNetwork<RF24>, class radio_t = RF24>
+class ESBGateway
 {
 
     /**
@@ -55,9 +74,15 @@ class RF24Gateway
 
 public:
     /**
-     * RF24Gateway constructor.
+     * ESBGateway constructor.
+     * @code
+     * RF24 radio(7,8);
+     * RF24Network network(radio);
+     * RF24Mesh mesh(radio,network);
+     * RF24Gateway gateway(radio,network,mesh);
+     * @endcode
      */
-    RF24Gateway(RF24& _radio, RF24Network& _network, RF24Mesh& _mesh);
+    ESBGateway(radio_t& _radio, network_t& _network, mesh_t& _mesh);
 
     /**
      * Begin function for use with RF24Mesh (TUN interface)
@@ -199,9 +224,9 @@ public:
     uint8_t routingTableSize;
 
 private:
-    RF24& radio;
-    RF24Network& network;
-    RF24Mesh& mesh;
+    radio_t& radio;
+    network_t& network;
+    mesh_t& mesh;
 
     bool begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel);
     bool mesh_enabled;
@@ -235,8 +260,8 @@ private:
     std::queue<msgStruct> rxQueue;
     std::queue<msgStruct> txQueue;
 
-    void printPayload(std::string buffer, std::string debugMsg = "");
-    void printPayload(char* buffer, int nread, std::string debugMsg = "");
+    // void printPayload(std::string buffer, std::string debugMsg = "");
+    // void printPayload(char* buffer, int nread, std::string debugMsg = "");
 
     int s; //Socket variable for sending UDP
     void setupSocket();
@@ -245,6 +270,21 @@ private:
 
     void loadRoutingTable();
 };
+
+/**
+ * A type definition of the template class `ESBGateway` to maintain backward compatibility.
+ * 
+ * ```.cpp
+ * RF24 radio(7, 8);
+ * RF24Network network(radio);
+ * RF24Mesh mesh(radio, network);
+ * 
+ * RF24Gateway gateway(radio, network, mesh);
+ * // is equivalent to
+ * ESBGateway<ESBMesh<ESBNetwork<RF24>, RF24>, ESBNetwork<RF24>, RF24> gateway(radio, network, mesh);
+ * ```
+ */
+typedef ESBGateway<ESBMesh<ESBNetwork<RF24>, RF24>, ESBNetwork<RF24>, RF24> RF24Gateway;
 
 /**
  * @example RF24GatewayNode.cpp
