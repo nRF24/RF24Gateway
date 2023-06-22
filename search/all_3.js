@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gw_0',['gw',['../structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245',1,'RF24Gateway::routeStruct']]]
+  ['fifocleared_0',['fifoCleared',['../classESBGateway.html#adfee55530c62d956bbe655909b57c6e5',1,'ESBGateway']]]
 ];

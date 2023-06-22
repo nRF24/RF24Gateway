@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['thisnodeaddress_0',['thisNodeAddress',['../classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf',1,'RF24Gateway']]],
-  ['thisnodeid_1',['thisNodeID',['../classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de',1,'RF24Gateway']]]
+  ['sendudp_0',['sendUDP',['../classESBGateway.html#af1efe5211f53be4bade8c2e6be10d966',1,'ESBGateway']]],
+  ['setip_1',['setIP',['../classESBGateway.html#a16f0a977e0e77d894e555ace9999568d',1,'ESBGateway']]]
 ];

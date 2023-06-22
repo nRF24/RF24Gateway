@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['poll_0',['poll',['../classRF24Gateway.html#afd57521e1958f45b210888c9a957adb3',1,'RF24Gateway']]]
+  ['mask_0',['mask',['../structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85',1,'ESBGateway::routeStruct']]],
+  ['meshenabled_1',['meshEnabled',['../classESBGateway.html#a0e89668c66169cc98d8398e54966f38e',1,'ESBGateway']]]
 ];
