@@ -94,7 +94,7 @@ int main()
 {
 
     gw.begin();
-    //mesh.setStaticAddress(8, 1);
+    // mesh.setStaticAddress(8, 1);
 
     //uint8_t nodeID = 22;
     //gw.begin(nodeID,3,RF24_2MBPS);
