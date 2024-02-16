@@ -273,12 +273,12 @@ private:
 
 /**
  * A type definition of the template class `ESBGateway` to maintain backward compatibility.
- * 
+ *
  * ```.cpp
  * RF24 radio(7, 8);
  * RF24Network network(radio);
  * RF24Mesh mesh(radio, network);
- * 
+ *
  * RF24Gateway gateway(radio, network, mesh);
  * // is equivalent to
  * ESBGateway<ESBMesh<ESBNetwork<RF24>, RF24>, ESBNetwork<RF24>, RF24> gateway(radio, network, mesh);
