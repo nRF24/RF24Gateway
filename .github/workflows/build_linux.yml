@@ -39,8 +39,8 @@ jobs:
       usr-dir: ${{ matrix.toolchain.usr_dir }}
       examples-path: examples
       deploy-release: ${{ github.event_name == 'release' && (matrix.toolchain.compiler == 'armhf' || matrix.toolchain.compiler == 'arm64') }}
-      rf24network-ref: 1.x
-      rf24mesh-ref: 1.x
+      rf24network-ref: v1.x
+      rf24mesh-ref: v1.x
     strategy:
       fail-fast: false
       matrix:
