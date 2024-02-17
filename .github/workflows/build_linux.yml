@@ -2,8 +2,7 @@ name: Linux build
 
 on:
   pull_request:
-    branches: [master]
-    types: [opened, reopened]
+    branches: [master, v1.x]
     paths:
       - "*.h"
       - "*.cpp"
@@ -13,7 +12,7 @@ on:
       - "!**Makefile" # old build system is not tested in this workflow
       - ".github/workflows/build_linux.yml"
   push:
-    branches: [master]
+    branches: [master, v1.x]
     paths:
       - "*.h"
       - "*.cpp"
@@ -30,11 +29,8 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  check_formatting:
-    uses: nRF24/.github/.github/workflows/cpp_lint.yaml@main
 
   using_cmake:
-    needs: check_formatting
     uses: nRF24/.github/.github/workflows/build_linux_cmake.yaml@main
     with:
       compiler: ${{ matrix.toolchain.compiler }}
