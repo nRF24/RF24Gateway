@@ -2,7 +2,7 @@ name: build Docs
 
 on:
   pull_request:
-    types: [opened, reopened]
+    branches: [master, v1.x]
     paths:
       - "*.h"
       - "*.md"
@@ -12,6 +12,7 @@ on:
       - ".github/workflows/doxygen.yml"
       - "Doxyfile"
   push:
+    branches: [master, v1.x]
     paths:
       - "*.h"
       - "*.md"
@@ -21,7 +22,6 @@ on:
       - ".github/workflows/doxygen.yml"
       - "Doxyfile"
   release:
-    branches: [master]
     types: [published, edited]
   workflow_dispatch:
 
