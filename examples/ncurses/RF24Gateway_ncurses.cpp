@@ -1,21 +1,21 @@
 /**
-* RF24Gateway NCurses interface - TMRh20 2015
-* This is a generic tool for nodes supporting or combining with RF24Ethernet and/or RF24Network.
-*
-* The tool provides a simple interface for monitoring information and activity regarding the RF24Gateway: <br>
-* a: Interface statistics from /proc/net/dev <br>
-* b: RF24Mesh address/id assignments <br>
-* c: RF24Network/Radio information <br>
-* d: Active IP connections (optional) <br>
-*
-* **Requirements: NCurses**
-* Install NCurses: apt-get install libncurses5-dev
-*
-* **Controls**
-* Type 'h' to view the help menu
-*
-*
-*/
+ * RF24Gateway NCurses interface - TMRh20 2015
+ * This is a generic tool for nodes supporting or combining with RF24Ethernet and/or RF24Network.
+ *
+ * The tool provides a simple interface for monitoring information and activity regarding the RF24Gateway: <br>
+ * a: Interface statistics from /proc/net/dev <br>
+ * b: RF24Mesh address/id assignments <br>
+ * c: RF24Network/Radio information <br>
+ * d: Active IP connections (optional) <br>
+ *
+ * **Requirements: NCurses**
+ * Install NCurses: apt-get install libncurses5-dev
+ *
+ * **Controls**
+ * Type 'h' to view the help menu
+ *
+ *
+ */
 
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
@@ -141,9 +141,9 @@ int main()
     {
 
         /**
-    * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
-    * RF24Network user payloads are loaded into the user cache
-    */
+         * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
+         * RF24Network user payloads are loaded into the user cache
+         */
 
         if (millis() - mesh_timer > 30000 && mesh.getNodeID())
         { //Every 30 seconds, test mesh connectivity
