@@ -246,7 +246,6 @@ private:
     void handleRX(uint32_t waitDelay = 0);
     void handleTX();
     volatile bool gotInterrupt;
-    
     int configDevice(uint16_t address);
     int allocateTunDevice(char* dev, int flags, uint16_t address);
 
