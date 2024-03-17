@@ -268,7 +268,6 @@ private:
     struct in_addr getLocalIP();
 
     void loadRoutingTable();
-
 };
 
 /**
