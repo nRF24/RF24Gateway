@@ -49,7 +49,6 @@ int main(int argc, char** argv)
 
         // The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
         // RF24Network user payloads are loaded into the user cache
-        gw.interrupts(0); // Disable interrupts while accessing the radio
 
         if (network.available()) {
             RF24NetworkHeader header;
@@ -83,11 +82,9 @@ int main(int argc, char** argv)
             mesh.begin();
         }
 
-        gw.interrupts(); // Re-enable interrupts when done accessing the radio
 
         //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
-        //The function will perform a delayed wait of max 3ms unless otherwise specified.
-        gw.poll(3);
+        gw.poll();
     }
     return 0;
 }

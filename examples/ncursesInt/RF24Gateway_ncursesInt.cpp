@@ -157,8 +157,6 @@ int main()
     while (1)
     {
 
-        gw.interrupts(0); //Disable interrupts before accessing the radio
-
         if (millis() - mesh_timer > 30000 && mesh.getNodeID() > 0)
         { //Every 30 seconds, test mesh connectivity
             if (!mesh.checkConnection())
@@ -174,14 +172,12 @@ int main()
             }
             mesh_timer = millis();
         }
-        gw.interrupts();
 
         if (ok)
         { //Non-master nodes need an active connection to the mesh in order to handle data
 
             /** Read RF24Network Payloads (Do nothing with them currently) **/
             /*******************************/
-            gw.interrupts(0);
             if (network.available())
             {
                 ++networkPacketsRX;
@@ -210,7 +206,6 @@ int main()
                 }
                 network.read(header, 0, 0);
             }
-            gw.interrupts(); //Re-enable interrupts when done accessing the radio
         }
         else
         {
@@ -221,7 +216,7 @@ int main()
          * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
          * RF24Network user payloads are loaded into the user cache
          */
-        gw.poll(10);
+        gw.poll();
 
         /** Mesh address/id printout **/
         /*******************************/
@@ -349,7 +344,6 @@ int main()
         //checking for deviations from the default configuration (1MBPS data rate)
         //The mesh is restarted on failure and failure count logged to failLog.txt
         //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
-        gw.interrupts(0);
         if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
         {
 
@@ -364,7 +358,6 @@ int main()
             delay(1000);
             radio.failureDetected = 0;
         }
-        gw.interrupts(1);
 
     } //while 1
 
