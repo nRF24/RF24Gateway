@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 
 
         //When using interrupts, gw.poll(); needs to be called to handle incoming data from the network interface.
-        gw.poll();
+        gw.poll(2);
     }
     return 0;
 }

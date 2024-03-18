@@ -216,7 +216,7 @@ int main()
          * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
          * RF24Network user payloads are loaded into the user cache
          */
-        gw.poll();
+        gw.poll(2);
 
         /** Mesh address/id printout **/
         /*******************************/
