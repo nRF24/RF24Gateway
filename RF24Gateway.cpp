@@ -349,9 +349,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
         handleRadioIn();
         handleRadioOut();
     }
+    else {
+        delay(2);
+    }
     handleRX();
     handleRadioOut();
-    delay(1);
 }
 
 /***************************************************************************************/
