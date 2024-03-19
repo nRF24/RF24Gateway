@@ -220,9 +220,7 @@ private:
     void handleRadioIn();
     void handleRX(uint32_t waitDelay = 0);
     void handleTX();
-    volatile bool interruptInProgress;
-    volatile bool interruptsEnabled;
-
+    volatile bool gotInterrupt;
     int configDevice(uint16_t address);
     int allocateTunDevice(char* dev, int flags, uint16_t address);
 
@@ -238,7 +236,7 @@ private:
     void printPayload(std::string buffer, std::string debugMsg = "");
     void printPayload(char* buffer, int nread, std::string debugMsg = "");
 
-    int s; //Socket variable for sending UDP
+    int s; // Socket variable for sending UDP
     void setupSocket();
     struct sockaddr_in addr;
     struct in_addr getLocalIP();
