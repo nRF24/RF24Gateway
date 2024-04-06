@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['poll_0',['poll',['../classESBGateway.html#a3174228b62901c8575d8fb1905d4559e',1,'ESBGateway']]]
+  ['how_20it_20works_0',['How It Works',['../index.html#autotoc_md3',1,'']]]
 ];

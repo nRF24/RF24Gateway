@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['esbgateway_0',['ESBGateway',['../classESBGateway.html',1,'ESBGateway&lt; mesh_t, network_t, radio_t &gt;'],['../classESBGateway.html#a32e99edaeaad744ac078c89667fea97e',1,'ESBGateway::ESBGateway()']]],
-  ['esbmesh_1',['ESBMesh',['../classESBMesh.html',1,'']]],
-  ['esbmesh_3c_20esbnetwork_3c_20rf24_20_3e_2c_20rf24_20_3e_2',['ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;',['../classESBMesh.html',1,'']]],
-  ['esbnetwork_3',['ESBNetwork',['../classESBNetwork.html',1,'']]],
-  ['esbnetwork_3c_20rf24_20_3e_4',['ESBNetwork&lt; RF24 &gt;',['../classESBNetwork.html',1,'']]]
+  ['begin_0',['begin',['../classESBGateway.html#a63aa12d91a100713af306be07a091736',1,'ESBGateway::begin(uint8_t nodeID=0, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS)'],['../classESBGateway.html#a86d7e067cda97af1a810a42269c2e231',1,'ESBGateway::begin(uint16_t address, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS, bool meshEnable=0, uint8_t nodeID=0)']]]
 ];

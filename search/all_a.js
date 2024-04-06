@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['thisnodeaddress_0',['thisNodeAddress',['../classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180',1,'ESBGateway']]],
-  ['thisnodeid_1',['thisNodeID',['../classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf',1,'ESBGateway']]]
+  ['network_20configuration_20example_0',['Network Configuration Example',['../index.html#autotoc_md6',1,'']]],
+  ['news_202023_20api_20changes_1',['News - 2023 API Changes',['../index.html#autotoc_md1',1,'']]]
 ];

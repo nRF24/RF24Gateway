@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['rf24gateway_0',['RF24Gateway',['../index.html',1,'']]],
-  ['routestruct_1',['routeStruct',['../structESBGateway_1_1routeStruct.html',1,'ESBGateway']]],
-  ['routingstruct_2',['routingStruct',['../classESBGateway.html#a1a3e6c55fcc931364823fd09106befbd',1,'ESBGateway']]],
-  ['routingtablesize_3',['routingTableSize',['../classESBGateway.html#ae48103de27d41f7d5187a7c32463fde7',1,'ESBGateway']]]
+  ['ifdropped_0',['ifDropped',['../classESBGateway.html#a9a307c3c9e320944592a20d0587644bc',1,'ESBGateway']]],
+  ['installation_1',['Installation',['../index.html#autotoc_md2',1,'']]],
+  ['interrupts_2',['interrupts',['../classESBGateway.html#a30757aeb509a6eb1cbcb4dce84eae514',1,'ESBGateway']]],
+  ['ip_3',['ip',['../structESBGateway_1_1routeStruct.html#a55d3ef4a67bbe45aa3417c5fbae13cdb',1,'ESBGateway::routeStruct']]],
+  ['it_20works_4',['How It Works',['../index.html#autotoc_md3',1,'']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['mask_0',['mask',['../structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85',1,'ESBGateway::routeStruct']]],
-  ['meshenabled_1',['meshEnabled',['../classESBGateway.html#a0e89668c66169cc98d8398e54966f38e',1,'ESBGateway']]]
+  ['gw_0',['gw',['../structESBGateway_1_1routeStruct.html#aa46d4e51c8c6d75066115b6614a25e34',1,'ESBGateway::routeStruct']]]
 ];

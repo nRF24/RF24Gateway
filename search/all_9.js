@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['sendudp_0',['sendUDP',['../classESBGateway.html#af1efe5211f53be4bade8c2e6be10d966',1,'ESBGateway']]],
-  ['setip_1',['setIP',['../classESBGateway.html#a16f0a977e0e77d894e555ace9999568d',1,'ESBGateway']]]
+  ['mask_0',['mask',['../structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85',1,'ESBGateway::routeStruct']]],
+  ['meshenabled_1',['meshEnabled',['../classESBGateway.html#a0e89668c66169cc98d8398e54966f38e',1,'ESBGateway']]]
 ];
