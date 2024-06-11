@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ip_0',['ip',['../structESBGateway_1_1routeStruct.html#a55d3ef4a67bbe45aa3417c5fbae13cdb',1,'ESBGateway::routeStruct']]]
+  ['ip_0',['ip',['../structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0',1,'RF24Gateway::routeStruct']]]
 ];

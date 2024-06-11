@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['esbgateway_0',['ESBGateway',['../classESBGateway.html#a32e99edaeaad744ac078c89667fea97e',1,'ESBGateway']]]
+  ['ifdropped_0',['ifDropped',['../classRF24Gateway.html#a8b4479e126d180037f71f77f9aaf40c0',1,'RF24Gateway']]],
+  ['interrupts_1',['interrupts',['../classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c',1,'RF24Gateway']]]
 ];
