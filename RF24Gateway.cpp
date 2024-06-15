@@ -37,7 +37,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::begin(uint16_t address, uint8_t _ch
 template<class mesh_t, class network_t, class radio_t>
 bool ESBGateway<mesh_t, network_t, radio_t>::begin(bool configTUN, bool meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel)
 {
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
     printf("GW Begin\n");
     printf("Config Device address 0%o nodeID %d\n", address, mesh_nodeID);
 #endif
@@ -84,7 +84,7 @@ bool ESBGateway<mesh_t, network_t, radio_t>::begin(bool configTUN, bool meshEnab
     }
     network.multicastRelay = 1;
 
-    //#if (DEBUG_LEVEL >= 1)
+    //#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
     radio.printDetails();
     //#endif
 
@@ -171,7 +171,7 @@ int ESBGateway<mesh_t, network_t, radio_t>::configDevice(uint16_t address)
         flags = IFF_TAP | IFF_NO_PI | IFF_MULTI_QUEUE;
     }
     tunFd = allocateTunDevice(tunName, flags, address);
-#if DEBUG_LEVEL >= 1
+#if RF24GATEWAY_DEBUG_LEVEL >= 1
     if (tunFd >= 0) {
         std::cout << "RF24Gw: Successfully attached to tun/tap device " << tunTapDevice << std::endl;
     }
@@ -207,7 +207,7 @@ int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int fla
     // Create device
     if (ioctl(fd, TUNSETIFF, (void*)&ifr) < 0) {
         // close(fd);
-        //#if (DEBUG_LEVEL >= 1)
+        //#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETIFF" << std::endl;
         std::cerr << "RF24Gw: If changing from TAP/TUN, run 'sudo ip link delete tun_nrf24' to remove the interface" << std::endl;
         return -1;
@@ -216,7 +216,7 @@ int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int fla
 
     // Make persistent
     if (ioctl(fd, TUNSETPERSIST, 1) < 0) {
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETPERSIST" << std::endl;
 #endif
         return -1;
@@ -236,7 +236,7 @@ int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int fla
         memcpy((char*)&ifr.ifr_hwaddr, (char*)&sap, sizeof(struct sockaddr));
 
         if (ioctl(fd, SIOCSIFHWADDR, &ifr) < 0) {
-#if DEBUG_LEVEL >= 1
+#if RF24GATEWAY_DEBUG_LEVEL >= 1
             fprintf(stderr, "RF24Gw: Failed to set MAC address\n");
 #endif
         }
@@ -385,10 +385,10 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
             memcpy(&msg.message, &f.message_buffer, bytesRead);
             msg.size = bytesRead;
 
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
             std::cout << "Radio: Received " << bytesRead << " bytes ... " << std::endl;
 #endif
-#if (DEBUG_LEVEL >= 3)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 3)
             // printPayload(msg.getPayloadStr(),"radio RX");
             std::cout << "TunRead: " << std::endl;
             for (size_t i = 0; i < msg.size; i++) {
@@ -456,11 +456,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 
         msgStruct* msgTx = &txQueue.front();
 
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
         std::cout << "Radio: Sending " << msgTx->size << " bytes ... ";
         std::cout << std::endl;
 #endif
-#if (DEBUG_LEVEL >= 3)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 3)
 
         // PrintDebug == 1 does not have an endline.
         // printPayload(msg.getPayloadStr(),"radio TX");
@@ -596,10 +596,10 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
         if (FD_ISSET(tunFd, &socketSet)) {
             if ((nread = read(tunFd, buffer, MAX_PAYLOAD_SIZE)) >= 0) {
 
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
                 std::cout << "Tun: Successfully read " << nread << " bytes from tun device" << std::endl;
 #endif
-#if (DEBUG_LEVEL >= 3)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 3)
                 std::cout << "TunRead: " << std::endl;
                 for (int i = 0; i < nread; i++)
                 {
@@ -618,7 +618,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
                 }
             }
             else {
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
                 std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
 #endif
             }
@@ -652,18 +652,18 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleTX()
         if (writtenBytes != msg->size)
         {
 // std::cerr << "Tun: Less bytes written to tun/tap device then requested." << std::endl;
-#if DEBUG_LEVEL >= 1
+#if RF24GATEWAY_DEBUG_LEVEL >= 1
             printf("Tun: Less bytes written %d to tun/tap device then requested %d.", writtenBytes, msg->size);
 #endif
         }
         else
         {
-#if (DEBUG_LEVEL >= 1)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
             std::cout << "Tun: Successfully wrote " << writtenBytes << " bytes to tun device" << std::endl;
 #endif
         }
 
-#if (DEBUG_LEVEL >= 3)
+#if (RF24GATEWAY_DEBUG_LEVEL >= 3)
         // printPayload(msg.message,"tun write");
         std::cout << "TunRead: " << std::endl;
         for (size_t i = 0; i < msg->size; i++) {
