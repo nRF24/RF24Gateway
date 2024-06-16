@@ -33,9 +33,9 @@
     #define IFF_MULTI_QUEUE 0x0100
 #endif
 
-#ifndef DEBUG_LEVEL
-    #define DEBUG_LEVEL 0
-#endif // DEBUG_LEVEL
+#ifndef RF24GATEWAY_DEBUG_LEVEL
+    #define RF24GATEWAY_DEBUG_LEVEL 0
+#endif // RF24GATEWAY_DEBUG_LEVEL
 
 #define BACKLOG 10 /* Passed to listen() */
 
