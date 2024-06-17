@@ -182,29 +182,26 @@ int main()
             {
                 ++networkPacketsRX;
                 RF24NetworkHeader header;
-
                 // un-needed variables
                 // size_t size = network.peek(header);
                 // uint8_t buf[size];
+                network.read(header, /*buf*/ 0, /*size*/ 0); // pop the RX payload from network.queue
 
-                if (header.type == 1) // header.type is uninitialized
+                // send a timestamp to master
+                struct timeStruct
                 {
-                    struct timeStruct
-                    {
-                        uint8_t hr;
-                        uint8_t min;
-                    } myTime;
+                    uint8_t hr;
+                    uint8_t min;
+                } myTime;
 
-                    time_t mTime;
-                    time(&mTime);
-                    struct tm* tm = localtime(&mTime);
+                time_t mTime;
+                time(&mTime);
+                struct tm* tm = localtime(&mTime);
 
-                    myTime.hr = tm->tm_hour;
-                    myTime.min = tm->tm_min;
-                    RF24NetworkHeader hdr(header.from_node, 1);
-                    network.write(hdr, &myTime, sizeof(myTime));
-                }
-                network.read(header, 0, 0);
+                myTime.hr = tm->tm_hour;
+                myTime.min = tm->tm_min;
+                RF24NetworkHeader hdr(0, 1);
+                network.write(hdr, &myTime, sizeof(myTime));
             }
         }
         else
