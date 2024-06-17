@@ -400,9 +400,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -422,9 +420,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -444,9 +440,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -694,7 +688,7 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Packets(sys): %u\n", ok);
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
-    wprintw(rf24Pad, "RX Packets(user): %u\n", networkPacketsRX);
+    wprintw(rf24Pad, "RX Packets(user): %lu\n", networkPacketsRX);
     if (gw.fifoCleared)
     {
         ++fifoClears;
@@ -747,7 +741,7 @@ void drawConnPad()
             fnd = line.find_last_of(" ", fnd - 2);
             unsigned findEnd = line.find(" mark=");
             line = line.substr(fnd, findEnd - fnd);
-            mvwprintw(connPad, ctr++, 0, "%d %s\n", lCtr++, line.c_str());
+            mvwprintw(connPad, ctr++, 0, "%ld %s\n", lCtr++, line.c_str());
 
             if (ctr > maxX - 15)
             {
