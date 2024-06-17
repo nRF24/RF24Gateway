@@ -9,6 +9,7 @@ on:
       - "CMakeLists.txt"
       - "cmake/**"
       - "examples/**.cpp"
+      - "examples/**CMakeLists.txt"
       - "!**Makefile" # old build system is not tested in this workflow
       - ".github/workflows/build_linux.yml"
   push:
@@ -19,6 +20,7 @@ on:
       - "CMakeLists.txt"
       - "cmake/**"
       - "examples/**.cpp"
+      - "examples/**CMakeLists.txt"
       - "!**Makefile" # old build system is not tested in this workflow
       - ".github/workflows/build_linux.yml"
   release:
