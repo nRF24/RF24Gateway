@@ -5,10 +5,11 @@ A simple example of controlling a RF24Ethernet based sensor node via a python sc
 Turn a light on in the evening and off in the morning according to a schedule
 """
 
-import urllib2
 from datetime import datetime
-import time
 import syslog
+import time
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 ######### Configuration #########
 
@@ -23,21 +24,19 @@ requestOFF = "http://" + sensorIP + ":1000/OFF"
 lightState = 2
 
 while 1:
-
     # Get the current hour
     currentHour = datetime.now().hour
 
     # Check to see if the system should be off
     if (currentHour >= scheduleON or currentHour < scheduleOFF) and lightState != 1:
-
         result = 0
         # Connect to our sensor at 10.10.3.44:1000/ and request OFF
         try:
-            response = urllib2.urlopen(requestOFF, None, 15)  # 15 second time-out
+            response = urlopen(requestOFF, None, 15)  # 15 second time-out
             result = response.getcode()
-        except urllib2.HTTPError, e:
+        except HTTPError as e:
             syslog.syslog("HTTPError = " + str(e.code))
-        except urllib2.URLError, e:
+        except URLError as e:
             syslog.syslog("URLError = " + str(e.reason))
         except Exception:
             import traceback
@@ -54,11 +53,11 @@ while 1:
         result = 0
 
         try:
-            response = urllib2.urlopen(requestON, None, 15)  # 15 second time-out
+            response = urlopen(requestON, None, 15)  # 15 second time-out
             result = response.getcode()
-        except urllib2.HTTPError, e:
+        except HTTPError as e:
             syslog.syslog("HTTPError = " + str(e.code))
-        except urllib2.URLError, e:
+        except URLError as e:
             syslog.syslog("URLError = " + str(e.reason))
         except Exception:
             import traceback

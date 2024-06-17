@@ -10,13 +10,9 @@ See RF24Gateway examples:
                            RF24NetworkFrame frame = RF24NetworkFrame(header, buf, size);
                            gw.sendUDP(mesh.getNodeID(header.from_node), frame);
 """
-import paho.mqtt.client as mqtt
-import socket
 
-try: #python 2 to 3 hack
-    unicode("")  # all strings are unicode in python3
-except NameError:
-    unicode = str  # does the same thing as python2's builtin unicode()
+import socket
+import paho.mqtt.client as mqtt
 
 ### Setup the MQTT host IP & topic to publish to
 mqttHost = "10.10.2.2"
@@ -29,7 +25,6 @@ print("Waiting for UDP message on {} port {}" % server_address)
 sock.bind(server_address)
 
 while True:
-
     data, address = sock.recvfrom(2048)
 
     print("received {} bytes from {}".format(len(data), address))
@@ -40,6 +35,6 @@ while True:
         # TODO: Sort, Display and Analyze the data
         mqttc = mqtt.Client()
         mqttc.connect(mqttHost, 1883)
-        data = unicode(data, errors="replace")
+        data = data.decode(errors="replace")
         mqttc.publish(topic, data)
         mqttc.loop(2)
