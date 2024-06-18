@@ -200,7 +200,7 @@ int main()
 
                 myTime.hr = tm->tm_hour;
                 myTime.min = tm->tm_min;
-                RF24NetworkHeader hdr(0, 1);
+                RF24NetworkHeader hdr(header.from_node, 1);
                 network.write(hdr, &myTime, sizeof(myTime));
             }
         }
