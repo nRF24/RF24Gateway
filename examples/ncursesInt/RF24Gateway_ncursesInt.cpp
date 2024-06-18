@@ -164,10 +164,14 @@ int main()
                 wclear(renewPad);
                 mvwprintw(renewPad, 0, 0, "*Renewing Address*");
                 prefresh(renewPad, 0, 0, 3, 26, 4, 55);
-                if ((ok = mesh.renewAddress()))
+                if (mesh.renewAddress() != MESH_DEFAULT_ADDRESS)
                 {
+                    ok = true;
                     wclear(renewPad);
                     prefresh(renewPad, 0, 0, 3, 26, 4, 55);
+                }
+                else {
+                    ok = false;
                 }
             }
             mesh_timer = millis();
