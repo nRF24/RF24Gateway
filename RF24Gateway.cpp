@@ -209,7 +209,12 @@ int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int fla
         // close(fd);
         //#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
         std::cerr << "RF24Gw: Error: enabling TUNSETIFF" << std::endl;
-        std::cerr << "RF24Gw: If changing from TAP/TUN, run 'sudo ip link delete tun_nrf24' to remove the interface" << std::endl;
+        uint32_t UID = getuid();
+        if (UID) {
+            std::cout << "Not running as root, preconfigure the interface as follows, where 'pi' is your username" << std::endl;
+            std::cout << "sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue" << std::endl;
+            std::cout << "sudo ifconfig tun_nrf24 10.10.2.2/24" << std::endl;
+        }
         return -1;
         //#endif
     }
