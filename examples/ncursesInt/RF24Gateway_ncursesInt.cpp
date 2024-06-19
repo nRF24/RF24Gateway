@@ -579,8 +579,8 @@ void drawCfg(bool isConf)
             mvwprintw(win, 8, 1, "Unable to set IP/Subnet \n");
             uint32_t UID = getuid();
             if (UID) {
-                mvwprintw(win, 9, 1, "Not running as root, configure as follows, where 'pi' is your username:\n");
-                mvwprintw(win, 10, 1, "sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue\n");
+                mvwprintw(win, 9, 1, "Not running as root, configure as follows:\n");
+                mvwprintw(win, 10, 1, "sudo ip tuntap add dev tun_nrf24 mode tun user %s multi_queue\n", getlogin());
                 mvwprintw(win, 11, 1, "sudo ifconfig tun_nrf24 10.10.2.2/24\n");
             }
             refresh();
