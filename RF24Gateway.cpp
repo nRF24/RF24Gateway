@@ -417,6 +417,7 @@ struct in_addr ESBGateway<mesh_t, network_t, radio_t>::getLocalIP()
     int family, s, n;
     char host[NI_MAXHOST];
     struct in_addr myNet;
+    memset(&myNet, 0, sizeof(myNet));
 
     getifaddrs(&ifap);
     for (ifa = ifap, n = 0; ifa != NULL; ifa = ifa->ifa_next, n++) {
@@ -682,14 +683,14 @@ template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::printPayload(std::string buffer, std::string debugMsg)
 {
 }
-
+*/
 /***************************************************************************************
 
 template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::printPayload(char* buffer, int nread, std::string debugMsg)
 {
 }
-
+*/
 /***************************************************************************************/
 
 template<class mesh_t, class network_t, class radio_t>

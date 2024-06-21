@@ -164,8 +164,10 @@ int main()
                 wclear(renewPad);
                 mvwprintw(renewPad, 0, 0, "*Renewing Address*");
                 prefresh(renewPad, 0, 0, 3, 26, 4, 55);
-                if ((ok = mesh.renewAddress()))
+                ok = mesh.renewAddress() != MESH_DEFAULT_ADDRESS;
+                if (ok)
                 {
+                    ok = true;
                     wclear(renewPad);
                     prefresh(renewPad, 0, 0, 3, 26, 4, 55);
                 }
@@ -182,29 +184,26 @@ int main()
             {
                 ++networkPacketsRX;
                 RF24NetworkHeader header;
-
                 // un-needed variables
                 // size_t size = network.peek(header);
                 // uint8_t buf[size];
+                network.read(header, /*buf*/ 0, /*size*/ 0); // pop the RX payload from network.queue
 
-                if (header.type == 1) // header.type is uninitialized
+                // send a timestamp to master
+                struct timeStruct
                 {
-                    struct timeStruct
-                    {
-                        uint8_t hr;
-                        uint8_t min;
-                    } myTime;
+                    uint8_t hr;
+                    uint8_t min;
+                } myTime;
 
-                    time_t mTime;
-                    time(&mTime);
-                    struct tm* tm = localtime(&mTime);
+                time_t mTime;
+                time(&mTime);
+                struct tm* tm = localtime(&mTime);
 
-                    myTime.hr = tm->tm_hour;
-                    myTime.min = tm->tm_min;
-                    RF24NetworkHeader hdr(header.from_node, 1);
-                    network.write(hdr, &myTime, sizeof(myTime));
-                }
-                network.read(header, 0, 0);
+                myTime.hr = tm->tm_hour;
+                myTime.min = tm->tm_min;
+                RF24NetworkHeader hdr(header.from_node, 1);
+                network.write(hdr, &myTime, sizeof(myTime));
             }
         }
         else
@@ -400,9 +399,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -422,9 +419,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -444,9 +439,7 @@ void drawTopology()
 
             for (int j = 0; j < mesh.addrListTop; j++) {
                 if (mesh.addrList[j].address == i) {
-                    int y = 0;
-                    int x = 0;
-                    getyx(connPad, y, x);
+                    int x = getcurx(connPad);
                     if (x > connPadmaxX - 77) {
                         wprintw(connPad, "\n");
                     }
@@ -694,7 +687,7 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Packets(sys): %u\n", ok);
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
-    wprintw(rf24Pad, "RX Packets(user): %u\n", networkPacketsRX);
+    wprintw(rf24Pad, "RX Packets(user): %lu\n", networkPacketsRX);
     if (gw.fifoCleared)
     {
         ++fifoClears;
@@ -747,7 +740,7 @@ void drawConnPad()
             fnd = line.find_last_of(" ", fnd - 2);
             unsigned findEnd = line.find(" mark=");
             line = line.substr(fnd, findEnd - fnd);
-            mvwprintw(connPad, ctr++, 0, "%d %s\n", lCtr++, line.c_str());
+            mvwprintw(connPad, ctr++, 0, "%ld %s\n", lCtr++, line.c_str());
 
             if (ctr > maxX - 15)
             {
