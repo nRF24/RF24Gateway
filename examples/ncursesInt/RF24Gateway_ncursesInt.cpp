@@ -552,7 +552,8 @@ void drawCfg(bool isConf)
 
     sleep(1);
     wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, 5, 1, isConf ? "IP Configuration\n" : "**Interface Not Configured:**\n");
+    mvwprintw(win, 4, 1, isConf ? "IP Configuration\n" : "**Interface Not Configured:**\n");
+    mvwprintw(win, 5, 1, "IP 10.10.2.2 and Subnet Mask 255.255.255.0 is default\n");
     wattroff(win, COLOR_PAIR(1));
     mvwprintw(win, 6, 1, "Enter IP Address: \n");
     refresh();
@@ -567,7 +568,17 @@ void drawCfg(bool isConf)
 
     if (strlen(ip) >= 6 && strlen(mask) >= 7)
     {
-        gw.setIP(ip, mask);
+        if (gw.setIP(ip, mask) < 0) {
+            mvwprintw(win, 8, 1, "Unable to set IP/Subnet \n");
+            uint32_t UID = getuid();
+            if (UID) {
+                mvwprintw(win, 9, 1, "Not running as root, configure as follows:\n");
+                mvwprintw(win, 10, 1, "sudo ip tuntap add dev tun_nrf24 mode tun user %s multi_queue\n", getlogin());
+                mvwprintw(win, 11, 1, "sudo ifconfig tun_nrf24 10.10.2.2/24\n");
+            }
+            refresh();
+            sleep(10);
+        }
     }
     else
     {
