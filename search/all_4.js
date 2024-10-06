@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['esbgateway_0',['ESBGateway',['../classESBGateway.html',1,'ESBGateway&lt; mesh_t, network_t, radio_t &gt;'],['../classESBGateway.html#a32e99edaeaad744ac078c89667fea97e',1,'ESBGateway::ESBGateway()']]],
-  ['esbmesh_1',['ESBMesh',['../classESBMesh.html',1,'']]],
-  ['esbmesh_3c_20esbnetwork_3c_20rf24_20_3e_2c_20rf24_20_3e_2',['ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;',['../classESBMesh.html',1,'']]],
-  ['esbnetwork_3',['ESBNetwork',['../classESBNetwork.html',1,'']]],
-  ['esbnetwork_3c_20rf24_20_3e_4',['ESBNetwork&lt; RF24 &gt;',['../classESBNetwork.html',1,'']]],
-  ['example_5',['Network Configuration Example',['../index.html#autotoc_md6',1,'']]],
-  ['explanation_6',['Explanation',['../index.html#autotoc_md7',1,'']]]
+  ['ifdropped_0',['ifDropped',['../classRF24Gateway.html#a8b4479e126d180037f71f77f9aaf40c0',1,'RF24Gateway']]],
+  ['interrupts_1',['interrupts',['../classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c',1,'RF24Gateway']]],
+  ['ip_2',['ip',['../structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0',1,'RF24Gateway::routeStruct']]]
 ];

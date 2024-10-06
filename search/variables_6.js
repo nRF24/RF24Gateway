@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['thisnodeaddress_0',['thisNodeAddress',['../classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180',1,'ESBGateway']]],
-  ['thisnodeid_1',['thisNodeID',['../classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf',1,'ESBGateway']]]
+  ['thisnodeaddress_0',['thisNodeAddress',['../classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf',1,'RF24Gateway']]],
+  ['thisnodeid_1',['thisNodeID',['../classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de',1,'RF24Gateway']]]
 ];
