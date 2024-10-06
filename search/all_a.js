@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['update_0',['update',['../classRF24Gateway.html#a91c25cc30c580baa4afac301fd9a0f00',1,'RF24Gateway']]]
+  ['documentation_0',['Documentation',['../md_CHANGELOG.html#autotoc_md7',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md10',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md18',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md21',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md24',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md30',1,'&lt;!-- 8 --&gt; 📝 Documentation']]]
 ];

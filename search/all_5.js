@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['mask_0',['mask',['../structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c',1,'RF24Gateway::routeStruct']]],
-  ['meshenabled_1',['meshEnabled',['../classRF24Gateway.html#a7dad81701804d1fb5cd55d0370d1a2df',1,'RF24Gateway']]]
+  ['8_20📝_20documentation_0',['8 📝 Documentation',['../md_CHANGELOG.html#autotoc_md7',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md10',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md18',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md21',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md24',1,'&lt;!-- 8 --&gt; 📝 Documentation'],['../md_CHANGELOG.html#autotoc_md30',1,'&lt;!-- 8 --&gt; 📝 Documentation']]]
 ];
