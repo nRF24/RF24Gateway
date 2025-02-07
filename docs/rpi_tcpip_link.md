@@ -9,9 +9,9 @@ Due to long range of NRFs, some of those have 1800 meter wireless range, it woul
 
 ## Hardware Configuration
 
-1- wiring: Here is how i did connect the module to the RPi as described in the main RF24 documentation [here](https://nrf24.github.io/RF24/#autotoc_md227).
-2- Noise on 3.3v on RPi: put some capacitor or L-C filter to reduce the noise on 3.3v supply from RPi.
-3- Shielding NRF24 module: shield your NRF module, if it have not. (More info [here](http://embedblog.eu/?p=187) and [here](https://forum.mysensors.org/topic/3615/long-range-transmission-with-nrf24l01-pa-lna))
+1. wiring: Here is how I did connect the module to the RPi as described in the main RF24 documentation [here](https://nrf24.github.io/RF24/#autotoc_md227).
+2. Noise on 3.3v on RPi: Put some capacitor or L-C filter to reduce the noise on 3.3v supply from RPi.
+3. Shielding PA/LNA module: Shield your radio module, if it has none. See more details [in the RF24 Common Issues document](https://github.com/nRF24/RF24/blob/master/COMMON_ISSUES.md#my-palna-module-fails-to-transmit)
 
 ## Software Configuration
 
