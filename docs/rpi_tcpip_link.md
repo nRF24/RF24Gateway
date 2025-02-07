@@ -92,7 +92,7 @@ sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
 sudo ifconfig tun_nrf24 10.11.2.3/24
 ```
 
-finally run the ncurses example on both machines:
+### Run the ncurses example on both machines
 
 ```
 cd ~/rf24libs/RF24Gateway/examples/build/ncurses
