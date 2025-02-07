@@ -19,7 +19,7 @@ Due to long range of NRFs, some of those have 1800 meter wireless range, it woul
 2- install RF24 drivers on RPi: 
 more detail [here](https://nrf24.github.io/RF24/md_docs_2linux__install.html). 
 
-```
+```text
 sudo apt-get update
 sudo apt-get upgrade
 wget https://raw.githubusercontent.com/nRF24/.github/main/installer/install.sh
