@@ -30,7 +30,7 @@ Installer will promp which modules you want to install. I did installed all modu
 
 after installation done, and if there are no errors in the process, there will be these directories inside the RPi:
 
-```
+```text
 ~/rf24libs/RF24
 ~/rf24libs/RF24Network
 ~/rf24libs/RF24Gateway
