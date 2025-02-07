@@ -94,7 +94,7 @@ sudo ifconfig tun_nrf24 10.11.2.3/24
 
 ### Run the ncurses example on both machines
 
-```
+```text
 cd ~/rf24libs/RF24Gateway/examples/build/ncurses
 ./RF24Gateway_ncurses
 ```
