@@ -55,7 +55,7 @@ int main()
     //gw.begin(address,3,RF24_2MBPS);
 ```
 after edit:
-```
+```cpp
 int main()
 {
 
