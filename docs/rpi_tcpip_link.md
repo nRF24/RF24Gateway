@@ -99,7 +99,7 @@ cd ~/rf24libs/RF24Gateway/examples/build/ncurses
 ./RF24Gateway_ncurses
 ```
 
-Done. the primary machine IP is `10.11.2.2` and secondary machine ip is `10.11.2.3`.
+Done. The primary machine IP is `10.11.2.2`, and the secondary machine IP is `10.11.2.3`.
 One could ping machines from each other.
 
 Result from pinging primary machine from secondary is latency about few milliseconds (or even less than a millisecond) and the speed was about `10kB/s` (equal to 100K bit / second).
