@@ -80,7 +80,7 @@ make
 
 then on primary:
 
-```
+```text
 sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
 sudo ifconfig tun_nrf24 10.11.2.2/24
 ```
