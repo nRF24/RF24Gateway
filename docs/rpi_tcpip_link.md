@@ -70,7 +70,7 @@ int main()
 
 Again, the above edit is only done in the secondary machine, the primary machine needs no edits.
 
-then need to recompile the ncurses example, run in terminal:
+Next, we need to recompile the ncurses example and run it in the terminal:
 
 ```text
 cd ~/rf24libs/RF24Gateway/examples/build
