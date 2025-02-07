@@ -78,7 +78,7 @@ cd ~/rf24libs/RF24Gateway/examples/build
 make
 ```
 
-then on primary:
+### Primary machine config
 
 ```text
 sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
