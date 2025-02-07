@@ -40,7 +40,7 @@ after installation done, and if there are no errors in the process, there will b
 Next we need to choose a master/primary node (as discussed [here](https://github.com/nRF24/RF24Gateway/issues/41)). so one RPi will be primary, and another one will be secondary. we'll use the official example named `ncurses` in [RF24 repo](https://github.com/nRF24/RF24Gateway/tree/master/examples/ncurses) to establish the network.
 this code is already cloned to local device in process of installation. so we need to have some edits on the code. On the Master/Primary machine no need to do edits, but on the secondary machine we need to edit `~/rf24libs/RF24Gateway/examples/ncurses/RF24Gateway_ncurses.cpp` file, first lines of method `main()`
 
-Before edit (firs lines)
+Before edit (first lines)
 ```
 int main()
 {
