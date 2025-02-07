@@ -15,9 +15,8 @@ Due to long range of NRFs, some of those have 1800 meter wireless range, it woul
 
 ## Software Configuration
 
-1- Enable SPI from `raspi-config': more detail [here](https://pimylifeup.com/raspberry-pi-spi/). then a reboot.
-2- install RF24 drivers on RPi: 
-more detail [here](https://nrf24.github.io/RF24/md_docs_2linux__install.html). 
+1. Enable SPI from [`raspi-config`](https://www.raspberrypi.com/documentation/computers/configuration.html#raspi-config). Select "Interface Options" -> "SPI" -> "Yes" -> "Ok", then exit and reboot the RPi (`sudo reboot`).
+2. Install nRF24 library stack on each machine. See more detail in the [RF24 docs](https://nrf24.github.io/RF24/md_docs_2linux__install.html). 
 
 ```text
 sudo apt-get update
