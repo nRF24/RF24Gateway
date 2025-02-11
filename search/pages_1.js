@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rf24gateway_0',['RF24Gateway',['../index.html',1,'']]]
+  ['changelog_0',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['contributing_1',['CONTRIBUTING',['../md_CONTRIBUTING.html',1,'']]]
 ];

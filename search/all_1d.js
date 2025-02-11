@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🛠️_20fixed_0',['🛠️ Fixed',['../md_CHANGELOG.html#autotoc_md3',1,'&lt;!-- 4 --&gt; 🛠️ Fixed'],['../md_CHANGELOG.html#autotoc_md17',1,'&lt;!-- 4 --&gt; 🛠️ Fixed'],['../md_CHANGELOG.html#autotoc_md23',1,'&lt;!-- 4 --&gt; 🛠️ Fixed'],['../md_CHANGELOG.html#autotoc_md29',1,'&lt;!-- 4 --&gt; 🛠️ Fixed']]]
+  ['🗨️_20changed_0',['🗨️ Changed',['../md_CHANGELOG.html#autotoc_md4',1,'&lt;!-- 9 --&gt; 🗨️ Changed'],['../md_CHANGELOG.html#autotoc_md8',1,'&lt;!-- 9 --&gt; 🗨️ Changed'],['../md_CHANGELOG.html#autotoc_md13',1,'&lt;!-- 9 --&gt; 🗨️ Changed'],['../md_CHANGELOG.html#autotoc_md19',1,'&lt;!-- 9 --&gt; 🗨️ Changed'],['../md_CHANGELOG.html#autotoc_md25',1,'&lt;!-- 9 --&gt; 🗨️ Changed'],['../md_CHANGELOG.html#autotoc_md31',1,'&lt;!-- 9 --&gt; 🗨️ Changed']]]
 ];

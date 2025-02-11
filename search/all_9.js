@@ -19,9 +19,11 @@ var searchData=
   ['compare_20v1_200_204_20v2_200_200_202_200_200_20a_202023_2006_2021_16',['&lt;a href=&quot;https://github.com/nRF24/RF24Gateway/compare/v1.0.4...v2.0.0&quot; &gt;2.0.0&lt;/a&gt; - 2023-06-21',['../md_CHANGELOG.html#autotoc_md9',1,'']]],
   ['compare_20v2_200_200_20v2_201_200_202_201_200_20a_202024_2004_2006_17',['&lt;a href=&quot;https://github.com/nRF24/RF24Gateway/compare/v2.0.0...v2.1.0&quot; &gt;2.1.0&lt;/a&gt; - 2024-04-06',['../md_CHANGELOG.html#autotoc_md5',1,'']]],
   ['compare_20v2_201_200_20v2_201_201_202_201_201_20a_202024_2010_2006_18',['&lt;a href=&quot;https://github.com/nRF24/RF24Gateway/compare/v2.1.0...v2.1.1&quot; &gt;2.1.1&lt;/a&gt; - 2024-10-06',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
-  ['config_5ftun_19',['config_TUN',['../classESBGateway.html#a0530f6b4fa80e1bb4632326e15dd8113',1,'ESBGateway']]],
-  ['configuration_20',['Configuration',['../index.html#autotoc_md42',1,'Additional Routing Configuration'],['../index.html#autotoc_md38',1,'Advanced Configuration'],['../index.html#autotoc_md41',1,'Routing Configuration'],['../index.html#autotoc_md37',1,'Simple Configuration']]],
-  ['configuration_20example_21',['Network Configuration Example',['../index.html#autotoc_md39',1,'']]],
-  ['contributing_22',['CONTRIBUTING',['../md_CONTRIBUTING.html',1,'']]],
-  ['contributors_23',['New Contributors',['../md_CHANGELOG.html#autotoc_md32',1,'']]]
+  ['config_19',['config',['../md_docs_2rpi__tcpip__link.html#autotoc_md48',1,'Primary machine config'],['../md_docs_2rpi__tcpip__link.html#autotoc_md49',1,'Secondary machine config']]],
+  ['config_5ftun_20',['config_TUN',['../classESBGateway.html#a0530f6b4fa80e1bb4632326e15dd8113',1,'ESBGateway']]],
+  ['configuration_21',['Configuration',['../index.html#autotoc_md42',1,'Additional Routing Configuration'],['../index.html#autotoc_md38',1,'Advanced Configuration'],['../md_docs_2rpi__tcpip__link.html#autotoc_md46',1,'Hardware Configuration'],['../index.html#autotoc_md41',1,'Routing Configuration'],['../index.html#autotoc_md37',1,'Simple Configuration'],['../md_docs_2rpi__tcpip__link.html#autotoc_md47',1,'Software Configuration']]],
+  ['configuration_20example_22',['Network Configuration Example',['../index.html#autotoc_md39',1,'']]],
+  ['contributing_23',['CONTRIBUTING',['../md_CONTRIBUTING.html',1,'']]],
+  ['contributors_24',['New Contributors',['../md_CHANGELOG.html#autotoc_md32',1,'']]],
+  ['create_20tcp_20ip_20link_20between_20two_20raspberry_20pi_25',['Example: create TCP/IP link between two Raspberry Pi',['../index.html#autotoc_md43',1,'']]]
 ];
