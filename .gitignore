@@ -5,6 +5,7 @@
 # ignore docs folder
 docs/html/
 docs/xml/
+docs/doxygenAction
 
 # ignore CMake stuff
 build/
