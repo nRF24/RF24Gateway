@@ -1,11 +1,12 @@
-
-
 # longer range TCPIP via NRF24L01 for a pair of Raspberry PIs
 
 ## Intro
 
 This tutorial is trying to use `NRF24L01` to create a TCP/IP link between two Raspberry Pi boards.
 Due to long range of NRFs, some of those have 1800 meter wireless range, it would be good to have a TCPIP link between two RPi via NRFs so it would be possible to have a TCPIP connection between two RPi in longer range. The onboard wifi of RPi cannot do long ranges like 50 meter even in clear sight. 
+
+TODO: ADD Image path.
+![schematics](image.png)
 
 ## Hardware Configuration
 
