@@ -175,4 +175,4 @@ Examples are:
 
 # Example: create TCP/IP link between two Raspberry Pi
 
-This example demonstrates how a tcpip link could be created between two RPIs: [Example LINK](md_rpi_tcpip_link.html)
+This example demonstrates how a tcpip link could be created between two RPIs: [Example LINK](md_docs_2rpi__tcpip__link.html)
