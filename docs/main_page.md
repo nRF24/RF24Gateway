@@ -142,3 +142,7 @@ Examples are:
    ```text
    0.0.0.0 0.0.0.0 10.10.3.32
    ```
+
+# Example: create TCP/IP link between two Raspberry Pi
+
+This example demonstrates how a tcpip link could be created between two RPIs: [Example LINK](md_docs_2rpi__tcpip__link.html)
