@@ -118,7 +118,6 @@ PING 10.11.2.2 (10.11.2.2) 56(84) bytes of data.
 --- 10.11.2.2 ping statistics ---
 10 packets transmitted, 10 received, 0% packet loss, time 9013ms
 rtt min/avg/max/mdev = 13.014/14.281/15.603/0.698 ms
-
 ```
 
 The resulting latency when pinging primary machine from secondary is about 14 millisecond. lets check the transfer speed. The speed is most of the times about `10kB/s` (equal to 100K bits per second) sometimes get less. `5 kB/s` should be good approximation for average
