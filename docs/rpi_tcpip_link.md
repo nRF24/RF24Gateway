@@ -101,5 +101,28 @@ cd ~/rf24libs/RF24Gateway/examples/build/ncurses
 Done. The primary machine IP is `10.11.2.2`, and the secondary machine IP is `10.11.2.3`.
 One could ping machines from each other.
 
-The resulting latency when pinging primary machine from secondary is about a few milliseconds (or even less than a millisecond), and the speed is about `10kB/s` (equal to 100K bits per second).
+```
+pi@pi:~ $ ping 10.11.2.2 -c10
+PING 10.11.2.2 (10.11.2.2) 56(84) bytes of data.
+64 bytes from 10.11.2.2: icmp_seq=1 ttl=64 time=15.6 ms
+64 bytes from 10.11.2.2: icmp_seq=2 ttl=64 time=13.6 ms
+64 bytes from 10.11.2.2: icmp_seq=3 ttl=64 time=14.2 ms
+64 bytes from 10.11.2.2: icmp_seq=4 ttl=64 time=14.8 ms
+64 bytes from 10.11.2.2: icmp_seq=5 ttl=64 time=13.0 ms
+64 bytes from 10.11.2.2: icmp_seq=6 ttl=64 time=14.9 ms
+64 bytes from 10.11.2.2: icmp_seq=7 ttl=64 time=14.0 ms
+64 bytes from 10.11.2.2: icmp_seq=8 ttl=64 time=14.0 ms
+64 bytes from 10.11.2.2: icmp_seq=9 ttl=64 time=14.1 ms
+64 bytes from 10.11.2.2: icmp_seq=10 ttl=64 time=14.7 ms
+
+--- 10.11.2.2 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 13.014/14.281/15.603/0.698 ms
+
+```
+
+The resulting latency when pinging primary machine from secondary is about 14 millisecond. lets check the transfer speed:
+
+
+(or even less than a millisecond), and the speed is most of the times about `10kB/s` (equal to 100K bits per second) sometimes get less. `5 kB/s` should be good approximation for average
 
