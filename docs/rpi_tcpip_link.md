@@ -121,8 +121,5 @@ rtt min/avg/max/mdev = 13.014/14.281/15.603/0.698 ms
 
 ```
 
-The resulting latency when pinging primary machine from secondary is about 14 millisecond. lets check the transfer speed:
-
-
-(or even less than a millisecond), and the speed is most of the times about `10kB/s` (equal to 100K bits per second) sometimes get less. `5 kB/s` should be good approximation for average
+The resulting latency when pinging primary machine from secondary is about 14 millisecond. lets check the transfer speed. The speed is most of the times about `10kB/s` (equal to 100K bits per second) sometimes get less. `5 kB/s` should be good approximation for average
 
