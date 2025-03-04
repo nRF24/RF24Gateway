@@ -101,7 +101,7 @@ cd ~/rf24libs/RF24Gateway/examples/build/ncurses
 Done. The primary machine IP is `10.11.2.2`, and the secondary machine IP is `10.11.2.3`.
 One could ping machines from each other.
 
-```
+```text
 pi@pi:~ $ ping 10.11.2.2 -c10
 PING 10.11.2.2 (10.11.2.2) 56(84) bytes of data.
 64 bytes from 10.11.2.2: icmp_seq=1 ttl=64 time=15.6 ms
