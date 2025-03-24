@@ -84,8 +84,8 @@ std::string tunStr("tun_nrf24");
 bool showConnPad;
 bool topo = true;
 
-size_t bRX;
-size_t bTX;
+float bRX;
+float bTX;
 
 /******************************************************************/
 /***********************MAIN***************************************/
@@ -600,13 +600,13 @@ void drawDevPad()
             float bytesTNow = strtof(txBytes, NULL) - bTX;
 
             float RKBS = bytesRNow > 0 ? bytesRNow / updateRate : 0.0;
-            float TKBS = bytesRNow > 0 ? bytesTNow / updateRate : 0.0;
+            float TKBS = bytesTNow > 0 ? bytesTNow / updateRate : 0.0;
 
             wprintw(devPad, "\nRX %.03f KB/s\n", RKBS);
             wprintw(devPad, "TX %.03f KB/s\n", TKBS);
 
-            bRX = strtol(rxBytes, NULL, 10);
-            bTX = strtol(txBytes, NULL, 10);
+            bRX = strtof(rxBytes, NULL);
+            bTX = strtof(txBytes, NULL);
         }
     }
     inFile.close();
