@@ -161,14 +161,14 @@ int main()
         { //Every 30 seconds, test mesh connectivity
             if (!mesh.checkConnection())
             {
-                wclear(renewPad);
+                werase(renewPad);
                 mvwprintw(renewPad, 0, 0, "*Renewing Address*");
                 prefresh(renewPad, 0, 0, 3, 26, 4, 55);
                 ok = mesh.renewAddress() != MESH_DEFAULT_ADDRESS;
                 if (ok)
                 {
                     ok = true;
-                    wclear(renewPad);
+                    werase(renewPad);
                     prefresh(renewPad, 0, 0, 3, 26, 4, 55);
                 }
             }
@@ -263,7 +263,7 @@ int main()
                     topo = false;
                     if (!showConnPad)
                     {
-                        wclear(connPad);
+                        werase(connPad);
                         prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
                         drawMain();
                     }
@@ -292,7 +292,7 @@ int main()
                     drawHelp();
                     break;
                 case 'x':
-                    clear();
+                    erase();
                     endwin();
                     return 0;
                     break;
@@ -325,7 +325,7 @@ int main()
                     padSelection = std::max(padSelection, 0);
                     break; //left
                 case 'Q':
-                    clear();
+                    erase();
                     endwin();
                     return 0;
                     break;
@@ -362,7 +362,7 @@ int main()
 
     //delwin(meshPad);
     //delwin(connPad);
-    clear();
+    erase();
     endwin();
     return 0;
 
@@ -373,7 +373,7 @@ int main()
 
 void drawTopology()
 {
-    wclear(connPad);
+    werase(connPad);
     wattroff(connPad, COLOR_PAIR(1));
     mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
     mvwprintw(win, 15, 10, "Mesh Topology");
@@ -454,7 +454,7 @@ void drawTopology()
 void drawMain()
 {
 
-    clear();
+    erase();
 
     attron(COLOR_PAIR(1));
     wprintw(win, "RF24Gateway Ncurses Interface by TMRh20 - 2015-2022\n");
@@ -600,7 +600,7 @@ void drawCfg(bool isConf)
 void drawDevPad()
 {
 
-    wclear(devPad);
+    werase(devPad);
 
     std::string line;
     std::ifstream inFile;
@@ -644,7 +644,7 @@ void drawDevPad()
 void drawMeshPad()
 {
 
-    wclear(meshPad);
+    werase(meshPad);
 
     meshInfoTimer = millis();
     //uint8_t pos=5;
@@ -673,7 +673,7 @@ void drawMeshPad()
 void drawRF24Pad()
 {
 
-    wclear(rf24Pad);
+    werase(rf24Pad);
     mvwprintw(rf24Pad, 1, 0, "Address: 0%o\n", mesh.mesh_address);
     wprintw(rf24Pad, "nodeID: %d\n", mesh.getNodeID());
     wprintw(rf24Pad, "En Mesh: %s\n", gw.meshEnabled() ? "True" : "False");
@@ -733,7 +733,7 @@ void drawConnPad()
     int ctr = 0;
     size_t lCtr = 1;
     std::string line;
-    wclear(connPad);
+    werase(connPad);
     //box(connPad,ACS_VLINE,ACS_HLINE);
 
     std::ifstream inFile;
