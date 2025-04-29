@@ -653,7 +653,7 @@ void drawMeshPad()
         mvwprintw(meshPad, i + 1, 0, " Address: 0%o ID: %d \n", mesh.addrList[i].address, mesh.addrList[i].nodeID);
     }
 
-    meshScroll = rf24_max(meshScroll,0);
+    meshScroll = rf24_max(meshScroll, 0);
 
     if (padSelection == 0)
     {
