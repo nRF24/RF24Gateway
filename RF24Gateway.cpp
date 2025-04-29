@@ -457,13 +457,13 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 {
     bool ok = 0;
 
-    uint32_t txQueueTimer = millis();
+    uint32_t txQueueTimer = millis() + 750;
 
     while (!txQueue.empty() && network.external_queue.size() == 0) {
 
         uint32_t queueSize = txQueue.size();
-        if (millis() - txQueueTimer > 500) {
-            for (int i = 0; i < queueSize; i++) {
+        if (millis() > txQueueTimer && queueSize >= 10) {
+            for (uint32_t i = 0; i < queueSize; i++) {
                 droppedIncoming++;
                 txQueue.pop();
             }
@@ -634,7 +634,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
 #endif
             }
         }
-        if (millis() - tunTimeout > 500) {
+        if (millis() - tunTimeout > 750) {
             return;
         }
     }
