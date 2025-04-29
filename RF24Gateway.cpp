@@ -343,7 +343,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::update(bool interrupts)
 template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
 {
-    if (radio.available() && !gotInterrupt) {
+    if (!gotInterrupt && radio.available()) {
         fifoCleared = true;
     }
     else {
