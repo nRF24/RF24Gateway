@@ -349,10 +349,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
         handleRadioIn();
         handleTX();
     }
-    else if (radio.rxFifoFull()) {
+    else if (radio.available()) {
         fifoCleared = true;
+        gotInterrupt = true;
         handleRadioIn();
-        handleRadioOut();
+        handleTX();
     }
     else {
         delay(waitDelay);
