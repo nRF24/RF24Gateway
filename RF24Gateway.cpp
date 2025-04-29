@@ -343,20 +343,17 @@ void ESBGateway<mesh_t, network_t, radio_t>::update(bool interrupts)
 template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
 {
-
-    if (gotInterrupt) {
-        gotInterrupt = false;
-        handleRadioIn();
-        handleTX();
-    }
-    else if (radio.rxFifoFull()) {
+    if (!gotInterrupt && radio.available()) {
         fifoCleared = true;
-        handleRadioIn();
-        handleRadioOut();
     }
     else {
-        delay(waitDelay);
+        if (!gotInterrupt) {
+            delay(waitDelay);
+        }
     }
+    gotInterrupt = false;
+    handleRadioIn();
+    handleTX();
     handleRX();
     handleRadioOut();
 }
@@ -384,14 +381,12 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
 
         msgStruct msg;
 
-        unsigned int bytesRead = f.message_size;
-
-        if (bytesRead > 0) {
-            memcpy(&msg.message, &f.message_buffer, bytesRead);
-            msg.size = bytesRead;
+        if (f.message_size > 0) {
+            memcpy(&msg.message, &f.message_buffer, f.message_size);
+            msg.size = f.message_size;
 
 #if (RF24GATEWAY_DEBUG_LEVEL >= 1)
-            std::cout << "Radio: Received " << bytesRead << " bytes ... " << std::endl;
+            std::cout << "Radio: Received " << f.message_size << " bytes ... " << std::endl;
 #endif
 #if (RF24GATEWAY_DEBUG_LEVEL >= 3)
             // printPayload(msg.getPayloadStr(),"radio RX");
@@ -407,7 +402,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
             rxQueue.push(msg);
         }
         else {
-            // std::cerr << "Radio: Error reading data from radio. Read '" << bytesRead << "' Bytes." << std::endl;
+            // std::cerr << "Radio: Error reading data from radio. Read '" << f.message_size << "' Bytes." << std::endl;
         }
         network.external_queue.pop();
     }
@@ -458,8 +453,18 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 {
     bool ok = 0;
 
+    uint32_t txQueueTimer = millis() + 750;
+
     while (!txQueue.empty() && network.external_queue.size() == 0) {
 
+        uint32_t queueSize = txQueue.size();
+        if (millis() > txQueueTimer && queueSize >= 10) {
+            for (uint32_t i = 0; i < queueSize; i++) {
+                droppedIncoming++;
+                txQueue.pop();
+            }
+            return;
+        }
         msgStruct* msgTx = &txQueue.front();
 
 #if (RF24GATEWAY_DEBUG_LEVEL >= 1)
@@ -598,10 +603,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
     selectTimeout.tv_sec = 0;
     selectTimeout.tv_usec = waitDelay * 1000;
 
-    if (select(tunFd + 1, &socketSet, NULL, NULL, &selectTimeout) != 0) {
+    uint32_t tunTimeout = millis();
+
+    while (select(tunFd + 1, &socketSet, NULL, NULL, &selectTimeout) != 0) {
         if (FD_ISSET(tunFd, &socketSet)) {
             if ((nread = read(tunFd, buffer, MAX_PAYLOAD_SIZE)) >= 0) {
-
 #if (RF24GATEWAY_DEBUG_LEVEL >= 1)
                 std::cout << "Tun: Successfully read " << nread << " bytes from tun device" << std::endl;
 #endif
@@ -616,18 +622,16 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
                 msgStruct msg;
                 memcpy(&msg.message, &buffer, nread);
                 msg.size = nread;
-                if (txQueue.size() < 10) {
-                    txQueue.push(msg);
-                }
-                else {
-                    droppedIncoming++;
-                }
+                txQueue.push(msg);
             }
             else {
 #if (RF24GATEWAY_DEBUG_LEVEL >= 1)
                 std::cerr << "Tun: Error while reading from tun/tap interface." << std::endl;
 #endif
             }
+        }
+        if (millis() - tunTimeout > 750) {
+            return;
         }
     }
 }
