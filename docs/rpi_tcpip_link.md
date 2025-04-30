@@ -82,14 +82,20 @@ make
 ```text
 sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
 sudo ifconfig tun_nrf24 10.11.2.2/24
+sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
+sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
+These changes are only temporary and need to be run each time before startup of the gateway.
 
 ### Secondary machine config
 
 ```text
 sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
 sudo ifconfig tun_nrf24 10.11.2.3/24
+sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
+sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
+These changes are only temporary and need to be run each time before startup of the gateway.
 
 ### Run the ncurses example on both machines
 
