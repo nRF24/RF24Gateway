@@ -222,6 +222,11 @@ public:
      * The size of the existing routing table loaded into memory. See routeStruct
      */
     uint8_t routingTableSize;
+    
+    /**
+    * How many times the network has returned error 160 NETWORK_OVERRUN
+    */
+    uint32_t networkOverruns;
 
 private:
     radio_t& radio;

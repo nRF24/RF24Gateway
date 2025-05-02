@@ -363,15 +363,24 @@ void ESBGateway<mesh_t, network_t, radio_t>::poll(uint32_t waitDelay)
 template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
 {
+    
+    uint8_t returnVal = 0;
+    
     if (mesh_enabled) {
-        while (mesh.update()) {
+        while ((returnVal = mesh.update())) {
+            if(returnVal == NETWORK_OVERRUN){
+                ++networkOverruns;
+            }
             if (!thisNodeAddress) {
                 mesh.DHCP();
             }
         }
     }
     else {
-        while (network.update()) {
+        while ((returnVal = network.update())) {
+            if(returnVal == NETWORK_OVERRUN){
+                ++networkOverruns;
+            }
         }
     }
 
@@ -507,12 +516,16 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 
                         ok = network.multicast(header, &msgTx->message, msgTx->size, 1); // Send to Level 1
                         while (millis() - arp_timeout < 5) {
-                            network.update();
+                            if(network.update() == NETWORK_OVERRUN){
+                                ++networkOverruns;
+                            }
                         }
                         network.multicast(header, &msgTx->message, msgTx->size, 1); // Send to Level 1
                         arp_timeout = millis();
                         while (millis() - arp_timeout < 15) {
-                            network.update();
+                            if(network.update() == NETWORK_OVERRUN){
+                                ++networkOverruns;
+                            }
                         }
                         network.multicast(header, &msgTx->message, msgTx->size, 1); // Send to Level 1
                     }
