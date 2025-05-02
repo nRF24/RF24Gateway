@@ -708,7 +708,7 @@ void drawRF24Pad()
     }
     wprintw(rf24Pad, "Interrupts Missed: %u\n", fifoClears);
     wprintw(rf24Pad, "Network Overruns: %u\n", gw.networkOverruns);
-    
+
     if (padSelection == 1)
     {
         wattron(rf24Pad, COLOR_PAIR(1));
