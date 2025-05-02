@@ -76,7 +76,7 @@ To maximize throughput between Raspberry Pi or other Linux devices, run the foll
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
 sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
-These changes are only temporary and need to be run each time after reboot of the gateway. To make them permanent, edit `/etc/sysctl.conf`
+These changes are only temporary and need to be run each time after reboot of the operating system. To make them permanent, edit `/etc/sysctl.conf`
 
 
 If there are problems starting the examples, the following commands can be run to configure the interface:

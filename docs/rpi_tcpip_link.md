@@ -92,17 +92,24 @@ restored.
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
 sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
-These changes are only temporary and need to be run each time after reboot of the gateway.
+These changes are only temporary and need to be run each time after reboot of the operating system.
 
 ### Secondary machine config
 
 ```text
 sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
 sudo ifconfig tun_nrf24 10.11.2.3/24
+```
+
+The following commands can be run to modify the default TCP/IP window sizes. This can severely impact other network
+functionality. Run `sudo sysctl net.ipv4.tcp_wmem` and `sudo sysctl net.ipv4.tcp_rmem` to get the defaults so they can be 
+restored.
+
+```
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
 sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
-These changes are only temporary and need to be run each time after reboot of the gateway.
+These changes are only temporary and need to be run each time after reboot of the operating system.
 
 ### Run the ncurses example on both machines
 
