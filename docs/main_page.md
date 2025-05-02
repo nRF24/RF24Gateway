@@ -84,7 +84,7 @@ sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
 
 To maximize throughput between Raspberry Pi or other Linux devices, run the following commands:
-@note These commands can severely impact other network functionality. Run `sudo sysctl net.ipv4.tcp_wmem` and `sudo sysctl net.ipv4.tcp_rmem` to get the default settings so they can be restored.
+@warning These commands can severely impact other network functionality. Run `sudo sysctl net.ipv4.tcp_wmem` and `sudo sysctl net.ipv4.tcp_rmem` to get the default settings so they can be restored.
 
 ```shell
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
