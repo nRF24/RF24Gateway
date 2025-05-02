@@ -70,12 +70,14 @@ In this case the master node could be configured with IP 10.1.3.1 netmask 255.25
 The remaining Arduino nodes can used nodeIDs 2-253, and would be assigned IP addresses 10.1.3.2-253 and netmask 255.255.255.0
 
 To maximize throughput between Raspberry Pi or other Linux devices, run the following commands:
+@note These commands can severely impact other network functionality. Run `sudo sysctl net.ipv4.tcp_wmem` and `sudo sysctl net.ipv4.tcp_rmem`to get the default settings so they can be restored.
 
 ```shell
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
 sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
-These changes are only temporary and need to be run each time before startup of the gateway. To make them permanent, edit `/etc/sysctl.conf`
+These changes are only temporary and need to be run each time after reboot of the gateway. To make them permanent, edit `/etc/sysctl.conf`
+
 
 If there are problems starting the examples, the following commands can be run to configure the interface:
 
