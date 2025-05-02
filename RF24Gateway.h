@@ -228,6 +228,11 @@ public:
      */
     uint32_t networkOverruns;
 
+    /**
+     * How many times the network has returned error 161 NETWORK_CORRUPTION
+     */
+    uint32_t networkCorruption;
+
 private:
     radio_t& radio;
     network_t& network;

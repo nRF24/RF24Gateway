@@ -708,6 +708,7 @@ void drawRF24Pad()
     }
     wprintw(rf24Pad, "Interrupts Missed: %u\n", fifoClears);
     wprintw(rf24Pad, "Network Overruns: %u\n", gw.networkOverruns);
+    wprintw(rf24Pad, "Network Corruption: %u", gw.networkCorruption);
 
     if (padSelection == 1)
     {
