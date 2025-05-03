@@ -39,19 +39,11 @@ Arduino nodes running RF24Ethernet.
 In this case the master node could be configured with IP 10.1.3.1 netmask 255.255.255.0 and nodeID 0
 The remaining Arduino nodes can used nodeIDs 2-253, and would be assigned IP addresses 10.1.3.2-253 and netmask 255.255.255.0
 
-To maximize throughput between Raspberry Pi or other Linux devices, run the following commands:
-
-```shell
-sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
-sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
-```
-These changes are only temporary and need to be run each time before startup of the gateway. To make them permanent, edit `/etc/sysctl.conf`
-
 If there are problems starting the examples, the following commands can be run to configure the interface:
 
 ```shell
 ip tuntap add dev tun_nrf24 mode tun user pi multi_queue
-ifconfig tun_nrf24 10.1.3.1/24
+ifconfig tun_nrf24 10.10.2.2/24
 ```
 
 To enable nat and routing, the following commands can also be run:
@@ -60,6 +52,15 @@ To enable nat and routing, the following commands can also be run:
 sudo sysctl -w net.ipv4.ip_forward=1
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
+
+To maximize throughput between Raspberry Pi or other Linux devices, run the following commands:
+@warning These commands can severely impact other network functionality. Run `sudo sysctl net.ipv4.tcp_wmem` and `sudo sysctl net.ipv4.tcp_rmem` to get the default settings so they can be restored.
+
+```shell
+sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
+sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
+```
+These changes are only temporary and need to be run each time after reboot of the operating system. To make them permanent, edit `/etc/sysctl.conf`
 
 See http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html for more info
 
