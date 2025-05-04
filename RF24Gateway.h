@@ -198,6 +198,16 @@ public:
      */
     uint8_t routingTableSize;
 
+    /**
+     * How many times the network has returned error 160 NETWORK_OVERRUN
+     */
+    uint32_t networkOverruns;
+
+    /**
+     * How many times the network has returned error 161 NETWORK_CORRUPTION
+     */
+    uint32_t networkCorruption;
+
 private:
     RF24& radio;
     RF24Network& network;

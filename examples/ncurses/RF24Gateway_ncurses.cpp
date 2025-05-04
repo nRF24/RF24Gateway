@@ -666,7 +666,9 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Packets: %u\n", ok);
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
-    wprintw(rf24Pad, "RX Packets(user): %u\n", networkPacketsRX);
+    wprintw(rf24Pad, "RX Packets(user): %lu\n", networkPacketsRX);
+    wprintw(rf24Pad, "Network Overruns: %u", gw.networkOverruns);
+    wprintw(rf24Pad, "Network Corruption: %u", gw.networkCorruption);
 
     if (padSelection == 1)
     {

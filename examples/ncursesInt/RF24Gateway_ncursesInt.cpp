@@ -129,7 +129,7 @@ int main()
     /*******************************/
     devPad = newpad(11, 40);
     meshPad = newpad(50, 50);
-    rf24Pad = newpad(11, 40);
+    rf24Pad = newpad(13, 40);
     connPad = newpad(21, 150);
     cfgPad = newpad(10, 40);
     renewPad = newpad(1, 35);
@@ -228,20 +228,20 @@ int main()
 
             // Draw the pads on screen
             drawDevPad();
-            prefresh(devPad, 0, 0, 4, 1, 14, 25);
+            prefresh(devPad, 0, 0, 4, 1, 15, 25);
 
             drawMeshPad();
             wscrl(meshPad, meshScroll);
-            prefresh(meshPad, 0, 0, 4, 26, 14, 48);
+            prefresh(meshPad, 0, 0, 4, 26, 15, 48);
 
             drawRF24Pad();
-            prefresh(rf24Pad, 0, 0, 4, 52, 14, 78);
+            prefresh(rf24Pad, 0, 0, 4, 52, 15, 78);
 
             if (showConnPad)
             {
                 drawConnPad();
                 wscrl(connPad, connScroll);
-                prefresh(connPad, 0, 0, 16, 1, maxX - 1, maxY - 2);
+                prefresh(connPad, 0, 0, 18, 1, maxX - 1, maxY - 2);
             }
         } //MeshInfo Timer
 
@@ -377,8 +377,8 @@ void drawTopology()
 {
     werase(connPad);
     wattroff(connPad, COLOR_PAIR(1));
-    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
-    mvwprintw(win, 15, 10, "Mesh Topology");
+    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);
+    mvwprintw(win, 16, 10, "Mesh Topology");
 
     wattron(connPad, COLOR_PAIR(1));
     int connPadmaxX;
@@ -514,7 +514,7 @@ retryIF:
         }
     }
 
-    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
+    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);
 
     refresh();
 }
@@ -703,7 +703,9 @@ void drawRF24Pad()
         ++fifoClears;
         gw.fifoCleared = false;
     }
-    wprintw(rf24Pad, "Interrupt Errors: %u", fifoClears);
+    wprintw(rf24Pad, "Interrupts Missed: %u\n", fifoClears);
+    wprintw(rf24Pad, "Network Overruns: %u\n", gw.networkOverruns);
+    wprintw(rf24Pad, "Network Corruption: %u", gw.networkCorruption);
 
     if (padSelection == 1)
     {
@@ -750,7 +752,7 @@ void drawConnPad()
             fnd = line.find_last_of(" ", fnd - 2);
             unsigned findEnd = line.find(" mark=");
             line = line.substr(fnd, findEnd - fnd);
-            mvwprintw(connPad, ctr++, 0, "%d %s\n", lCtr++, line.c_str());
+            mvwprintw(connPad, ctr++, 0, "%lu %s\n", lCtr++, line.c_str());
 
             if (ctr > maxX - 15)
             {
@@ -760,8 +762,8 @@ void drawConnPad()
     }
 
     inFile.close();
-    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);
-    mvwprintw(win, 15, 10, "Active IP Connections:");
+    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);
+    mvwprintw(win, 16, 10, "Active IP Connections:");
 }
 
 /******************************************************************/
