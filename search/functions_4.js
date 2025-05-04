@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['poll_0',['poll',['../classESBGateway.html#a3174228b62901c8575d8fb1905d4559e',1,'ESBGateway']]]
+  ['rf24gateway_0',['RF24Gateway',['../classRF24Gateway.html#a939a9d63e37fb627847ebe70d4fb6043',1,'RF24Gateway']]]
 ];

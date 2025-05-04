@@ -6,7 +6,6 @@
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>RF24Gateway - TCP/IP over RF24Network: RF24Gateway.h Source File</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v2.1.1</span>
+   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v1.1.2</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -133,337 +132,305 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define BACKLOG 10 </span><span class="comment">/* Passed to listen() */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">class </span>RF24;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> radio_t&gt;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classESBNetwork.html">   45</a></span><span class="keyword">class </span><a class="code hl_class" href="classESBNetwork.html">ESBNetwork</a>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> network_t, <span class="keyword">class</span> radio_t&gt;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classESBMesh.html">   48</a></span><span class="keyword">class </span><a class="code hl_class" href="classESBMesh.html">ESBMesh</a>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"></span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> * @tparam mesh_t The `mesh` object&#39;s type. Defaults to `RF24Mesh` for legacy behavior.</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * for the nRF24L01 radio. For more detail, see the</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> * @tparam network_t The `network` object&#39;s type. Defaults to `RF24Network` for legacy behavior.</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"> * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * for the nRF24L01 radio. For more detail, see the</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"> * @tparam radio_t The `radio` object&#39;s type. Defaults to `RF24` for legacy behavior.</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"> * This new abstraction is really meant for using the nRF52840 SoC as a drop-in replacement</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"> * for the nRF24L01 radio. For more detail, see the</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment"> * [nrf_to_nrf Arduino library](https://github.com/TMRh20/nrf_to_nrf).</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> mesh_t = ESBMesh&lt;ESBNetwork&lt;RF24&gt;, RF24&gt;, <span class="keyword">class</span> network_t = ESBNetwork&lt;RF24&gt;, <span class="keyword">class</span> radio_t = RF24&gt;</div>
-<div class="foldopen" id="foldopen00065" data-start="{" data-end="};">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classESBGateway.html">   65</a></span><span class="keyword">class </span><a class="code hl_function" href="classESBGateway.html#a32e99edaeaad744ac078c89667fea97e">ESBGateway</a></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"></span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">     * @name RF24Gateway (RPi/Linux)</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">     *  RF24Gateway library for devices with an IP stack</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">     */</span><span class="comment"></span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">    /**@{*/</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">     * ESBGateway constructor.</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">     * @code</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">     * RF24 radio(7,8);</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">     * RF24Network network(radio);</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">     * RF24Mesh mesh(radio,network);</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">     * RF24Gateway gateway(radio,network,mesh);</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">     * @endcode</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classESBGateway.html#a32e99edaeaad744ac078c89667fea97e">   85</a></span>    <a class="code hl_function" href="classESBGateway.html#a32e99edaeaad744ac078c89667fea97e">ESBGateway</a>(radio_t&amp; _radio, network_t&amp; _network, mesh_t&amp; _mesh);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"></span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">     * Begin function for use with RF24Mesh (TUN interface)</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">     * @param nodeID The RF24Mesh nodeID to use</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">     * @param channel The radio channel to use (1-127)</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">     * @param data_rate The RF24 datarate to use (RF24_250KBPS, RF24_1MBPS, RF24_2MBPS)</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">     * @code gw.begin(); //Start the gateway using RF24Mesh, with nodeID 0 (Master) @endcode</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">     * @code uint8_t nodeID; gw.begin(nodeID); //Start the gateway using RF24Mesh, with nodeID 1 (Child node) @endcode</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">class </span>RF24Network;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">class </span>RF24Mesh;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classRF24Gateway.html">   46</a></span><span class="keyword">class </span><a class="code hl_function" href="classRF24Gateway.html#a939a9d63e37fb627847ebe70d4fb6043">RF24Gateway</a></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"></span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">     * @name RF24Gateway (RPi/Linux)</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">     *  RF24Gateway library for devices with an IP stack</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">     */</span><span class="comment"></span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">    /**@{*/</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">     * RF24Gateway constructor.</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_function" href="classRF24Gateway.html#a939a9d63e37fb627847ebe70d4fb6043">RF24Gateway</a>(RF24&amp; _radio, RF24Network&amp; _network, RF24Mesh&amp; _mesh);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"></span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">     * Begin function for use with RF24Mesh (TUN interface)</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">     * @param nodeID The RF24Mesh nodeID to use</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">     * @param channel The radio channel to use (1-127)</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">     * @param data_rate The RF24 datarate to use (RF24_250KBPS, RF24_1MBPS, RF24_2MBPS)</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">     * @code gw.begin(); //Start the gateway using RF24Mesh, with nodeID 0 (Master) @endcode</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">     * @code uint8_t nodeID; gw.begin(nodeID); //Start the gateway using RF24Mesh, with nodeID 1 (Child node) @endcode</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">begin</a>(uint8_t nodeID = 0, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"></span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">     * Begin function for use with a TAP (Ethernet) interface. RF24Mesh can be used for address assignment, but</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">     * ARP will be used to perform the lookups.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">     * @param address The RF24Network address to use</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">     * @param channel The radio channel (0-127) to use</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">     * @param data_rate The RF24 datarate to use (RF24_250KBPS, RF24_1MBPS, RF24_2MBPS)</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">     * @param meshEnable Whether to use RF24Mesh for address assignment</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">     * @param nodeID The RF24Mesh nodeID to use **if** meshEnable has been set to true</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">     * @code uint16_t address=00; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 00 (Master) @endcode</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">     * @code uint16_t address=01; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 01 (Child) @endcode</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">begin</a>(uint16_t address, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS, <span class="keywordtype">bool</span> meshEnable = 0, uint8_t nodeID = 0);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"></span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">     * Once the Gateway has been started via begin() , call setIP to configure the IP and</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">     * subnet mask.</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">     * @param ip_addr A character array containing the numeric IP address ie: 192.168.1.1</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">     * @param mask A character array containing the subnet mask ie: 255.255.255.0</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">     * @return -1 if failed, 0 on success</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classESBGateway.html#a63aa12d91a100713af306be07a091736">   97</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#a63aa12d91a100713af306be07a091736">begin</a>(uint8_t nodeID = 0, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classRF24Gateway.html#a1dcb8921636e754ae4a7f21d59fcfb3e">setIP</a>(<span class="keywordtype">char</span>* ip_addr, <span class="keywordtype">char</span>* mask);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment"></span> </div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">     * Begin function for use with a TAP (Ethernet) interface. RF24Mesh can be used for address assignment, but</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">     * ARP will be used to perform the lookups.</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">     * @param address The RF24Network address to use</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">     * @param channel The radio channel (0-127) to use</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">     * @param data_rate The RF24 datarate to use (RF24_250KBPS, RF24_1MBPS, RF24_2MBPS)</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">     * @param meshEnable Whether to use RF24Mesh for address assignment</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">     * @param nodeID The RF24Mesh nodeID to use **if** meshEnable has been set to true</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">     * @code uint16_t address=00; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 00 (Master) @endcode</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">     * @code uint16_t address=01; gw.begin(address); //Start the gateway without using RF24Mesh, with RF24Network address 01 (Child) @endcode</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classESBGateway.html#a86d7e067cda97af1a810a42269c2e231">  112</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#a86d7e067cda97af1a810a42269c2e231">begin</a>(uint16_t address, uint8_t channel = 97, rf24_datarate_e data_rate = RF24_1MBPS, <span class="keywordtype">bool</span> meshEnable = 0, uint8_t nodeID = 0);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment"></span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">     * Once the Gateway has been started via begin() , call setIP to configure the IP and</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">     * subnet mask.</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">     * @param ip_addr A character array containing the numeric IP address ie: 192.168.1.1</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">     * @param mask A character array containing the subnet mask ie: 255.255.255.0</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">     * @return -1 if failed, 0 on success</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classESBGateway.html#a16f0a977e0e77d894e555ace9999568d">  122</a></span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classESBGateway.html#a16f0a977e0e77d894e555ace9999568d">setIP</a>(<span class="keywordtype">char</span>* ip_addr, <span class="keywordtype">char</span>* mask);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"></span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">     * Calling update() keeps the network and mesh layers active and processing data. This needs to be called regularly.</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">     * @code</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">     * gw.update();</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">     * if(network.available()){</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">     *  ...do something</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">     * }</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">     * @endcode</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">     * @param interrupts Set true if called from an interrupt handler &amp; call poll() from the main loop or a thread.</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classESBGateway.html#aaf1214fabf2485bcffb30f9460c2e2b2">  134</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#aaf1214fabf2485bcffb30f9460c2e2b2">update</a>(<span class="keywordtype">bool</span> <a class="code hl_function" href="classESBGateway.html#a30757aeb509a6eb1cbcb4dce84eae514">interrupts</a> = 0);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment"></span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">     * gw.poll(); needs to be called to handle incoming data from the network interface.</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">     * The function will perform a delayed wait of max 3ms unless otherwise specified.</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">     * @param waitDelay How long in milliseconds this function will wait for incoming data.</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classESBGateway.html#a3174228b62901c8575d8fb1905d4559e">  141</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#a3174228b62901c8575d8fb1905d4559e">poll</a>(uint32_t waitDelay = 3);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment"></span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">     * When using interrupts (gwNodeInt, ncursesInt examples) users need to call</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">     * this function to disable interrupts before accessing the radio and again to</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">     * re-enable interrupts when complete</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">     * @param enable 0 to disable interrupts and access the radio, 1 to re-enable</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classESBGateway.html#a30757aeb509a6eb1cbcb4dce84eae514">  149</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#a30757aeb509a6eb1cbcb4dce84eae514">interrupts</a>(<span class="keywordtype">bool</span> enable = 1);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"></span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">    /**@}*/</span><span class="comment"></span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">     * @name Advanced Operation</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">     *  More advanced methods and options</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">     */</span><span class="comment"></span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">    /**@{*/</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180">  159</a></span>    uint16_t <a class="code hl_variable" href="classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180">thisNodeAddress</a>; <span class="comment">/**&lt; Address of our node in Octal format (01,021, etc) */</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf">  160</a></span>    uint8_t <a class="code hl_variable" href="classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf">thisNodeID</a>;       <span class="comment">/**&lt; NodeID (0-255) */</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classESBGateway.html#a0e89668c66169cc98d8398e54966f38e">  162</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classESBGateway.html#a0e89668c66169cc98d8398e54966f38e">meshEnabled</a>(); <span class="comment">/**&lt; Is RF24Mesh enabled? */</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classESBGateway.html#a0530f6b4fa80e1bb4632326e15dd8113">  163</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classESBGateway.html#a0530f6b4fa80e1bb4632326e15dd8113">config_TUN</a>;    <span class="comment">/**&lt; Using a TAP(false) or TUN(true) interface */</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classESBGateway.html#adfee55530c62d956bbe655909b57c6e5">  164</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classESBGateway.html#adfee55530c62d956bbe655909b57c6e5">fifoCleared</a>;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="foldopen" id="foldopen00166" data-start="{" data-end="}">
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classESBGateway.html#a9a307c3c9e320944592a20d0587644bc">  166</a></span>    uint32_t <a class="code hl_function" href="classESBGateway.html#a9a307c3c9e320944592a20d0587644bc">ifDropped</a>()</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> droppedIncoming;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">     * Calling update() keeps the network and mesh layers active and processing data. This needs to be called regularly.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">     * @code</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">     * gw.update();</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">     * if(network.available()){</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">     *  ...do something</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">     * }</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">     * @endcode</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">     * @param interrupts Set true if called from an interrupt handler &amp; call poll() from the main loop or a thread.</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#a91c25cc30c580baa4afac301fd9a0f00">update</a>(<span class="keywordtype">bool</span> <a class="code hl_function" href="classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c">interrupts</a> = 0);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"></span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">     * gw.poll(); needs to be called to handle incoming data from the network interface.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">     * The function will perform a delayed wait of max 3ms unless otherwise specified.</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">     * @param waitDelay How long in milliseconds this function will wait for incoming data.</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#afd57521e1958f45b210888c9a957adb3">poll</a>(uint32_t waitDelay = 3);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment"></span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">     * When using interrupts (gwNodeInt, ncursesInt examples) users need to call</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">     * this function to disable interrupts before accessing the radio and again to</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment">     * re-enable interrupts when complete</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">     * @param enable 0 to disable interrupts and access the radio, 1 to re-enable</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c">interrupts</a>(<span class="keywordtype">bool</span> enable = 1);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment"></span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">    /**@}*/</span><span class="comment"></span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">     * @name Advanced Operation</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">     *  More advanced methods and options</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">     */</span><span class="comment"></span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">    /**@{*/</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf">  134</a></span>    uint16_t <a class="code hl_variable" href="classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf">thisNodeAddress</a>; <span class="comment">/**&lt; Address of our node in Octal format (01,021, etc) */</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de">  135</a></span>    uint8_t <a class="code hl_variable" href="classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de">thisNodeID</a>;       <span class="comment">/**&lt; NodeID (0-255) */</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classRF24Gateway.html#a7dad81701804d1fb5cd55d0370d1a2df">meshEnabled</a>(); <span class="comment">/**&lt; Is RF24Mesh enabled? */</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#ab5845650441bbb0e6dc6d46581a8defd">  138</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classRF24Gateway.html#ab5845650441bbb0e6dc6d46581a8defd">config_TUN</a>;    <span class="comment">/**&lt; Using a TAP(false) or TUN(true) interface */</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#ab1c6dca6e041f4b53d505be6ceedee76">  139</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classRF24Gateway.html#ab1c6dca6e041f4b53d505be6ceedee76">fifoCleared</a>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a8b4479e126d180037f71f77f9aaf40c0">  141</a></span>    uint32_t <a class="code hl_function" href="classRF24Gateway.html#a8b4479e126d180037f71f77f9aaf40c0">ifDropped</a>()</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="keywordflow">return</span> droppedIncoming;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classESBGateway.html#af1efe5211f53be4bade8c2e6be10d966">  171</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classESBGateway.html#af1efe5211f53be4bade8c2e6be10d966">sendUDP</a>(uint8_t nodeID, RF24NetworkFrame frame);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment"></span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">    /**@}*/</span><span class="comment"></span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">     * @name Routing Table</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">     * Utilizing a routing table to provide complete connectivity</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">     */</span><span class="comment"></span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">    /**@{*/</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment"></span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">     * If a user has created a file &quot;routing.txt&quot; in the RF24Gateway working directory, it will be loaded &lt;br&gt;</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">     * at startup into the routing table. The file should contain standard routing table entries as follows: &lt;br&gt;</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">     * IP&lt;space&gt;NetMask&lt;space&gt;Gateway &lt;br&gt;</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">     * ie: routing.txt</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">     * @code</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">     * 10.1.4.0 255.255.255.0 10.1.3.33</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">     * 0.0.0.0 0.0.0.0 10.1.3.34 @endcode</span></div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">     * The first example entry would route all traffic to the 10.1.4.x subnet to 10.1.3.33 &lt;br&gt;</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">     * All other traffic not destined for the RF24 nodes will use 10.1.3.34 as the gateway</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">     * Data can be accessed using standard linux Internet address manipulation routines as follows:</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">     * @code</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">     * printf(&quot;**IP\t\tMask\t\tGateway**\n&quot;);</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">     * for(int i=0; i&lt;gw.routingTableSize; i++){</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">     *   printf(&quot;%s \t&quot;,inet_ntoa(gw.routingStruct[i].ip));//inet_ntoa uses a statically assigned buffer, so the printf calls need to be done separately</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">     *   printf(&quot;%s \t&quot;,inet_ntoa(gw.routingStruct[i].mask));</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">     *   printf(&quot;%s\n&quot;, inet_ntoa(gw.routingStruct[i].gw));</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">     *   //std::cout &lt;&lt; inet_ntoa(gw.routingStruct[i].ip) &lt;&lt; &quot; \t&quot; &lt;&lt; inet_ntoa(gw.routingStruct[i].mask) &lt;&lt; &quot; \t&quot; &lt;&lt; inet_ntoa(gw.routingStruct[i].gw) &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">     * }</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">     * printf(&quot;*****\n&quot;);</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">     * Users can modify the routing table as desired, but changes made in code will not currently be saved to file</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">     * @endcode</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRF24Gateway.html#a9128f60a993cc25b5abe89757b06350e">sendUDP</a>(uint8_t nodeID, RF24NetworkFrame frame);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"></span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">    /**@}*/</span><span class="comment"></span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">     * @name Routing Table</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">     * Utilizing a routing table to provide complete connectivity</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">     */</span><span class="comment"></span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">    /**@{*/</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"></span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">     * If a user has created a file &quot;routing.txt&quot; in the RF24Gateway working directory, it will be loaded &lt;br&gt;</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">     * at startup into the routing table. The file should contain standard routing table entries as follows: &lt;br&gt;</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">     * IP&lt;space&gt;NetMask&lt;space&gt;Gateway &lt;br&gt;</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">     * ie: routing.txt</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">     * @code</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">     * 10.1.4.0 255.255.255.0 10.1.3.33</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">     * 0.0.0.0 0.0.0.0 10.1.3.34 @endcode</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">     * The first example entry would route all traffic to the 10.1.4.x subnet to 10.1.3.33 &lt;br&gt;</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">     * All other traffic not destined for the RF24 nodes will use 10.1.3.34 as the gateway</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">     * Data can be accessed using standard linux Internet address manipulation routines as follows:</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">     * @code</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">     * printf(&quot;**IP\t\tMask\t\tGateway**\n&quot;);</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">     * for(int i=0; i&lt;gw.routingTableSize; i++){</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">     *   printf(&quot;%s \t&quot;,inet_ntoa(gw.routingStruct[i].ip));//inet_ntoa uses a statically assigned buffer, so the printf calls need to be done separately</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment">     *   printf(&quot;%s \t&quot;,inet_ntoa(gw.routingStruct[i].mask));</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment">     *   printf(&quot;%s\n&quot;, inet_ntoa(gw.routingStruct[i].gw));</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">     *   //std::cout &lt;&lt; inet_ntoa(gw.routingStruct[i].ip) &lt;&lt; &quot; \t&quot; &lt;&lt; inet_ntoa(gw.routingStruct[i].mask) &lt;&lt; &quot; \t&quot; &lt;&lt; inet_ntoa(gw.routingStruct[i].gw) &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">     * }</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment">     * printf(&quot;*****\n&quot;);</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">     * Users can modify the routing table as desired, but changes made in code will not currently be saved to file</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">     * @endcode</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">     */</span></div>
+<div class="foldopen" id="foldopen00184" data-start="{" data-end="};">
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="structRF24Gateway_1_1routeStruct.html">  184</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structRF24Gateway_1_1routeStruct.html">routeStruct</a></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0">  186</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0">ip</a>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c">  187</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c">mask</a>;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245">  188</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245">gw</a>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    };</div>
+</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment"></span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">     * The array that holds the routing structure data. See routeStruct</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48">  194</a></span>    <a class="code hl_struct" href="structRF24Gateway_1_1routeStruct.html">routeStruct</a> <a class="code hl_variable" href="classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48">routingStruct</a>[256];</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment"></span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">     * The size of the existing routing table loaded into memory. See routeStruct</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090">  199</a></span>    uint8_t <a class="code hl_variable" href="classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090">routingTableSize</a>;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment"></span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">     * How many times the network has returned error 160 NETWORK_OVERRUN</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a7ba87854e7690c3378a0bb9ecfaafccc">  204</a></span>    uint32_t <a class="code hl_variable" href="classRF24Gateway.html#a7ba87854e7690c3378a0bb9ecfaafccc">networkOverruns</a>;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment"></span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">     * How many times the network has returned error 161 NETWORK_CORRUPTION</span></div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">     */</span></div>
-<div class="foldopen" id="foldopen00209" data-start="{" data-end="};">
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="structESBGateway_1_1routeStruct.html">  209</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structESBGateway_1_1routeStruct.html">routeStruct</a></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    {</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="structESBGateway_1_1routeStruct.html#a55d3ef4a67bbe45aa3417c5fbae13cdb">  211</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structESBGateway_1_1routeStruct.html#a55d3ef4a67bbe45aa3417c5fbae13cdb">ip</a>;</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85">  212</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85">mask</a>;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="structESBGateway_1_1routeStruct.html#aa46d4e51c8c6d75066115b6614a25e34">  213</a></span>        <span class="keyword">struct </span>in_addr <a class="code hl_variable" href="structESBGateway_1_1routeStruct.html#aa46d4e51c8c6d75066115b6614a25e34">gw</a>;</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    };</div>
-</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment"></span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">     * The array that holds the routing structure data. See routeStruct</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classESBGateway.html#a1a3e6c55fcc931364823fd09106befbd">  219</a></span>    routeStruct <a class="code hl_variable" href="classESBGateway.html#a1a3e6c55fcc931364823fd09106befbd">routingStruct</a>[256];</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment"></span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">     * The size of the existing routing table loaded into memory. See routeStruct</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="classESBGateway.html#ae48103de27d41f7d5187a7c32463fde7">  224</a></span>    uint8_t <a class="code hl_variable" href="classESBGateway.html#ae48103de27d41f7d5187a7c32463fde7">routingTableSize</a>;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classRF24Gateway.html#a12fb19f478bfa3b7620ea85bea717107">  209</a></span>    uint32_t <a class="code hl_variable" href="classRF24Gateway.html#a12fb19f478bfa3b7620ea85bea717107">networkCorruption</a>;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    RF24&amp; radio;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    RF24Network&amp; network;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    RF24Mesh&amp; mesh;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">begin</a>(<span class="keywordtype">bool</span> configTUN, <span class="keywordtype">bool</span> meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel);</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordtype">bool</span> mesh_enabled;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    uint32_t droppedIncoming;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    uint8_t channel;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    rf24_datarate_e dataRate;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordtype">char</span> tunName[IFNAMSIZ];</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">int</span> tunFd;</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    radio_t&amp; radio;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    network_t&amp; network;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    mesh_t&amp; mesh;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classESBGateway.html#a63aa12d91a100713af306be07a091736">begin</a>(<span class="keywordtype">bool</span> configTUN, <span class="keywordtype">bool</span> meshEnable, uint16_t address, uint8_t mesh_nodeID, rf24_datarate_e data_rate, uint8_t _channel);</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordtype">bool</span> mesh_enabled;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    uint32_t droppedIncoming;</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    uint8_t channel;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    rf24_datarate_e dataRate;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordtype">char</span> tunName[IFNAMSIZ];</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordtype">int</span> tunFd;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> packets_sent; <span class="comment">/**&lt; How many have we sent already */</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    uint32_t interfaceInTimer;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordtype">void</span> handleRadioOut();</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordtype">void</span> handleRadioIn();</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordtype">void</span> handleRX(uint32_t waitDelay = 0);</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">void</span> handleTX();</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">volatile</span> <span class="keywordtype">bool</span> gotInterrupt;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordtype">int</span> configDevice(uint16_t address);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">int</span> allocateTunDevice(<span class="keywordtype">char</span>* dev, <span class="keywordtype">int</span> flags, uint16_t address);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">struct </span>msgStruct</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    {</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        std::uint8_t message[MAX_PAYLOAD_SIZE];</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        std::size_t size;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    };</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    std::queue&lt;msgStruct&gt; rxQueue;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    std::queue&lt;msgStruct&gt; txQueue;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="comment">// void printPayload(std::string buffer, std::string debugMsg = &quot;&quot;);</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="comment">// void printPayload(char* buffer, int nread, std::string debugMsg = &quot;&quot;);</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keywordtype">int</span> s; <span class="comment">// Socket variable for sending UDP</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordtype">void</span> setupSocket();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="keyword">struct </span>sockaddr_in addr;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keyword">struct </span>in_addr getLocalIP();</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordtype">void</span> loadRoutingTable();</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>};</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> packets_sent; <span class="comment">/**&lt; How many have we sent already */</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    uint32_t interfaceInTimer;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordtype">void</span> handleRadioOut();</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordtype">void</span> handleRadioIn();</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keywordtype">void</span> handleRX(uint32_t waitDelay = 0);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordtype">void</span> handleTX();</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keyword">volatile</span> <span class="keywordtype">bool</span> gotInterrupt;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordtype">int</span> configDevice(uint16_t address);</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordtype">int</span> allocateTunDevice(<span class="keywordtype">char</span>* dev, <span class="keywordtype">int</span> flags, uint16_t address);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keyword">struct </span>msgStruct</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        std::uint8_t message[MAX_PAYLOAD_SIZE];</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        std::size_t size;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    };</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    std::queue&lt;msgStruct&gt; rxQueue;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    std::queue&lt;msgStruct&gt; txQueue;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordtype">void</span> printPayload(std::string buffer, std::string debugMsg = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordtype">void</span> printPayload(<span class="keywordtype">char</span>* buffer, <span class="keywordtype">int</span> nread, std::string debugMsg = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordtype">int</span> s; <span class="comment">// Socket variable for sending UDP</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">void</span> setupSocket();</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keyword">struct </span>sockaddr_in addr;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">struct </span>in_addr getLocalIP();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordtype">void</span> loadRoutingTable();</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>};</div>
 </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment"></span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment"> * A type definition of the template class `ESBGateway` to maintain backward compatibility.</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment"></span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment"> * @example RF24GatewayNode.cpp</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment"> * A simple example of using RF24Gateway node to forward IP traffic automatically to a network interface, while</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment"> * managing standard RF24Network user payloads independently.</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment"></span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment"> * @example RF24Gateway_ncurses.cpp</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment"> * RF24Gateway NCurses interface - TMRh20 2015 &lt;br&gt;</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment"> * This is a generic tool for nodes supporting or combining with RF24Ethernet and/or RF24Network.</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment"> * The tool provides a simple interface for monitoring information and activity regarding the RF24Gateway: &lt;br&gt;</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment"> * a: Interface statistics from /proc/net/dev &lt;br&gt;</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment"> * b: RF24Mesh address/id assignments &lt;br&gt;</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment"> * c: RF24Network/Radio information &lt;br&gt;</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment"> * d: Active IP connections (optional) &lt;br&gt;</span></div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment"> * ```.cpp</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment"> * RF24 radio(7, 8);</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment"> * RF24Network network(radio);</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment"> * RF24Mesh mesh(radio, network);</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"> * RF24Gateway gateway(radio, network, mesh);</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"> * // is equivalent to</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment"> * ESBGateway&lt;ESBMesh&lt;ESBNetwork&lt;RF24&gt;, RF24&gt;, ESBNetwork&lt;RF24&gt;, RF24&gt; gateway(radio, network, mesh);</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * ```</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="keyword">typedef</span> <a class="code hl_class" href="classESBGateway.html">ESBGateway&lt;ESBMesh&lt;ESBNetwork&lt;RF24&gt;</a>, RF24&gt;, <a class="code hl_class" href="classESBNetwork.html">ESBNetwork&lt;RF24&gt;</a>, RF24&gt; RF24Gateway;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment"> * **Requirements: NCurses** &lt;br&gt;</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment"> * Install NCurses: apt-get install libncurses5-dev</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment"> * Optional: Enable nf_conntrack: @code modprobe nf_conntrack_ipv4 @endcode</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment"> * @image html ncurses.JPG</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment"></span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * @example RF24GatewayNodeInt.cpp</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> * A copy of the RF24GatewayNode example using interrupts.</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment"></span> </div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment"> * @example RF24GatewayNode.cpp</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"> * A simple example of using RF24Gateway node to forward IP traffic automatically to a network interface, while</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment"> * managing standard RF24Network user payloads independently.</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment"></span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment"> * @example RF24Gateway_ncurses.cpp</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment"> * RF24Gateway NCurses interface - TMRh20 2015 &lt;br&gt;</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment"> * This is a generic tool for nodes supporting or combining with RF24Ethernet and/or RF24Network.</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"> * The tool provides a simple interface for monitoring information and activity regarding the RF24Gateway: &lt;br&gt;</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment"> * a: Interface statistics from /proc/net/dev &lt;br&gt;</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment"> * b: RF24Mesh address/id assignments &lt;br&gt;</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment"> * c: RF24Network/Radio information &lt;br&gt;</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"> * d: Active IP connections (optional) &lt;br&gt;</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment"> * **Requirements: NCurses** &lt;br&gt;</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * Install NCurses: apt-get install libncurses5-dev</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> * Optional: Enable nf_conntrack: @code modprobe nf_conntrack_ipv4 @endcode</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment"> * @image html ncurses.JPG</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment"></span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="comment"> * @example RF24GatewayNodeInt.cpp</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="comment"> * A copy of the RF24GatewayNode example using interrupts.</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment"></span> </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment"> * @example RF24Gateway_ncursesInt.cpp</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment"> * A copy of the ncurses example using interrupts.</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="comment"></span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment"> * @example bClient.sh</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment"> * the sensor nodes. &lt;br&gt;Example of on demand LED/Lighting control using a Bash script.</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"></span> </div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment"> * @example nodeClient.js</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment"> * the sensor nodes. &lt;br&gt; Example of on demand LED/Lighting control using a NodeJS script.</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"></span> </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> * @example pyClient.py</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment"> * the sensor nodes. &lt;br&gt; Example of scheduled LED/Lighting control using a Python script.</span></div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassESBGateway_html"><div class="ttname"><a href="classESBGateway.html">ESBGateway</a></div><div class="ttdef"><b>Definition</b> <a href="#l00065">RF24Gateway.h:66</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a0530f6b4fa80e1bb4632326e15dd8113"><div class="ttname"><a href="classESBGateway.html#a0530f6b4fa80e1bb4632326e15dd8113">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::config_TUN</a></div><div class="ttdeci">bool config_TUN</div><div class="ttdef"><b>Definition</b> <a href="#l00163">RF24Gateway.h:163</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a0e89668c66169cc98d8398e54966f38e"><div class="ttname"><a href="classESBGateway.html#a0e89668c66169cc98d8398e54966f38e">ESBGateway::meshEnabled</a></div><div class="ttdeci">bool meshEnabled()</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00153">RF24Gateway.cpp:153</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a0f17365f6cce8bd10f05b8113b9f2180"><div class="ttname"><a href="classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::thisNodeAddress</a></div><div class="ttdeci">uint16_t thisNodeAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00159">RF24Gateway.h:159</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a16f0a977e0e77d894e555ace9999568d"><div class="ttname"><a href="classESBGateway.html#a16f0a977e0e77d894e555ace9999568d">ESBGateway::setIP</a></div><div class="ttdeci">int setIP(char *ip_addr, char *mask)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00257">RF24Gateway.cpp:257</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a1a3e6c55fcc931364823fd09106befbd"><div class="ttname"><a href="classESBGateway.html#a1a3e6c55fcc931364823fd09106befbd">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::routingStruct</a></div><div class="ttdeci">routeStruct routingStruct[256]</div><div class="ttdef"><b>Definition</b> <a href="#l00219">RF24Gateway.h:219</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a30757aeb509a6eb1cbcb4dce84eae514"><div class="ttname"><a href="classESBGateway.html#a30757aeb509a6eb1cbcb4dce84eae514">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::interrupts</a></div><div class="ttdeci">void interrupts(bool enable=1)</div></div>
-<div class="ttc" id="aclassESBGateway_html_a3174228b62901c8575d8fb1905d4559e"><div class="ttname"><a href="classESBGateway.html#a3174228b62901c8575d8fb1905d4559e">ESBGateway::poll</a></div><div class="ttdeci">void poll(uint32_t waitDelay=3)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00344">RF24Gateway.cpp:344</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a32e99edaeaad744ac078c89667fea97e"><div class="ttname"><a href="classESBGateway.html#a32e99edaeaad744ac078c89667fea97e">ESBGateway::ESBGateway</a></div><div class="ttdeci">ESBGateway(radio_t &amp;_radio, network_t &amp;_network, mesh_t &amp;_mesh)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00013">RF24Gateway.cpp:13</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a63aa12d91a100713af306be07a091736"><div class="ttname"><a href="classESBGateway.html#a63aa12d91a100713af306be07a091736">ESBGateway::begin</a></div><div class="ttdeci">void begin(uint8_t nodeID=0, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00021">RF24Gateway.cpp:21</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a86d7e067cda97af1a810a42269c2e231"><div class="ttname"><a href="classESBGateway.html#a86d7e067cda97af1a810a42269c2e231">ESBGateway::begin</a></div><div class="ttdeci">void begin(uint16_t address, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS, bool meshEnable=0, uint8_t nodeID=0)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00030">RF24Gateway.cpp:30</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_a9a307c3c9e320944592a20d0587644bc"><div class="ttname"><a href="classESBGateway.html#a9a307c3c9e320944592a20d0587644bc">ESBGateway::ifDropped</a></div><div class="ttdeci">uint32_t ifDropped()</div><div class="ttdef"><b>Definition</b> <a href="#l00166">RF24Gateway.h:166</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_aa12a1cbda71c18074fc519d0dda025bf"><div class="ttname"><a href="classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::thisNodeID</a></div><div class="ttdeci">uint8_t thisNodeID</div><div class="ttdef"><b>Definition</b> <a href="#l00160">RF24Gateway.h:160</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_aaf1214fabf2485bcffb30f9460c2e2b2"><div class="ttname"><a href="classESBGateway.html#aaf1214fabf2485bcffb30f9460c2e2b2">ESBGateway::update</a></div><div class="ttdeci">void update(bool interrupts=0)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00327">RF24Gateway.cpp:327</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_adfee55530c62d956bbe655909b57c6e5"><div class="ttname"><a href="classESBGateway.html#adfee55530c62d956bbe655909b57c6e5">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::fifoCleared</a></div><div class="ttdeci">bool fifoCleared</div><div class="ttdef"><b>Definition</b> <a href="#l00164">RF24Gateway.h:164</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_ae48103de27d41f7d5187a7c32463fde7"><div class="ttname"><a href="classESBGateway.html#ae48103de27d41f7d5187a7c32463fde7">ESBGateway&lt; ESBMesh&lt; ESBNetwork&lt; RF24 &gt;, RF24 &gt;, ESBNetwork&lt; RF24 &gt;, RF24 &gt;::routingTableSize</a></div><div class="ttdeci">uint8_t routingTableSize</div><div class="ttdef"><b>Definition</b> <a href="#l00224">RF24Gateway.h:224</a></div></div>
-<div class="ttc" id="aclassESBGateway_html_af1efe5211f53be4bade8c2e6be10d966"><div class="ttname"><a href="classESBGateway.html#af1efe5211f53be4bade8c2e6be10d966">ESBGateway::sendUDP</a></div><div class="ttdeci">void sendUDP(uint8_t nodeID, RF24NetworkFrame frame)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00725">RF24Gateway.cpp:725</a></div></div>
-<div class="ttc" id="aclassESBMesh_html"><div class="ttname"><a href="classESBMesh.html">ESBMesh</a></div><div class="ttdef"><b>Definition</b> <a href="#l00048">RF24Gateway.h:48</a></div></div>
-<div class="ttc" id="aclassESBNetwork_html"><div class="ttname"><a href="classESBNetwork.html">ESBNetwork</a></div><div class="ttdef"><b>Definition</b> <a href="#l00045">RF24Gateway.h:45</a></div></div>
-<div class="ttc" id="astructESBGateway_1_1routeStruct_html"><div class="ttname"><a href="structESBGateway_1_1routeStruct.html">ESBGateway::routeStruct</a></div><div class="ttdef"><b>Definition</b> <a href="#l00209">RF24Gateway.h:210</a></div></div>
-<div class="ttc" id="astructESBGateway_1_1routeStruct_html_a55d3ef4a67bbe45aa3417c5fbae13cdb"><div class="ttname"><a href="structESBGateway_1_1routeStruct.html#a55d3ef4a67bbe45aa3417c5fbae13cdb">ESBGateway::routeStruct::ip</a></div><div class="ttdeci">struct in_addr ip</div><div class="ttdef"><b>Definition</b> <a href="#l00211">RF24Gateway.h:211</a></div></div>
-<div class="ttc" id="astructESBGateway_1_1routeStruct_html_a77a1be906770ad3ceb94755d4601cf85"><div class="ttname"><a href="structESBGateway_1_1routeStruct.html#a77a1be906770ad3ceb94755d4601cf85">ESBGateway::routeStruct::mask</a></div><div class="ttdeci">struct in_addr mask</div><div class="ttdef"><b>Definition</b> <a href="#l00212">RF24Gateway.h:212</a></div></div>
-<div class="ttc" id="astructESBGateway_1_1routeStruct_html_aa46d4e51c8c6d75066115b6614a25e34"><div class="ttname"><a href="structESBGateway_1_1routeStruct.html#aa46d4e51c8c6d75066115b6614a25e34">ESBGateway::routeStruct::gw</a></div><div class="ttdeci">struct in_addr gw</div><div class="ttdef"><b>Definition</b> <a href="#l00213">RF24Gateway.h:213</a></div></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment"> * @example RF24Gateway_ncursesInt.cpp</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment"> * A copy of the ncurses example using interrupts.</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment"></span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment"> * @example bClient.sh</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment"> * the sensor nodes. &lt;br&gt;Example of on demand LED/Lighting control using a Bash script.</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment"></span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"> * @example nodeClient.js</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment"> * the sensor nodes. &lt;br&gt; Example of on demand LED/Lighting control using a NodeJS script.</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="comment"></span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment"> * @example pyClient.py</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * Once RF24Gateway and RF24Ethernet are configured, standard tools can be used to interact with</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> * the sensor nodes. &lt;br&gt; Example of scheduled LED/Lighting control using a Python script.</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassRF24Gateway_html_a12fb19f478bfa3b7620ea85bea717107"><div class="ttname"><a href="classRF24Gateway.html#a12fb19f478bfa3b7620ea85bea717107">RF24Gateway::networkCorruption</a></div><div class="ttdeci">uint32_t networkCorruption</div><div class="ttdef"><b>Definition</b> <a href="#l00209">RF24Gateway.h:209</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a1312aa864c8edbd44f7af75081e25caf"><div class="ttname"><a href="classRF24Gateway.html#a1312aa864c8edbd44f7af75081e25caf">RF24Gateway::thisNodeAddress</a></div><div class="ttdeci">uint16_t thisNodeAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00134">RF24Gateway.h:134</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a1dcb8921636e754ae4a7f21d59fcfb3e"><div class="ttname"><a href="classRF24Gateway.html#a1dcb8921636e754ae4a7f21d59fcfb3e">RF24Gateway::setIP</a></div><div class="ttdeci">int setIP(char *ip_addr, char *mask)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00243">RF24Gateway.cpp:243</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a318c35eb1ecce02e12062822e714d38c"><div class="ttname"><a href="classRF24Gateway.html#a318c35eb1ecce02e12062822e714d38c">RF24Gateway::interrupts</a></div><div class="ttdeci">void interrupts(bool enable=1)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00303">RF24Gateway.cpp:303</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a33c259fdc8989208a39a2eeb5a1761de"><div class="ttname"><a href="classRF24Gateway.html#a33c259fdc8989208a39a2eeb5a1761de">RF24Gateway::thisNodeID</a></div><div class="ttdeci">uint8_t thisNodeID</div><div class="ttdef"><b>Definition</b> <a href="#l00135">RF24Gateway.h:135</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a7ba87854e7690c3378a0bb9ecfaafccc"><div class="ttname"><a href="classRF24Gateway.html#a7ba87854e7690c3378a0bb9ecfaafccc">RF24Gateway::networkOverruns</a></div><div class="ttdeci">uint32_t networkOverruns</div><div class="ttdef"><b>Definition</b> <a href="#l00204">RF24Gateway.h:204</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a7dad81701804d1fb5cd55d0370d1a2df"><div class="ttname"><a href="classRF24Gateway.html#a7dad81701804d1fb5cd55d0370d1a2df">RF24Gateway::meshEnabled</a></div><div class="ttdeci">bool meshEnabled()</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00147">RF24Gateway.cpp:147</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a8b4479e126d180037f71f77f9aaf40c0"><div class="ttname"><a href="classRF24Gateway.html#a8b4479e126d180037f71f77f9aaf40c0">RF24Gateway::ifDropped</a></div><div class="ttdeci">uint32_t ifDropped()</div><div class="ttdef"><b>Definition</b> <a href="#l00141">RF24Gateway.h:141</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a8f8bcb7aad7a40d882268cfb3d6a3090"><div class="ttname"><a href="classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090">RF24Gateway::routingTableSize</a></div><div class="ttdeci">uint8_t routingTableSize</div><div class="ttdef"><b>Definition</b> <a href="#l00199">RF24Gateway.h:199</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a9005d67e041ab3352cdd57ac358b6024"><div class="ttname"><a href="classRF24Gateway.html#a9005d67e041ab3352cdd57ac358b6024">RF24Gateway::begin</a></div><div class="ttdeci">void begin(uint8_t nodeID=0, uint8_t channel=97, rf24_datarate_e data_rate=RF24_1MBPS)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00019">RF24Gateway.cpp:19</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a9128f60a993cc25b5abe89757b06350e"><div class="ttname"><a href="classRF24Gateway.html#a9128f60a993cc25b5abe89757b06350e">RF24Gateway::sendUDP</a></div><div class="ttdeci">void sendUDP(uint8_t nodeID, RF24NetworkFrame frame)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00727">RF24Gateway.cpp:727</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a91c25cc30c580baa4afac301fd9a0f00"><div class="ttname"><a href="classRF24Gateway.html#a91c25cc30c580baa4afac301fd9a0f00">RF24Gateway::update</a></div><div class="ttdeci">void update(bool interrupts=0)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00310">RF24Gateway.cpp:310</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_a939a9d63e37fb627847ebe70d4fb6043"><div class="ttname"><a href="classRF24Gateway.html#a939a9d63e37fb627847ebe70d4fb6043">RF24Gateway::RF24Gateway</a></div><div class="ttdeci">RF24Gateway(RF24 &amp;_radio, RF24Network &amp;_network, RF24Mesh &amp;_mesh)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00012">RF24Gateway.cpp:12</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_aaac15d895072ec085e051ee9f4d60b48"><div class="ttname"><a href="classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48">RF24Gateway::routingStruct</a></div><div class="ttdeci">routeStruct routingStruct[256]</div><div class="ttdef"><b>Definition</b> <a href="#l00194">RF24Gateway.h:194</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_ab1c6dca6e041f4b53d505be6ceedee76"><div class="ttname"><a href="classRF24Gateway.html#ab1c6dca6e041f4b53d505be6ceedee76">RF24Gateway::fifoCleared</a></div><div class="ttdeci">bool fifoCleared</div><div class="ttdef"><b>Definition</b> <a href="#l00139">RF24Gateway.h:139</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_ab5845650441bbb0e6dc6d46581a8defd"><div class="ttname"><a href="classRF24Gateway.html#ab5845650441bbb0e6dc6d46581a8defd">RF24Gateway::config_TUN</a></div><div class="ttdeci">bool config_TUN</div><div class="ttdef"><b>Definition</b> <a href="#l00138">RF24Gateway.h:138</a></div></div>
+<div class="ttc" id="aclassRF24Gateway_html_afd57521e1958f45b210888c9a957adb3"><div class="ttname"><a href="classRF24Gateway.html#afd57521e1958f45b210888c9a957adb3">RF24Gateway::poll</a></div><div class="ttdeci">void poll(uint32_t waitDelay=3)</div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8cpp_source.html#l00326">RF24Gateway.cpp:326</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html">RF24Gateway::routeStruct</a></div><div class="ttdef"><b>Definition</b> <a href="#l00184">RF24Gateway.h:185</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_a7742cff2aabb92931ee8828cbee2d68c"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#a7742cff2aabb92931ee8828cbee2d68c">RF24Gateway::routeStruct::mask</a></div><div class="ttdeci">struct in_addr mask</div><div class="ttdef"><b>Definition</b> <a href="#l00187">RF24Gateway.h:187</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_ab026ce6c7ca06f9d299065b5ca36b245"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#ab026ce6c7ca06f9d299065b5ca36b245">RF24Gateway::routeStruct::gw</a></div><div class="ttdeci">struct in_addr gw</div><div class="ttdef"><b>Definition</b> <a href="#l00188">RF24Gateway.h:188</a></div></div>
+<div class="ttc" id="astructRF24Gateway_1_1routeStruct_html_acc7b96511f6e94f2afef69a4c63679e0"><div class="ttname"><a href="structRF24Gateway_1_1routeStruct.html#acc7b96511f6e94f2afef69a4c63679e0">RF24Gateway::routeStruct::ip</a></div><div class="ttdeci">struct in_addr ip</div><div class="ttdef"><b>Definition</b> <a href="#l00186">RF24Gateway.h:186</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Feb 11 2025 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun May 4 2025 01:02:58 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

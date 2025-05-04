@@ -6,7 +6,6 @@
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>RF24Gateway - TCP/IP over RF24Network: RF24Gateway_ncursesInt.cpp</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v2.1.1</span>
+   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v1.1.2</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -141,7 +140,7 @@ $(function(){ initResizable(false); });
 <div class="line">RF24 radio(22, 0);</div>
 <div class="line">RF24Network network(radio);</div>
 <div class="line">RF24Mesh mesh(radio, network);</div>
-<div class="line">RF24Gateway gw(radio, network, mesh);</div>
+<div class="line"><a id="_a0" name="_a0"></a><a class="code hl_class" href="classRF24Gateway.html">RF24Gateway</a> gw(radio, network, mesh);</div>
 <div class="line"> </div>
 <div class="line">uint8_t nodeID = 0;</div>
 <div class="line"><span class="keywordtype">int</span> interruptPin = 24;</div>
@@ -182,8 +181,8 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="keywordtype">bool</span> showConnPad;</div>
 <div class="line"><span class="keywordtype">bool</span> topo = <span class="keyword">true</span>;</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">size_t</span> bRX;</div>
-<div class="line"><span class="keywordtype">size_t</span> bTX;</div>
+<div class="line"><span class="keywordtype">float</span> bRX;</div>
+<div class="line"><span class="keywordtype">float</span> bTX;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/******************************************************************/</span></div>
 <div class="line"><span class="comment">/***********************MAIN***************************************/</span></div>
@@ -223,7 +222,7 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="comment">    /*******************************/</span></div>
 <div class="line">    devPad = newpad(11, 40);</div>
 <div class="line">    meshPad = newpad(50, 50);</div>
-<div class="line">    rf24Pad = newpad(11, 40);</div>
+<div class="line">    rf24Pad = newpad(13, 40);</div>
 <div class="line">    connPad = newpad(21, 150);</div>
 <div class="line">    cfgPad = newpad(10, 40);</div>
 <div class="line">    renewPad = newpad(1, 35);</div>
@@ -255,14 +254,13 @@ $(function(){ initResizable(false); });
 <div class="line">        { <span class="comment">//Every 30 seconds, test mesh connectivity</span></div>
 <div class="line">            <span class="keywordflow">if</span> (!mesh.checkConnection())</div>
 <div class="line">            {</div>
-<div class="line">                wclear(renewPad);</div>
+<div class="line">                werase(renewPad);</div>
 <div class="line">                mvwprintw(renewPad, 0, 0, <span class="stringliteral">&quot;*Renewing Address*&quot;</span>);</div>
 <div class="line">                prefresh(renewPad, 0, 0, 3, 26, 4, 55);</div>
-<div class="line">                ok = mesh.renewAddress() != MESH_DEFAULT_ADDRESS;</div>
-<div class="line">                <span class="keywordflow">if</span> (ok)</div>
+<div class="line">                <span class="keywordflow">if</span> ((ok = mesh.renewAddress()))</div>
 <div class="line">                {</div>
 <div class="line">                    ok = <span class="keyword">true</span>;</div>
-<div class="line">                    wclear(renewPad);</div>
+<div class="line">                    werase(renewPad);</div>
 <div class="line">                    prefresh(renewPad, 0, 0, 3, 26, 4, 55);</div>
 <div class="line">                }</div>
 <div class="line">            }</div>
@@ -278,26 +276,29 @@ $(function(){ initResizable(false); });
 <div class="line">            {</div>
 <div class="line">                ++networkPacketsRX;</div>
 <div class="line">                RF24NetworkHeader header;</div>
+<div class="line"> </div>
 <div class="line">                <span class="comment">// un-needed variables</span></div>
 <div class="line">                <span class="comment">// size_t size = network.peek(header);</span></div>
 <div class="line">                <span class="comment">// uint8_t buf[size];</span></div>
-<div class="line">                network.read(header, <span class="comment">/*buf*/</span> 0, <span class="comment">/*size*/</span> 0); <span class="comment">// pop the RX payload from network.queue</span></div>
 <div class="line"> </div>
-<div class="line">                <span class="comment">// send a timestamp to master</span></div>
-<div class="line">                <span class="keyword">struct </span>timeStruct</div>
+<div class="line">                <span class="keywordflow">if</span> (header.type == 1) <span class="comment">// header.type is uninitialized</span></div>
 <div class="line">                {</div>
-<div class="line">                    uint8_t hr;</div>
-<div class="line">                    uint8_t min;</div>
-<div class="line">                } myTime;</div>
+<div class="line">                    <span class="keyword">struct </span>timeStruct</div>
+<div class="line">                    {</div>
+<div class="line">                        uint8_t hr;</div>
+<div class="line">                        uint8_t min;</div>
+<div class="line">                    } myTime;</div>
 <div class="line"> </div>
-<div class="line">                time_t mTime;</div>
-<div class="line">                time(&amp;mTime);</div>
-<div class="line">                <span class="keyword">struct </span>tm* tm = localtime(&amp;mTime);</div>
+<div class="line">                    time_t mTime;</div>
+<div class="line">                    time(&amp;mTime);</div>
+<div class="line">                    <span class="keyword">struct </span>tm* tm = localtime(&amp;mTime);</div>
 <div class="line"> </div>
-<div class="line">                myTime.hr = tm-&gt;tm_hour;</div>
-<div class="line">                myTime.min = tm-&gt;tm_min;</div>
-<div class="line">                RF24NetworkHeader hdr(header.from_node, 1);</div>
-<div class="line">                network.write(hdr, &amp;myTime, <span class="keyword">sizeof</span>(myTime));</div>
+<div class="line">                    myTime.hr = tm-&gt;tm_hour;</div>
+<div class="line">                    myTime.min = tm-&gt;tm_min;</div>
+<div class="line">                    RF24NetworkHeader hdr(header.from_node, 1);</div>
+<div class="line">                    network.write(hdr, &amp;myTime, <span class="keyword">sizeof</span>(myTime));</div>
+<div class="line">                }</div>
+<div class="line">                network.read(header, 0, 0);</div>
 <div class="line">            }</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">else</span></div>
@@ -320,20 +321,20 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">            <span class="comment">// Draw the pads on screen</span></div>
 <div class="line">            drawDevPad();</div>
-<div class="line">            prefresh(devPad, 0, 0, 4, 1, 14, 25);</div>
+<div class="line">            prefresh(devPad, 0, 0, 4, 1, 15, 25);</div>
 <div class="line"> </div>
 <div class="line">            drawMeshPad();</div>
 <div class="line">            wscrl(meshPad, meshScroll);</div>
-<div class="line">            prefresh(meshPad, 0, 0, 4, 26, 14, 48);</div>
+<div class="line">            prefresh(meshPad, 0, 0, 4, 26, 15, 48);</div>
 <div class="line"> </div>
 <div class="line">            drawRF24Pad();</div>
-<div class="line">            prefresh(rf24Pad, 0, 0, 4, 52, 14, 78);</div>
+<div class="line">            prefresh(rf24Pad, 0, 0, 4, 52, 15, 78);</div>
 <div class="line"> </div>
 <div class="line">            <span class="keywordflow">if</span> (showConnPad)</div>
 <div class="line">            {</div>
 <div class="line">                drawConnPad();</div>
 <div class="line">                wscrl(connPad, connScroll);</div>
-<div class="line">                prefresh(connPad, 0, 0, 16, 1, maxX - 1, maxY - 2);</div>
+<div class="line">                prefresh(connPad, 0, 0, 18, 1, maxX - 1, maxY - 2);</div>
 <div class="line">            }</div>
 <div class="line">        } <span class="comment">//MeshInfo Timer</span></div>
 <div class="line"><span class="comment"></span> </div>
@@ -357,7 +358,7 @@ $(function(){ initResizable(false); });
 <div class="line">                    topo = <span class="keyword">false</span>;</div>
 <div class="line">                    <span class="keywordflow">if</span> (!showConnPad)</div>
 <div class="line">                    {</div>
-<div class="line">                        wclear(connPad);</div>
+<div class="line">                        werase(connPad);</div>
 <div class="line">                        prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);</div>
 <div class="line">                        drawMain();</div>
 <div class="line">                    }</div>
@@ -386,7 +387,7 @@ $(function(){ initResizable(false); });
 <div class="line">                    drawHelp();</div>
 <div class="line">                    <span class="keywordflow">break</span>;</div>
 <div class="line">                <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>:</div>
-<div class="line">                    clear();</div>
+<div class="line">                    erase();</div>
 <div class="line">                    endwin();</div>
 <div class="line">                    <span class="keywordflow">return</span> 0;</div>
 <div class="line">                    <span class="keywordflow">break</span>;</div>
@@ -419,7 +420,7 @@ $(function(){ initResizable(false); });
 <div class="line">                    padSelection = std::max(padSelection, 0);</div>
 <div class="line">                    <span class="keywordflow">break</span>; <span class="comment">//left</span></div>
 <div class="line">                <span class="keywordflow">case</span> <span class="charliteral">&#39;Q&#39;</span>:</div>
-<div class="line">                    clear();</div>
+<div class="line">                    erase();</div>
 <div class="line">                    endwin();</div>
 <div class="line">                    <span class="keywordflow">return</span> 0;</div>
 <div class="line">                    <span class="keywordflow">break</span>;</div>
@@ -456,7 +457,7 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">    <span class="comment">//delwin(meshPad);</span></div>
 <div class="line">    <span class="comment">//delwin(connPad);</span></div>
-<div class="line">    clear();</div>
+<div class="line">    erase();</div>
 <div class="line">    endwin();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line"> </div>
@@ -467,10 +468,10 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> drawTopology()</div>
 <div class="line">{</div>
-<div class="line">    wclear(connPad);</div>
+<div class="line">    werase(connPad);</div>
 <div class="line">    wattroff(connPad, COLOR_PAIR(1));</div>
-<div class="line">    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);</div>
-<div class="line">    mvwprintw(win, 15, 10, <span class="stringliteral">&quot;Mesh Topology&quot;</span>);</div>
+<div class="line">    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);</div>
+<div class="line">    mvwprintw(win, 16, 10, <span class="stringliteral">&quot;Mesh Topology&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    wattron(connPad, COLOR_PAIR(1));</div>
 <div class="line">    <span class="keywordtype">int</span> connPadmaxX;</div>
@@ -493,7 +494,9 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; mesh.addrListTop; j++) {</div>
 <div class="line">                <span class="keywordflow">if</span> (mesh.addrList[j].address == i) {</div>
-<div class="line">                    <span class="keywordtype">int</span> x = getcurx(connPad);</div>
+<div class="line">                    <span class="keywordtype">int</span> y = 0;</div>
+<div class="line">                    <span class="keywordtype">int</span> x = 0;</div>
+<div class="line">                    getyx(connPad, y, x);</div>
 <div class="line">                    <span class="keywordflow">if</span> (x &gt; connPadmaxX - 77) {</div>
 <div class="line">                        wprintw(connPad, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line">                    }</div>
@@ -513,7 +516,9 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; mesh.addrListTop; j++) {</div>
 <div class="line">                <span class="keywordflow">if</span> (mesh.addrList[j].address == i) {</div>
-<div class="line">                    <span class="keywordtype">int</span> x = getcurx(connPad);</div>
+<div class="line">                    <span class="keywordtype">int</span> y = 0;</div>
+<div class="line">                    <span class="keywordtype">int</span> x = 0;</div>
+<div class="line">                    getyx(connPad, y, x);</div>
 <div class="line">                    <span class="keywordflow">if</span> (x &gt; connPadmaxX - 77) {</div>
 <div class="line">                        wprintw(connPad, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line">                    }</div>
@@ -533,7 +538,9 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; mesh.addrListTop; j++) {</div>
 <div class="line">                <span class="keywordflow">if</span> (mesh.addrList[j].address == i) {</div>
-<div class="line">                    <span class="keywordtype">int</span> x = getcurx(connPad);</div>
+<div class="line">                    <span class="keywordtype">int</span> y = 0;</div>
+<div class="line">                    <span class="keywordtype">int</span> x = 0;</div>
+<div class="line">                    getyx(connPad, y, x);</div>
 <div class="line">                    <span class="keywordflow">if</span> (x &gt; connPadmaxX - 77) {</div>
 <div class="line">                        wprintw(connPad, <span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line">                    }</div>
@@ -548,7 +555,7 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="keywordtype">void</span> drawMain()</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line">    clear();</div>
+<div class="line">    erase();</div>
 <div class="line"> </div>
 <div class="line">    attron(COLOR_PAIR(1));</div>
 <div class="line">    wprintw(win, <span class="stringliteral">&quot;RF24Gateway Ncurses Interface by TMRh20 - 2015-2022\n&quot;</span>);</div>
@@ -600,7 +607,7 @@ $(function(){ initResizable(false); });
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);</div>
+<div class="line">    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);</div>
 <div class="line"> </div>
 <div class="line">    refresh();</div>
 <div class="line">}</div>
@@ -646,8 +653,7 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">    sleep(1);</div>
 <div class="line">    wattron(win, COLOR_PAIR(1));</div>
-<div class="line">    mvwprintw(win, 4, 1, isConf ? <span class="stringliteral">&quot;IP Configuration\n&quot;</span> : <span class="stringliteral">&quot;**Interface Not Configured:**\n&quot;</span>);</div>
-<div class="line">    mvwprintw(win, 5, 1, <span class="stringliteral">&quot;IP 10.10.2.2 and Subnet Mask 255.255.255.0 is default\n&quot;</span>);</div>
+<div class="line">    mvwprintw(win, 5, 1, isConf ? <span class="stringliteral">&quot;IP Configuration\n&quot;</span> : <span class="stringliteral">&quot;**Interface Not Configured:**\n&quot;</span>);</div>
 <div class="line">    wattroff(win, COLOR_PAIR(1));</div>
 <div class="line">    mvwprintw(win, 6, 1, <span class="stringliteral">&quot;Enter IP Address: \n&quot;</span>);</div>
 <div class="line">    refresh();</div>
@@ -662,17 +668,7 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (strlen(ip) &gt;= 6 &amp;&amp; strlen(mask) &gt;= 7)</div>
 <div class="line">    {</div>
-<div class="line">        <span class="keywordflow">if</span> (gw.setIP(ip, mask) &lt; 0) {</div>
-<div class="line">            mvwprintw(win, 8, 1, <span class="stringliteral">&quot;Unable to set IP/Subnet \n&quot;</span>);</div>
-<div class="line">            uint32_t UID = getuid();</div>
-<div class="line">            <span class="keywordflow">if</span> (UID) {</div>
-<div class="line">                mvwprintw(win, 9, 1, <span class="stringliteral">&quot;Not running as root, configure as follows:\n&quot;</span>);</div>
-<div class="line">                mvwprintw(win, 10, 1, <span class="stringliteral">&quot;sudo ip tuntap add dev tun_nrf24 mode tun user %s multi_queue\n&quot;</span>, getlogin());</div>
-<div class="line">                mvwprintw(win, 11, 1, <span class="stringliteral">&quot;sudo ifconfig tun_nrf24 10.10.2.2/24\n&quot;</span>);</div>
-<div class="line">            }</div>
-<div class="line">            refresh();</div>
-<div class="line">            sleep(10);</div>
-<div class="line">        }</div>
+<div class="line">        gw.setIP(ip, mask);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">    {</div>
@@ -694,7 +690,7 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="keywordtype">void</span> drawDevPad()</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line">    wclear(devPad);</div>
+<div class="line">    werase(devPad);</div>
 <div class="line"> </div>
 <div class="line">    std::string line;</div>
 <div class="line">    std::ifstream inFile;</div>
@@ -721,13 +717,13 @@ $(function(){ initResizable(false); });
 <div class="line">            <span class="keywordtype">float</span> bytesTNow = strtof(txBytes, NULL) - bTX;</div>
 <div class="line"> </div>
 <div class="line">            <span class="keywordtype">float</span> RKBS = bytesRNow &gt; 0 ? bytesRNow / updateRate : 0.0;</div>
-<div class="line">            <span class="keywordtype">float</span> TKBS = bytesRNow &gt; 0 ? bytesTNow / updateRate : 0.0;</div>
+<div class="line">            <span class="keywordtype">float</span> TKBS = bytesTNow &gt; 0 ? bytesTNow / updateRate : 0.0;</div>
 <div class="line"> </div>
 <div class="line">            wprintw(devPad, <span class="stringliteral">&quot;\nRX %.03f KB/s\n&quot;</span>, RKBS);</div>
 <div class="line">            wprintw(devPad, <span class="stringliteral">&quot;TX %.03f KB/s\n&quot;</span>, TKBS);</div>
 <div class="line"> </div>
-<div class="line">            bRX = strtol(rxBytes, NULL, 10);</div>
-<div class="line">            bTX = strtol(txBytes, NULL, 10);</div>
+<div class="line">            bRX = strtof(rxBytes, NULL);</div>
+<div class="line">            bTX = strtof(txBytes, NULL);</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line">    inFile.close();</div>
@@ -738,7 +734,7 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="keywordtype">void</span> drawMeshPad()</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line">    wclear(meshPad);</div>
+<div class="line">    werase(meshPad);</div>
 <div class="line"> </div>
 <div class="line">    meshInfoTimer = millis();</div>
 <div class="line">    <span class="comment">//uint8_t pos=5;</span></div>
@@ -746,6 +742,8 @@ $(function(){ initResizable(false); });
 <div class="line">    {</div>
 <div class="line">        mvwprintw(meshPad, i + 1, 0, <span class="stringliteral">&quot; Address: 0%o ID: %d \n&quot;</span>, mesh.addrList[i].address, mesh.addrList[i].nodeID);</div>
 <div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    meshScroll = rf24_max(meshScroll, 0);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (padSelection == 0)</div>
 <div class="line">    {</div>
@@ -767,7 +765,7 @@ $(function(){ initResizable(false); });
 <div class="line"><span class="keywordtype">void</span> drawRF24Pad()</div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line">    wclear(rf24Pad);</div>
+<div class="line">    werase(rf24Pad);</div>
 <div class="line">    mvwprintw(rf24Pad, 1, 0, <span class="stringliteral">&quot;Address: 0%o\n&quot;</span>, mesh.mesh_address);</div>
 <div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;nodeID: %d\n&quot;</span>, mesh.getNodeID());</div>
 <div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;En Mesh: %s\n&quot;</span>, gw.meshEnabled() ? <span class="stringliteral">&quot;True&quot;</span> : <span class="stringliteral">&quot;False&quot;</span>);</div>
@@ -792,13 +790,15 @@ $(function(){ initResizable(false); });
 <div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;TX Packets(sys): %u\n&quot;</span>, ok);</div>
 <div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;TX Drops: %u\n&quot;</span>, fail);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
-<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;RX Packets(user): %lu\n&quot;</span>, networkPacketsRX);</div>
+<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;RX Packets(user): %u\n&quot;</span>, networkPacketsRX);</div>
 <div class="line">    <span class="keywordflow">if</span> (gw.fifoCleared)</div>
 <div class="line">    {</div>
 <div class="line">        ++fifoClears;</div>
 <div class="line">        gw.fifoCleared = <span class="keyword">false</span>;</div>
 <div class="line">    }</div>
-<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;Interrupt Errors: %u&quot;</span>, fifoClears);</div>
+<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;Interrupts Missed: %u\n&quot;</span>, fifoClears);</div>
+<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;Network Overruns: %u\n&quot;</span>, gw.networkOverruns);</div>
+<div class="line">    wprintw(rf24Pad, <span class="stringliteral">&quot;Network Corruption: %u&quot;</span>, gw.networkCorruption);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (padSelection == 1)</div>
 <div class="line">    {</div>
@@ -827,7 +827,7 @@ $(function(){ initResizable(false); });
 <div class="line">    <span class="keywordtype">int</span> ctr = 0;</div>
 <div class="line">    <span class="keywordtype">size_t</span> lCtr = 1;</div>
 <div class="line">    std::string line;</div>
-<div class="line">    wclear(connPad);</div>
+<div class="line">    werase(connPad);</div>
 <div class="line">    <span class="comment">//box(connPad,ACS_VLINE,ACS_HLINE);</span></div>
 <div class="line"> </div>
 <div class="line">    std::ifstream inFile;</div>
@@ -845,7 +845,7 @@ $(function(){ initResizable(false); });
 <div class="line">            fnd = line.find_last_of(<span class="stringliteral">&quot; &quot;</span>, fnd - 2);</div>
 <div class="line">            <span class="keywordtype">unsigned</span> findEnd = line.find(<span class="stringliteral">&quot; mark=&quot;</span>);</div>
 <div class="line">            line = line.substr(fnd, findEnd - fnd);</div>
-<div class="line">            mvwprintw(connPad, ctr++, 0, <span class="stringliteral">&quot;%ld %s\n&quot;</span>, lCtr++, line.c_str());</div>
+<div class="line">            mvwprintw(connPad, ctr++, 0, <span class="stringliteral">&quot;%lu %s\n&quot;</span>, lCtr++, line.c_str());</div>
 <div class="line"> </div>
 <div class="line">            <span class="keywordflow">if</span> (ctr &gt; maxX - 15)</div>
 <div class="line">            {</div>
@@ -855,15 +855,16 @@ $(function(){ initResizable(false); });
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    inFile.close();</div>
-<div class="line">    mvwhline(win, 15, 1, ACS_HLINE, maxY - 2);</div>
-<div class="line">    mvwprintw(win, 15, 10, <span class="stringliteral">&quot;Active IP Connections:&quot;</span>);</div>
+<div class="line">    mvwhline(win, 16, 1, ACS_HLINE, maxY - 2);</div>
+<div class="line">    mvwprintw(win, 16, 10, <span class="stringliteral">&quot;Active IP Connections:&quot;</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/******************************************************************/</span></div>
+<div class="ttc" id="aclassRF24Gateway_html"><div class="ttname"><a href="classRF24Gateway.html">RF24Gateway</a></div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8h_source.html#l00046">RF24Gateway.h:47</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Feb 11 2025 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun May 4 2025 01:02:58 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

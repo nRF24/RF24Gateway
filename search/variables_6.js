@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['thisnodeaddress_0',['thisNodeAddress',['../classESBGateway.html#a0f17365f6cce8bd10f05b8113b9f2180',1,'ESBGateway']]],
-  ['thisnodeid_1',['thisNodeID',['../classESBGateway.html#aa12a1cbda71c18074fc519d0dda025bf',1,'ESBGateway']]]
+  ['routingstruct_0',['routingStruct',['../classRF24Gateway.html#aaac15d895072ec085e051ee9f4d60b48',1,'RF24Gateway']]],
+  ['routingtablesize_1',['routingTableSize',['../classRF24Gateway.html#a8f8bcb7aad7a40d882268cfb3d6a3090',1,'RF24Gateway']]]
 ];
