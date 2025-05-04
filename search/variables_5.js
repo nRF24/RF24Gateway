@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['networkcorruption_0',['networkCorruption',['../classRF24Gateway.html#a12fb19f478bfa3b7620ea85bea717107',1,'RF24Gateway']]],
-  ['networkoverruns_1',['networkOverruns',['../classRF24Gateway.html#a7ba87854e7690c3378a0bb9ecfaafccc',1,'RF24Gateway']]]
+  ['networkcorruption_0',['networkCorruption',['../classESBGateway.html#a7a1edbc43a2487e680e02293a9419a32',1,'ESBGateway']]],
+  ['networkoverruns_1',['networkOverruns',['../classESBGateway.html#a1d5667b43737ad5a95cf1034ce5195c2',1,'ESBGateway']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['update_0',['update',['../classRF24Gateway.html#a91c25cc30c580baa4afac301fd9a0f00',1,'RF24Gateway']]]
+  ['update_0',['update',['../classESBGateway.html#aaf1214fabf2485bcffb30f9460c2e2b2',1,'ESBGateway']]]
 ];

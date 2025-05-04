@@ -6,6 +6,7 @@
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>RF24Gateway - TCP/IP over RF24Network: RF24Gateway</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,7 +28,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v1.1.2</span>
+   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v2.1.2</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -87,61 +88,90 @@ $(function(){ initResizable(false); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title"><a class="el" href="classRF24Gateway.html">RF24Gateway</a> </div></div>
+  <div class="headertitle"><div class="title">RF24Gateway </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md38">Installation</a>
+    <a href="#autotoc_md40">News - 2023 API Changes</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md39">How It Works</a>
+    <a href="#autotoc_md41">Installation</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md40">Simple Configuration</a>
+    <a href="#autotoc_md42">How It Works</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md41">Advanced Configuration</a>
+    <a href="#autotoc_md43">Simple Configuration</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md42">Network Configuration Example</a>
+    <a href="#autotoc_md44">Advanced Configuration</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md45">Network Configuration Example</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md43">Explanation</a>
+        <a href="#autotoc_md46">Explanation</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md44">Routing Configuration</a>
+        <a href="#autotoc_md47">Routing Configuration</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md45">Additional Routing Configuration</a>
+            <a href="#autotoc_md48">Additional Routing Configuration</a>
           </li>
         </ul>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md46">Example: create TCP/IP link between two Raspberry Pi</a>
+    <a href="#autotoc_md49">Example: create TCP/IP link between two Raspberry Pi</a>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2main__page"></a></p>
-<p><a class="el" href="classRF24Gateway.html">RF24Gateway</a> is a library style replacement for the standalone RF24toTUN application, used with RF24Ethernet.</p>
-<p>In addition to passing TCP/IP payloads to a network interface, <a class="el" href="classRF24Gateway.html">RF24Gateway</a> also allows users to send and receive standard RF24Network payloads.</p>
+<p>RF24Gateway is a library style replacement for the standalone RF24toTUN application, used with RF24Ethernet.</p>
+<p>In addition to passing TCP/IP payloads to a network interface, RF24Gateway also allows users to send and receive standard RF24Network payloads.</p>
 <p>This allows users to deploy and manage hybrid networks, consisting of nodes communicating via TCP/IP and RF24Network Messages</p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
+News - 2023 API Changes</h1>
+<p>Introducing <b>RF24Network, RF24Mesh &amp; RF24Gateway v2.0</b> with some <em>significant API changes</em>, adding the use of <a href="https://cplusplus.com/doc/oldtutorial/templates/">C++ Templates</a> in order to support a range of ESB enabled radios, most recently NRF52x radios.</p>
+<p><b>Important Notes:</b></p><ul>
+<li>Any network layer that uses v2 needs to have RF24Network/RF24Mesh dependencies of v2 or newer. RF24 v1.x is an exception here.</li>
+<li>General usage should remain backward compatible, see the included examples of the related libraries for more info</li>
+<li>Any third party libs that extend the network/mesh layer may also need to be updated to incorporate the new templated class prototypes: <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> radio_t&gt;</div>
+<div class="line"><span class="keyword">class </span><a class="code hl_class" href="classESBNetwork.html">ESBNetwork</a>;</div>
+<div class="line">  </div>
+<div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> network_t, <span class="keyword">class</span> radio_t&gt;</div>
+<div class="line"><span class="keyword">class </span><a class="code hl_class" href="classESBMesh.html">ESBMesh</a>;</div>
+<div class="ttc" id="aclassESBMesh_html"><div class="ttname"><a href="classESBMesh.html">ESBMesh</a></div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8h_source.html#l00048">RF24Gateway.h:48</a></div></div>
+<div class="ttc" id="aclassESBNetwork_html"><div class="ttname"><a href="classESBNetwork.html">ESBNetwork</a></div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8h_source.html#l00045">RF24Gateway.h:45</a></div></div>
+</div><!-- fragment --></li>
+<li>Third party libs should also be able to use the backward-compatible typedef in their template:<ul>
+<li>ESBGateway.h: <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> network_t, <span class="keyword">typename</span> mesh_t&gt;</div>
+<div class="line"><span class="keyword">class </span><a class="code hl_class" href="classESBGateway.html">ESBGateway</a></div>
+<div class="ttc" id="aclassESBGateway_html"><div class="ttname"><a href="classESBGateway.html">ESBGateway</a></div><div class="ttdef"><b>Definition</b> <a href="RF24Gateway_8h_source.html#l00065">RF24Gateway.h:66</a></div></div>
+</div><!-- fragment --> and inform the compiler what types they intend to support:</li>
+<li>ESBGateway.cpp: <div class="fragment"><div class="line"><span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_class" href="classESBGateway.html">ESBGateway&lt;RF24Network, RF24Mesh&gt;</a>;</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li>The auto installers do not perform a version check like package managers, so having the correct versions of the software is important.</li>
+<li>We <em>will</em> be maintaining the v1.x versions with bugfixes etc for those who cannot or do not wish to migrate to the newer template approach.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md41"></a>
 Installation</h1>
 <p>See <a href="http://nRF24.github.io/RF24">http://nRF24.github.io/RF24</a> for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.</p>
-<p>After running the installer, <a class="el" href="classRF24Gateway.html">RF24Gateway</a> will be installed at rf24libs/RF24Gateway. <a href="examples.html"><b>Examples</b></a> are included for operating the gateway as well as client scripts &amp; programs to control nodes via http requests.</p>
-<p>Note: <a class="el" href="classRF24Gateway.html">RF24Gateway</a> is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh or be statically assigned within RF24Mesh.</p>
-<p>See <a href="http://nRF24.github.io/RF24Ethernet/">http://nRF24.github.io/RF24Ethernet/</a> for related documentation for use with <a class="el" href="classRF24Gateway.html">RF24Gateway</a>.</p>
-<h1><a class="anchor" id="autotoc_md39"></a>
+<p>After running the installer, RF24Gateway will be installed at rf24libs/RF24Gateway. <a href="examples.html"><b>Examples</b></a> are included for operating the gateway as well as client scripts &amp; programs to control nodes via http requests.</p>
+<p>Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh or be statically assigned within RF24Mesh.</p>
+<p>See <a href="http://nRF24.github.io/RF24Ethernet/">http://nRF24.github.io/RF24Ethernet/</a> for related documentation for use with RF24Gateway.</p>
+<h1><a class="anchor" id="autotoc_md42"></a>
 How It Works</h1>
-<p><a class="el" href="classRF24Gateway.html">RF24Gateway</a> is relatively simple in design, and uses the <a href="https://www.kernel.org/doc/Documentation/networking/tuntap.txt">Universal TUN/TAP driver for Linux</a></p>
+<p>RF24Gateway is relatively simple in design, and uses the <a href="https://www.kernel.org/doc/Documentation/networking/tuntap.txt">Universal TUN/TAP driver for Linux</a></p>
 <p>Data incoming from the RF24 communication stack (designated as external data) is passed to the interface without modification. Conversely, incoming TCP/IP or other data received on the TUN/TAP interface is passed directly into the radio network and designated as external data.</p>
-<p>Linux devices running <a class="el" href="classRF24Gateway.html">RF24Gateway</a> can establish network links using the built-in TCP/IP stack, and users can include Arduino/AVR devices or additional RPi devices to automatically extend the wireless range.</p>
+<p>Linux devices running RF24Gateway can establish network links using the built-in TCP/IP stack, and users can include Arduino/AVR devices or additional RPi devices to automatically extend the wireless range.</p>
 <p>Arduino/AVR devices, etc must utilize a software IP stack such as uIP.</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Simple Configuration</h1>
 <p>In the standard configuration, a single Linux/RF24Gateway node is used to provide connectivity to one or more Arduino nodes running RF24Ethernet. In this case the master node could be configured with IP 10.1.3.1 netmask 255.255.255.0 and nodeID 0 The remaining Arduino nodes can used nodeIDs 2-253, and would be assigned IP addresses 10.1.3.2-253 and netmask 255.255.255.0</p>
 <p>If there are problems starting the examples, the following commands can be run to configure the interface:</p>
@@ -155,9 +185,9 @@ Simple Configuration</h1>
 <div class="line">sudo sysctl net.ipv4.tcp_rmem=&quot;1500 1500 1500&quot;</div>
 </div><!-- fragment --><p> These changes are only temporary and need to be run each time after reboot of the operating system. To make them permanent, edit <code>/etc/sysctl.conf</code></p>
 <p>See <a href="http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html">http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html</a> for more info</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Advanced Configuration</h1>
-<p>In a more advanced configuration, users can use two or more nodes running <a class="el" href="classRF24Gateway.html">RF24Gateway</a> together, along with Arduino Nodes running RF24Ethernet In this case the master node could be configured differently with IP 10.1.3.1 netmask 255.255.0.0 and nodeID 0 The child RPi2 node could be assigned IP 10.1.3.33 netmask 255.255.0.0 and nodeID 33 Another device, lets say usb0 connected to the child RPi2 node is assigned IP 10.1.5.1 netmask 255.255.255.0</p>
+<p>In a more advanced configuration, users can use two or more nodes running RF24Gateway together, along with Arduino Nodes running RF24Ethernet In this case the master node could be configured differently with IP 10.1.3.1 netmask 255.255.0.0 and nodeID 0 The child RPi2 node could be assigned IP 10.1.3.33 netmask 255.255.0.0 and nodeID 33 Another device, lets say usb0 connected to the child RPi2 node is assigned IP 10.1.5.1 netmask 255.255.255.0</p>
 <p>In this configuration, connectivity between all nodes in the mesh would be established, but a routing table is needed to include attached and internet devices.</p>
 <p>To fully enable routing beyond the RPi devices, a routing table needs to be added to the Master node:</p>
 <ol type="1">
@@ -165,17 +195,17 @@ Advanced Configuration</h1>
 <li>Edit the file accordingly</li>
 <li>Restart the gateway example to reload routing info</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Network Configuration Example</h1>
 <p>Local WiFi/Ethernet Network (Windows,Linux,RPi devices etc) - 10.10.1.0 - 255.255.255.0 ( 10.10.1.x network ) <br  />
  RPi devices (tun_nrf24 interfaces &amp; all connected devices) - 10.1.0.0 - 255.255.0.0 ( 10.1.x.x network )</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 Explanation</h2>
-<p>The RF24Gateway/RF24Mesh network supports about 253 hosts. I setup the <a class="el" href="classRF24Gateway.html">RF24Gateway</a> and all associated devices with a much larger subnet in this config to encompass all devices directly accessible via the <a class="el" href="classRF24Gateway.html">RF24Gateway</a> network.</p>
+<p>The RF24Gateway/RF24Mesh network supports about 253 hosts. I setup the RF24Gateway and all associated devices with a much larger subnet in this config to encompass all devices directly accessible via the RF24Gateway network.</p>
 <p>ie: RPi master 10.1.3.1/16, RPi2 child 10.1.3.33/16, RPi2 child usb0 10.1.5.1/24</p>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Routing Configuration</h2>
-<p>In the <a class="el" href="classRF24Gateway.html">RF24Gateway</a> example working directory, create a file "routing.txt". Add routing entries in a standard kind of format:</p>
+<p>In the RF24Gateway example working directory, create a file "routing.txt". Add routing entries in a standard kind of format:</p>
 <div class="fragment"><div class="line">IP&lt;space&gt;NetMask&lt;space&gt;Gateway</div>
 </div><!-- fragment --><p>Example routing.txt file:</p>
 <ul>
@@ -185,11 +215,11 @@ Routing Configuration</h2>
 <li><p class="startli">Traffic for 10.1.4.x will use 10.1.3.34 as the gateway</p>
 <div class="fragment"><div class="line">10.1.4.0 255.255.255.0 10.1.3.34</div>
 </div><!-- fragment --></li>
-<li><p class="startli">Traffic not in the <a class="el" href="classRF24Gateway.html">RF24Gateway</a> network will be sent via 10.10.3.33 by default</p>
+<li><p class="startli">Traffic not in the RF24Gateway network will be sent via 10.10.3.33 by default</p>
 <div class="fragment"><div class="line">0.0.0.0 0.0.0.0 10.10.3.33</div>
 </div><!-- fragment --></li>
 </ul>
-<h3><a class="anchor" id="autotoc_md45"></a>
+<h3><a class="anchor" id="autotoc_md48"></a>
 Additional Routing Configuration</h3>
 <p>You can specify any combination of IP/Netmask in the routing.txt file to create unique subnets for routing traffic.</p>
 <p>Examples are:</p>
@@ -203,11 +233,11 @@ Additional Routing Configuration</h3>
 <li><p class="startli">Traffic for 10.1.5.(65-94) will use 10.1.3.35 as the gateway</p>
 <div class="fragment"><div class="line">10.1.5.64 255.255.255.224 10.1.3.35</div>
 </div><!-- fragment --></li>
-<li><p class="startli">Traffic not in the <a class="el" href="classRF24Gateway.html">RF24Gateway</a> network will be sent via 10.10.3.32 by default</p>
+<li><p class="startli">Traffic not in the RF24Gateway network will be sent via 10.10.3.32 by default</p>
 <div class="fragment"><div class="line">0.0.0.0 0.0.0.0 10.10.3.32</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 Example: create TCP/IP link between two Raspberry Pi</h1>
 <p>This example demonstrates how a tcpip link could be created between two RPIs: <a href="md_docs_2rpi__tcpip__link.html">Example LINK</a> </p>
 </div></div><!-- PageDoc -->
@@ -215,7 +245,7 @@ Example: create TCP/IP link between two Raspberry Pi</h1>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 4 2025 01:02:58 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun May 4 2025 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

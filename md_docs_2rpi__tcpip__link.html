@@ -6,6 +6,7 @@
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>RF24Gateway - TCP/IP over RF24Network: longer range TCPIP via NRF24L01 for a pair of Raspberry PIs</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,7 +28,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v1.1.2</span>
+   <div id="projectname">RF24Gateway - TCP/IP over RF24Network<span id="projectnumber">&#160;v2.1.2</span>
    </div>
    <div id="projectbrief">TMRh20 - Pushing the practical limits of RF24 modules</div>
   </td>
@@ -90,22 +91,22 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">longer range TCPIP via NRF24L01 for a pair of Raspberry PIs</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md47"></a></p>
-<h1><a class="anchor" id="autotoc_md48"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md50"></a></p>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Intro</h1>
 <p>This tutorial is trying to use <code>NRF24L01</code> to create a TCP/IP link between two Raspberry Pi boards. Due to long range of NRFs, some of those have 1800 meter wireless range, it would be good to have a TCPIP link between two RPi via NRFs so it would be possible to have a TCPIP connection between two RPi in longer range. The onboard wifi of RPi cannot do long ranges like 50 meter even in clear sight.</p>
 <div class="image">
 <img src="rpi_tcpip_link.png" alt=""/>
 <div class="caption">
 schematics</div></div>
-    <h1><a class="anchor" id="autotoc_md49"></a>
+    <h1><a class="anchor" id="autotoc_md52"></a>
 Hardware Configuration</h1>
 <ol type="1">
 <li>wiring: Here is how I did connect the module to the RPi as described in the main RF24 documentation <a href="https://nrf24.github.io/RF24/#autotoc_md227">here</a>.</li>
 <li>Noise on 3.3v on RPi: Put some capacitor or L-C filter to reduce the noise on 3.3v supply from RPi.</li>
 <li>Shielding PA/LNA module: Shield your radio module, if it has none. See more details <a href="https://github.com/nRF24/RF24/blob/master/COMMON_ISSUES.md#my-palna-module-fails-to-transmit">in the RF24 Common Issues document</a></li>
 </ol>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md53"></a>
 Software Configuration</h1>
 <ol type="1">
 <li>Enable SPI from <a href="https://www.raspberrypi.com/documentation/computers/configuration.html#raspi-config"><code>raspi-config</code></a>. Select "Interface Options" -&gt; "SPI" -&gt; "Yes" -&gt; "Ok", then exit and reboot the RPi (<code>sudo reboot</code>).</li>
@@ -149,7 +150,7 @@ Software Configuration</h1>
 <p>Next, we need to recompile the ncurses example and run it in the terminal:</p>
 <div class="fragment"><div class="line">cd ~/rf24libs/RF24Gateway/examples/build</div>
 <div class="line">make</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md54"></a>
 Primary machine config</h2>
 <div class="fragment"><div class="line">sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue</div>
 <div class="line">sudo ifconfig tun_nrf24 10.11.2.2/24</div>
@@ -157,7 +158,7 @@ Primary machine config</h2>
 <div class="fragment"><div class="line">sudo sysctl net.ipv4.tcp_wmem=&quot;1500 1500 1500&quot;</div>
 <div class="line">sudo sysctl net.ipv4.tcp_rmem=&quot;1500 1500 1500&quot;</div>
 </div><!-- fragment --><p> These changes are only temporary and need to be run each time after reboot of the operating system.</p>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Secondary machine config</h2>
 <div class="fragment"><div class="line">sudo ip tuntap add dev tun_nrf24 mode tun user pi multi_queue</div>
 <div class="line">sudo ifconfig tun_nrf24 10.11.2.3/24</div>
@@ -165,7 +166,7 @@ Secondary machine config</h2>
 <div class="fragment"><div class="line">sudo sysctl net.ipv4.tcp_wmem=&quot;1500 1500 1500&quot;</div>
 <div class="line">sudo sysctl net.ipv4.tcp_rmem=&quot;1500 1500 1500&quot;</div>
 </div><!-- fragment --><p> These changes are only temporary and need to be run each time after reboot of the operating system.</p>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Run the ncurses example on both machines</h2>
 <div class="fragment"><div class="line">cd ~/rf24libs/RF24Gateway/examples/build/ncurses</div>
 <div class="line">./RF24Gateway_ncurses</div>
@@ -191,7 +192,7 @@ Run the ncurses example on both machines</h2>
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 4 2025 01:02:58 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun May 4 2025 for RF24Gateway - TCP/IP over RF24Network by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>
