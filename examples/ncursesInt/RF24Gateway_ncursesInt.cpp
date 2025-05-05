@@ -153,6 +153,7 @@ int main()
     /***********************LOOP***************************************/
     bool ok = true;
     uint32_t failCounter = 0;
+    uint32_t failTimer = 0;
 
     while (1)
     {
@@ -215,7 +216,7 @@ int main()
          * The gateway handles all IP traffic (marked as EXTERNAL_DATA_TYPE) and passes it to the associated network interface
          * RF24Network user payloads are loaded into the user cache
          */
-        gw.poll(2);
+        gw.poll(1);
 
         /** Mesh address/id printout **/
         /*******************************/
@@ -343,19 +344,22 @@ int main()
         //checking for deviations from the default configuration (1MBPS data rate)
         //The mesh is restarted on failure and failure count logged to failLog.txt
         //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
-        if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
-        {
-
-            std::ofstream myFile;
-            myFile.open("failLog.txt");
-            if (myFile.is_open())
+        if (millis() - failTimer > 1000) {
+            failTimer = millis();
+            if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
             {
-                myFile << ++failCounter << "\n";
+
+                std::ofstream myFile;
+                myFile.open("failLog.txt");
+                if (myFile.is_open())
+                {
+                    myFile << ++failCounter << "\n";
+                }
+                myFile.close();
+                mesh.begin(75);
+                delay(1000);
+                radio.failureDetected = 0;
             }
-            myFile.close();
-            mesh.begin();
-            delay(1000);
-            radio.failureDetected = 0;
         }
 
     } //while 1

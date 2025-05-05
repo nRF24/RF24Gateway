@@ -136,6 +136,7 @@ int main()
     /***********************LOOP***************************************/
     bool ok = true;
     uint32_t failCounter = 0;
+    uint32_t failTimer = 0;
 
     while (1)
     {
@@ -160,38 +161,34 @@ int main()
                 }
             }
         }
-        if (ok)
+        gw.update();
+
+        /** Read RF24Network Payloads (Do nothing with them currently) **/
+        /*******************************/
+        if (network.available())
         {
-            gw.update();
+            ++networkPacketsRX;
+            RF24NetworkHeader header;
+            size_t size = network.peek(header);
+            uint8_t buf[size];
 
-            /** Read RF24Network Payloads (Do nothing with them currently) **/
-            /*******************************/
-            if (network.available())
+            if (header.type == 1)
             {
-                ++networkPacketsRX;
-                RF24NetworkHeader header;
-                size_t size = network.peek(header);
-                uint8_t buf[size];
-
-                if (header.type == 1)
+                struct timeStruct
                 {
-                    struct timeStruct
-                    {
-                        uint8_t hr;
-                        uint8_t min;
-                    } myTime;
+                    uint8_t hr;
+                    uint8_t min;
+                } myTime;
+                time_t mTime;
+                time(&mTime);
+                struct tm* tm = localtime(&mTime);
 
-                    time_t mTime;
-                    time(&mTime);
-                    struct tm* tm = localtime(&mTime);
-
-                    myTime.hr = tm->tm_hour;
-                    myTime.min = tm->tm_min;
-                    RF24NetworkHeader hdr(header.from_node, 1);
-                    network.write(hdr, &myTime, sizeof(myTime));
-                }
-                network.read(header, &buf, size);
+                myTime.hr = tm->tm_hour;
+                myTime.min = tm->tm_min;
+                RF24NetworkHeader hdr(header.from_node, 1);
+                network.write(hdr, &myTime, sizeof(myTime));
             }
+            network.read(header, &buf, size);
         }
 
         /** Mesh address/id printout **/
@@ -316,18 +313,21 @@ int main()
         //checking for deviations from the default configuration (1MBPS data rate)
         //The mesh is restarted on failure and failure count logged to failLog.txt
         //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
-        if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
-        {
-            radio.failureDetected = 0;
-            std::ofstream myFile;
-            myFile.open("failLog.txt");
-            if (myFile.is_open())
+        if (millis() - failTimer > 1000) {
+            failTimer = millis();
+            if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
             {
-                myFile << ++failCounter << "\n";
-                myFile.close();
+                radio.failureDetected = 0;
+                std::ofstream myFile;
+                myFile.open("failLog.txt");
+                if (myFile.is_open())
+                {
+                    myFile << ++failCounter << "\n";
+                    myFile.close();
+                }
+                delay(500);
+                mesh.begin();
             }
-            delay(500);
-            mesh.begin();
         }
 
         delay(2);
@@ -672,7 +672,7 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
     wprintw(rf24Pad, "RX Packets(user): %lu\n", networkPacketsRX);
-    wprintw(rf24Pad, "Network Overruns: %u", gw.networkOverruns);
+    wprintw(rf24Pad, "Network Overruns: %u\n", gw.networkOverruns);
     wprintw(rf24Pad, "Network Corruption: %u", gw.networkCorruption);
 
     if (padSelection == 1)

@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 
     gw.setIP(ip, subnet);
     uint32_t failCounter = 0;
+    uint32_t failTimer = 0;
 
     while (1)
     {
@@ -64,18 +65,21 @@ int main(int argc, char** argv)
         //checking for deviations from the default configuration (1MBPS data rate)
         //The mesh is restarted on failure and failure count logged to failLog.txt
         //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
-        if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
-        {
-            radio.failureDetected = 0;
-            std::ofstream myFile;
-            myFile.open("failLog.txt");
-            if (myFile.is_open())
+        if (millis() - failTimer > 1000) {
+            failTimer = millis();
+            if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
             {
-                myFile << ++failCounter << "\n";
-                myFile.close();
+                radio.failureDetected = 0;
+                std::ofstream myFile;
+                myFile.open("failLog.txt");
+                if (myFile.is_open())
+                {
+                    myFile << ++failCounter << "\n";
+                    myFile.close();
+                }
+                delay(500);
+                mesh.begin();
             }
-            delay(500);
-            mesh.begin();
         }
     }
     return 0;
