@@ -132,7 +132,7 @@ int main()
     timeout(0);
 
     drawMain();
-    if(!mesh.getNodeID()){
+    if (!mesh.getNodeID()) {
         showConnPad = true;
     }
     /******************************************************************/
@@ -220,7 +220,7 @@ int main()
             }
         } //MeshInfo Timer
 
-        if(!handleKeyPad()){
+        if (!handleKeyPad()) {
             return 0;
         }
 
@@ -654,102 +654,103 @@ void drawConnPad()
 
 /******************************************************************/
 
-        /** Handle keyboard input **/
-        /*******************************/
+/** Handle keyboard input **/
+/*******************************/
 
-bool handleKeyPad(){
-    
-        int myChar = getch();
+bool handleKeyPad()
+{
 
-        if (myChar > -1)
+    int myChar = getch();
+
+    if (myChar > -1)
+    {
+        //cout << myChar << endl;
+        switch (myChar)
         {
-            //cout << myChar << endl;
-            switch (myChar)
-            {
-                // a: En/Disable display of active connections
-                case 'a':
-                    if (topo) {
-                        showConnPad = true;
-                    }
-                    else {
-                        showConnPad = !showConnPad;
-                    }
-                    topo = false;
-                    if (!showConnPad)
-                    {
-                        werase(connPad);
-                        prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
-                        drawMain();
-                    }
-                    break;
-                // w: Increase frame-rate of curses display
-                case 'w':
-                    if (updateRate > 100)
-                    {
-                        updateRate -= 100;
-                    }
-                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
-                    refresh();
-                    break;
-                // s: Decrease frame-rate of curses display
-                case 's':
-                    updateRate += 100;
-                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
-                    refresh();
-                    break;
-                // c: Display IP configuration menu
-                case 'c':
-                    drawCfg(1);
-                    break;
-                // h: Display help menu
-                case 'h':
-                    drawHelp();
-                    break;
-                case 'x':
-                    erase();
-                    endwin();
-                    return 0;
-                    break;
-                case 'A':
-                    if (padSelection == 0)
-                    {
-                        meshScroll++;
-                    }
-                    else if (padSelection == 1)
-                    {
-                        connScroll++;
-                    }
-                    break;
-                case 'B':
-                    if (padSelection == 0)
-                    {
-                        meshScroll--;
-                    }
-                    else if (padSelection == 1)
-                    {
-                        connScroll--;
-                    }
-                    break;
-                case 'C':
-                    padSelection++;
-                    padSelection = std::min(padSelection, 1);
-                    break; //right
-                case 'D':
-                    padSelection--;
-                    padSelection = std::max(padSelection, 0);
-                    break; //left
-                    meshScroll = std::max(meshScroll, 0);
-                    connScroll = std::max(connScroll, 0);
-                    meshInfoTimer = 0;
-                case 't':
-                    //drawTopology();
-                    topo = true;
+            // a: En/Disable display of active connections
+            case 'a':
+                if (topo) {
+                    showConnPad = true;
+                }
+                else {
                     showConnPad = !showConnPad;
-                    clear();
+                }
+                topo = false;
+                if (!showConnPad)
+                {
+                    werase(connPad);
+                    prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
                     drawMain();
-                    meshInfoTimer -= 1000;
-                    break;
-            }
+                }
+                break;
+            // w: Increase frame-rate of curses display
+            case 'w':
+                if (updateRate > 100)
+                {
+                    updateRate -= 100;
+                }
+                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
+                refresh();
+                break;
+            // s: Decrease frame-rate of curses display
+            case 's':
+                updateRate += 100;
+                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
+                refresh();
+                break;
+            // c: Display IP configuration menu
+            case 'c':
+                drawCfg(1);
+                break;
+            // h: Display help menu
+            case 'h':
+                drawHelp();
+                break;
+            case 'x':
+                erase();
+                endwin();
+                return 0;
+                break;
+            case 'A':
+                if (padSelection == 0)
+                {
+                    meshScroll++;
+                }
+                else if (padSelection == 1)
+                {
+                    connScroll++;
+                }
+                break;
+            case 'B':
+                if (padSelection == 0)
+                {
+                    meshScroll--;
+                }
+                else if (padSelection == 1)
+                {
+                    connScroll--;
+                }
+                break;
+            case 'C':
+                padSelection++;
+                padSelection = std::min(padSelection, 1);
+                break; //right
+            case 'D':
+                padSelection--;
+                padSelection = std::max(padSelection, 0);
+                break; //left
+                meshScroll = std::max(meshScroll, 0);
+                connScroll = std::max(connScroll, 0);
+                meshInfoTimer = 0;
+            case 't':
+                //drawTopology();
+                topo = true;
+                showConnPad = !showConnPad;
+                clear();
+                drawMain();
+                meshInfoTimer -= 1000;
+                break;
         }
-        return 1;
+    }
+    return 1;
 }
