@@ -232,7 +232,7 @@ int main()
             {
                 drawConnPad();
                 wscrl(connPad, connScroll);
-                prefresh(connPad, 0, 0, 18, 1, maxX - 1, maxY - 2);
+                prefresh(connPad, 0, 0, 17, 1, maxX - 1, maxY - 2);
             }
         } //MeshInfo Timer
 
