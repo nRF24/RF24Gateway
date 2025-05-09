@@ -718,7 +718,7 @@ bool handleKeyPad()
                 }
                 else if (padSelection == 1)
                 {
-                    connScroll++;
+                    connScroll = rf24_max(connScroll++, 0);
                 }
                 break;
             case 'B':
