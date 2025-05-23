@@ -68,6 +68,7 @@ void drawMeshPad(void);
 void drawConnPad(void);
 void drawRF24Pad(void);
 void drawTopology();
+bool handleKeyPad();
 
 int maxX, maxY;
 int padSelection = 0;
@@ -81,7 +82,7 @@ uint32_t mesh_timer = 0;
 size_t networkPacketsRX = 0;
 std::string subIP;
 std::string tunStr("tun_nrf24");
-bool showConnPad;
+bool showConnPad = false;
 bool topo = true;
 
 float bRX;
@@ -131,11 +132,14 @@ int main()
     timeout(0);
 
     drawMain();
-
+    if (!mesh.getNodeID()) {
+        showConnPad = true;
+    }
     /******************************************************************/
     /***********************LOOP***************************************/
     bool ok = true;
     uint32_t failCounter = 0;
+    uint32_t failTimer = 0;
 
     while (1)
     {
@@ -160,38 +164,34 @@ int main()
                 }
             }
         }
-        if (ok)
+        gw.update();
+
+        /** Read RF24Network Payloads (Do nothing with them currently) **/
+        /*******************************/
+        if (network.available())
         {
-            gw.update();
+            ++networkPacketsRX;
+            RF24NetworkHeader header;
+            size_t size = network.peek(header);
+            uint8_t buf[size];
 
-            /** Read RF24Network Payloads (Do nothing with them currently) **/
-            /*******************************/
-            if (network.available())
+            if (header.type == 1)
             {
-                ++networkPacketsRX;
-                RF24NetworkHeader header;
-                size_t size = network.peek(header);
-                uint8_t buf[size];
-
-                if (header.type == 1)
+                struct timeStruct
                 {
-                    struct timeStruct
-                    {
-                        uint8_t hr;
-                        uint8_t min;
-                    } myTime;
+                    uint8_t hr;
+                    uint8_t min;
+                } myTime;
+                time_t mTime;
+                time(&mTime);
+                struct tm* tm = localtime(&mTime);
 
-                    time_t mTime;
-                    time(&mTime);
-                    struct tm* tm = localtime(&mTime);
-
-                    myTime.hr = tm->tm_hour;
-                    myTime.min = tm->tm_min;
-                    RF24NetworkHeader hdr(header.from_node, 1);
-                    network.write(hdr, &myTime, sizeof(myTime));
-                }
-                network.read(header, &buf, size);
+                myTime.hr = tm->tm_hour;
+                myTime.min = tm->tm_min;
+                RF24NetworkHeader hdr(header.from_node, 1);
+                network.write(hdr, &myTime, sizeof(myTime));
             }
+            network.read(header, &buf, size);
         }
 
         /** Mesh address/id printout **/
@@ -220,114 +220,32 @@ int main()
             }
         } //MeshInfo Timer
 
-        /** Handle keyboard input **/
-        /*******************************/
-        int myChar = getch();
-
-        if (myChar > -1)
-        {
-            //cout << myChar << endl;
-            switch (myChar)
-            {
-                // a: En/Disable display of active connections
-                case 'a':
-                    if (topo) {
-                        showConnPad = true;
-                    }
-                    else {
-                        showConnPad = !showConnPad;
-                    }
-                    topo = false;
-                    if (!showConnPad)
-                    {
-                        werase(connPad);
-                        prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
-                        drawMain();
-                    }
-                    break;
-                // w: Increase frame-rate of curses display
-                case 'w':
-                    if (updateRate > 100)
-                    {
-                        updateRate -= 100;
-                    }
-                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
-                    refresh();
-                    break;
-                // s: Decrease frame-rate of curses display
-                case 's':
-                    updateRate += 100;
-                    mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
-                    refresh();
-                    break;
-                // c: Display IP configuration menu
-                case 'c':
-                    drawCfg(1);
-                    break;
-                // h: Display help menu
-                case 'h':
-                    drawHelp();
-                    break;
-                case 'x':
-                    erase();
-                    endwin();
-                    return 0;
-                    break;
-                case 'A':
-                    if (padSelection == 0)
-                    {
-                        meshScroll++;
-                    }
-                    else if (padSelection == 1)
-                    {
-                        connScroll++;
-                    }
-                    break;
-                case 'B':
-                    if (padSelection == 0)
-                    {
-                        meshScroll--;
-                    }
-                    else if (padSelection == 1)
-                    {
-                        connScroll--;
-                    }
-                    break;
-                case 'C':
-                    padSelection++;
-                    padSelection = std::min(padSelection, 1);
-                    break; //right
-                case 'D':
-                    padSelection--;
-                    padSelection = std::max(padSelection, 0);
-                    break; //left
-                    meshScroll = std::max(meshScroll, 0);
-                    connScroll = std::max(connScroll, 0);
-                    meshInfoTimer = 0;
-                case 't':
-                    //drawTopology();
-                    topo = true;
-                    showConnPad = true;
-                    break;
-            }
+        if (!handleKeyPad()) {
+            return 0;
         }
 
         //This section checks for failures detected by RF24 & RF24Network as well as
         //checking for deviations from the default configuration (1MBPS data rate)
         //The mesh is restarted on failure and failure count logged to failLog.txt
         //This makes the radios hot-swappable, disconnect & reconnect as desired, it should come up automatically
-        if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
-        {
-            radio.failureDetected = 0;
-            std::ofstream myFile;
-            myFile.open("failLog.txt");
-            if (myFile.is_open())
+        if (millis() - failTimer > 1000) {
+            failTimer = millis();
+            if (radio.failureDetected > 0 || radio.getDataRate() != RF24_1MBPS)
             {
-                myFile << ++failCounter << "\n";
-                myFile.close();
+                radio.failureDetected = 0;
+                std::ofstream myFile;
+                myFile.open("failLog.txt");
+                if (myFile.is_open())
+                {
+                    myFile << ++failCounter << "\n";
+                    myFile.close();
+                }
+                delay(500);
+                mesh.begin();
+                clear();
+                drawMain();
+                meshInfoTimer -= 1000;
             }
-            delay(500);
-            mesh.begin();
         }
 
         delay(2);
@@ -672,7 +590,7 @@ void drawRF24Pad()
     wprintw(rf24Pad, "TX Drops: %u\n", fail);
 #endif
     wprintw(rf24Pad, "RX Packets(user): %lu\n", networkPacketsRX);
-    wprintw(rf24Pad, "Network Overruns: %u", gw.networkOverruns);
+    wprintw(rf24Pad, "Network Overruns: %u\n", gw.networkOverruns);
     wprintw(rf24Pad, "Network Corruption: %u", gw.networkCorruption);
 
     if (padSelection == 1)
@@ -735,3 +653,100 @@ void drawConnPad()
 }
 
 /******************************************************************/
+
+/** Handle keyboard input **/
+/*******************************/
+
+bool handleKeyPad()
+{
+
+    int myChar = getch();
+
+    if (myChar > -1)
+    {
+        //cout << myChar << endl;
+        switch (myChar)
+        {
+            // a: En/Disable display of active connections
+            case 'a':
+                if (topo) {
+                    showConnPad = true;
+                }
+                else {
+                    showConnPad = !showConnPad;
+                }
+                topo = false;
+                if (!showConnPad)
+                {
+                    werase(connPad);
+                    prefresh(connPad, 0, 0, 15, 1, maxX - 1, maxY - 2);
+                    drawMain();
+                }
+                break;
+            // w: Increase frame-rate of curses display
+            case 'w':
+                if (updateRate > 100)
+                {
+                    updateRate -= 100;
+                }
+                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps", 1000.0 / updateRate);
+                refresh();
+                break;
+            // s: Decrease frame-rate of curses display
+            case 's':
+                updateRate += 100;
+                mvwprintw(win, 2, 27, "Refresh Rate: %.1f fps   \t", 1000.0 / updateRate);
+                refresh();
+                break;
+            // c: Display IP configuration menu
+            case 'c':
+                drawCfg(1);
+                break;
+            // h: Display help menu
+            case 'h':
+                drawHelp();
+                break;
+            case 'x':
+                erase();
+                endwin();
+                return 0;
+                break;
+            case 'A':
+                if (padSelection == 0)
+                {
+                    meshScroll++;
+                }
+                else if (padSelection == 1)
+                {
+                    connScroll = rf24_max(connScroll++, 0);
+                }
+                break;
+            case 'B':
+                if (padSelection == 0)
+                {
+                    meshScroll--;
+                }
+                else if (padSelection == 1)
+                {
+                    connScroll--;
+                }
+                break;
+            case 'C':
+                padSelection++;
+                padSelection = std::min(padSelection, 1);
+                break; //right
+            case 'D':
+                padSelection--;
+                padSelection = std::max(padSelection, 0);
+                break; //left
+            case 't':
+                topo = true;
+                showConnPad = !showConnPad;
+                clear();
+                drawMain();
+                meshInfoTimer -= 1000;
+                break;
+        }
+    }
+    return 1;
+}
