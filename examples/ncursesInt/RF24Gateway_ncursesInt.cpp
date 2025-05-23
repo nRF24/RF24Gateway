@@ -766,9 +766,6 @@ bool handleKeyPad()
                 endwin();
                 return 0;
                 break;
-                meshScroll = std::max(meshScroll, 0);
-                connScroll = std::max(connScroll, 0);
-                meshInfoTimer = 0;
             case 't':
                 topo = true;
                 showConnPad = !showConnPad;

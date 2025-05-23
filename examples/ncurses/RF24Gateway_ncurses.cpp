@@ -739,11 +739,7 @@ bool handleKeyPad()
                 padSelection--;
                 padSelection = std::max(padSelection, 0);
                 break; //left
-                meshScroll = std::max(meshScroll, 0);
-                connScroll = std::max(connScroll, 0);
-                meshInfoTimer = 0;
             case 't':
-                //drawTopology();
                 topo = true;
                 showConnPad = !showConnPad;
                 clear();
