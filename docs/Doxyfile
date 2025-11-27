@@ -17,7 +17,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 
-PROJECT_ICON = favicon.ico
+PROJECT_ICON = images/favicon.ico
 
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded by
 # double-quotes, unless you are using Doxywizard) that should identify the

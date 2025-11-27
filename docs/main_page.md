@@ -15,40 +15,47 @@ Introducing **RF24Network, RF24Mesh & RF24Gateway v2.0** with some *significant 
 in order to support a range of ESB enabled radios, most recently NRF52x radios.
 
 **Important Notes:**
+
 - Any network layer that uses v2 needs to have RF24Network/RF24Mesh dependencies of v2 or newer. RF24 v1.x is an exception here.
 - General usage should remain backward compatible, see the included examples of the related libraries for more info
 - Any third party libs that extend the network/mesh layer may also need to be updated to incorporate the new templated class prototypes:
-```cpp
-template<class radio_t>
-class ESBNetwork;
-  
-template<class network_t, class radio_t>
-class ESBMesh;
-```
+
+   ```cpp
+   template<class radio_t>
+   class ESBNetwork;
+
+   template<class network_t, class radio_t>
+   class ESBMesh;
+   ```
+
 - Third party libs should also be able to use the backward-compatible typedef in their template:
   - ESBGateway.h:
-  ```cpp
-  template<typename network_t, typename mesh_t>
-  class ESBGateway
-  ```
+
+   ```cpp
+   template<typename network_t, typename mesh_t>
+   class ESBGateway
+   ```
+
   and inform the compiler what types they intend to support:
   - ESBGateway.cpp:
-  ```cpp
-  template class ESBGateway<RF24Network, RF24Mesh>;
-  ```  
+
+   ```cpp
+   template class ESBGateway<RF24Network, RF24Mesh>;
+   ```
+
 - The auto installers do not perform a version check like package managers, so having the correct versions of the software is important.
 - We *will* be maintaining the v1.x versions with bugfixes etc for those who cannot or do not wish to migrate to the newer template approach.
 
 ## Installation
 
-See http://nRF24.github.io/RF24 for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
+See <http://nRF24.github.io/RF24> for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
 
 After running the installer, RF24Gateway will be installed at rf24libs/RF24Gateway. [**Examples**](examples.html) are included for operating the gateway
 as well as client scripts & programs to control nodes via http requests.
 
 Note: RF24Gateway is tested with and defaults to using RF24Mesh. Sensor nodes must also use RF24Mesh or be statically assigned within RF24Mesh.
 
-See http://nRF24.github.io/RF24Ethernet/ for related documentation for use with RF24Gateway.
+See <http://nRF24.github.io/RF24Ethernet/> for related documentation for use with RF24Gateway.
 
 ## How It Works
 
@@ -90,9 +97,10 @@ To maximize throughput between Raspberry Pi or other Linux devices, run the foll
 sudo sysctl net.ipv4.tcp_wmem="1500 1500 1500"
 sudo sysctl net.ipv4.tcp_rmem="1500 1500 1500"
 ```
+
 These changes are only temporary and need to be run each time after reboot of the operating system. To make them permanent, edit `/etc/sysctl.conf`
 
-See http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html for more info
+See <http://nRF24.github.io/RF24Ethernet/ConfigAndSetup.html> for more info
 
 ## Advanced Configuration
 
@@ -113,7 +121,8 @@ To fully enable routing beyond the RPi devices, a routing table needs to be adde
 
 ## Network Configuration Example
 
-Local WiFi/Ethernet Network (Windows,Linux,RPi devices etc) - 10.10.1.0 - 255.255.255.0 ( 10.10.1.x network ) <br>
+Local WiFi/Ethernet Network (Windows,Linux,RPi devices etc) - 10.10.1.0 - 255.255.255.0 ( 10.10.1.x network )
+
 RPi devices (tun_nrf24 interfaces & all connected devices) - 10.1.0.0 - 255.255.0.0 ( 10.1.x.x network )
 
 ### Explanation
@@ -182,6 +191,6 @@ Examples are:
    0.0.0.0 0.0.0.0 10.10.3.32
    ```
 
-# Example: create TCP/IP link between two Raspberry Pi
+## Example: create TCP/IP link between two Raspberry Pi
 
-This example demonstrates how a tcpip link could be created between two RPIs: [Example LINK](md_docs_2rpi__tcpip__link.html)
+This example demonstrates how a TCP/IP link could be created between two RPIs: [Example LINK](rpi_tcpip_link.md)

@@ -1,4 +1,4 @@
-# Please browse the docs from http://nrf24.github.io/RF24Gateway
+# Please browse the docs from <http://nrf24.github.io/RF24Gateway>
 
 ## Intended for use in Doxygen
 
