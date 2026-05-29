@@ -494,9 +494,10 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 
         std::uint8_t* tmp = msgTx->message;
 
+        // Ensure that at the length of the payload includes at least the MAC address
         if (msgTx->size < 6) {
             txQueue.pop();
-            return;
+            continue;
         }
 
         if (!config_TUN) { // TAP can use RF24Mesh for address assignment, but will still use ARP for address resolution
@@ -556,6 +557,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
         }
         else { // TUN always needs to use RF24Mesh for address assignment AND resolution
 
+            // Ensure that at least the 20-byte TCP/IP header is available
             if (msgTx->size < 20) {
                 txQueue.pop();
                 continue;
