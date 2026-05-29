@@ -396,7 +396,7 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
 
         msgStruct msg;
 
-        if (f.message_size > 0) {
+        if (f.message_size > 0 && f.message_size <= MAX_PAYLOAD_SIZE) {
             memcpy(&msg.message, &f.message_buffer, f.message_size);
             msg.size = f.message_size;
 
@@ -494,6 +494,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 
         std::uint8_t* tmp = msgTx->message;
 
+        if (msgTx->size < 6) {
+            txQueue.pop();
+            return;
+        }
+
         if (!config_TUN) { // TAP can use RF24Mesh for address assignment, but will still use ARP for address resolution
 
             uint32_t RF24_STR = 0x34324652; // Identifies the mac as an RF24 mac
@@ -550,6 +555,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
             }
         }
         else { // TUN always needs to use RF24Mesh for address assignment AND resolution
+
+            if (msgTx->size < 20) {
+                txQueue.pop();
+                continue;
+            }
 
             uint8_t lastOctet = tmp[19];
             int16_t meshAddr;
@@ -758,6 +768,9 @@ void ESBGateway<mesh_t, network_t, radio_t>::sendUDP(uint8_t nodeID, RF24Network
 
     uint8_t buffer[MAX_PAYLOAD_SIZE + 11];
 
+    if (frame.message_size > MAX_PAYLOAD_SIZE) {
+        return;
+    }
     memcpy(&buffer[0], &nodeID, 1);
     memcpy(&buffer[1], &frame.header, 8);
     memcpy(&buffer[9], &frame.message_size, 2);
