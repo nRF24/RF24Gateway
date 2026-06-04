@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use nushell as task runner by \@2bndy5 in [#54](https://github.com/nRF24/RF24Gateway/pull/54)
 - Revise CI by \@2bndy5 in [#55](https://github.com/nRF24/RF24Gateway/pull/55)
 - Inform AI agents about dev workflows by \@2bndy5 in [#57](https://github.com/nRF24/RF24Gateway/pull/57)
+- Bump version to v2.1.3 by \@TMRh20 in [`e7a5ee5`](https://github.com/nRF24/RF24Gateway/commit/e7a5ee5046f7afe3d01c4a37cbf62d3e2d517f4d)
 
 [2.1.3]: https://github.com/nRF24/RF24Gateway/compare/v2.1.2...v2.1.3
 
