@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 <!-- markdownlint-disable MD024 -->
 
+## [2.1.5] - 2026-06-06
+
+### <!-- 9 --> 🗨️ Changed
+
+- Rollover-safe millis call by \@TMRh20 in [#59](https://github.com/nRF24/RF24Gateway/pull/59)
+
+[2.1.5]: https://github.com/nRF24/RF24Gateway/compare/v2.1.4...v2.1.5
+
+Full commit diff: [`v2.1.4...v2.1.5`][2.1.5]
+
+## [2.1.4] - 2026-06-04
+
+### <!-- 9 --> 🗨️ Changed
+
+- Bump version to v2.1.4 by \@TMRh20 in [`ed0996b`](https://github.com/nRF24/RF24Gateway/commit/ed0996b877b66bd1c321ca2b062f3b0bf74310da)
+
+[2.1.4]: https://github.com/nRF24/RF24Gateway/compare/v2.1.3...v2.1.4
+
+Full commit diff: [`v2.1.3...v2.1.4`][2.1.4]
+
 ## [2.1.3] - 2026-05-31
 
 ### <!-- 1 --> 🚀 Added
