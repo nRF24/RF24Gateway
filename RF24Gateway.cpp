@@ -468,12 +468,12 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioOut()
 {
     bool ok = 0;
 
-    uint32_t txQueueTimer = millis() + 750;
+    uint32_t txQueueTimer = millis();
 
     while (!txQueue.empty() && network.external_queue.size() == 0) {
 
         uint32_t queueSize = txQueue.size();
-        if (millis() > txQueueTimer && queueSize >= 10) {
+        if (millis() - txQueueTimer > 750 && queueSize >= 10) {
             for (uint32_t i = 0; i < queueSize; i++) {
                 droppedIncoming++;
                 txQueue.pop();
