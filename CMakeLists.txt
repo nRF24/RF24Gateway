@@ -12,6 +12,7 @@ add_compile_options(-Ofast -Wall)
 
 # allow using CMake options to adjust RF24Network_config.h without modiying source code
 option(RF24GATEWAY_DEBUG_LEVEL "adjust the verbosity of the debugging messages" 0)
+option(RF24NETWORK_CCM "build ESBGateway for RF24CCM (requires RF24Network and RF24Mesh built with RF24NETWORK_CCM)" OFF)
 
 # detect CPU and add compiler flags accordingly
 include(cmake/detectCPU.cmake)
@@ -82,6 +83,10 @@ endif()
 if(RF24GATEWAY_DEBUG_LEVEL GREATER 0)
     message(STATUS "RF24GATEWAY_DEBUG_LEVEL set to ${RF24GATEWAY_DEBUG_LEVEL}")
     target_compile_definitions(${LibTargetName} PUBLIC RF24GATEWAY_DEBUG_LEVEL=${RF24GATEWAY_DEBUG_LEVEL})
+endif()
+if(RF24NETWORK_CCM)
+    message(STATUS "RF24NETWORK_CCM asserted")
+    target_compile_definitions(${LibTargetName} PUBLIC RF24NETWORK_CCM)
 endif()
 
 ###########################
