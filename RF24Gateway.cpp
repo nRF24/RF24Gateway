@@ -13,6 +13,8 @@ template<class mesh_t, class network_t, class radio_t>
 ESBGateway<mesh_t, network_t, radio_t>::ESBGateway(radio_t& _radio, network_t& _network, mesh_t& _mesh) : radio(_radio), network(_network), mesh(_mesh)
 {
     gotInterrupt = false;
+    droppedSpoofed = 0;
+    routingTableSize = 0;
 }
 
 /***************************************************************************************/
@@ -49,7 +51,9 @@ bool ESBGateway<mesh_t, network_t, radio_t>::begin(bool configTUN, bool meshEnab
 
     dataRate = data_rate;
 
-    configDevice(address);
+    if (configDevice(address) < 0) {
+        return false;
+    }
     mesh_enabled = meshEnable;
     thisNodeID = mesh_nodeID;
     thisNodeAddress = address;
@@ -171,14 +175,12 @@ int ESBGateway<mesh_t, network_t, radio_t>::configDevice(uint16_t address)
         flags = IFF_TAP | IFF_NO_PI | IFF_MULTI_QUEUE;
     }
     tunFd = allocateTunDevice(tunName, flags, address);
-#if RF24GATEWAY_DEBUG_LEVEL >= 1
-    if (tunFd >= 0) {
-        std::cout << "RF24Gw: Successfully attached to tun/tap device " << tunTapDevice << std::endl;
-    }
-    else {
+    if (tunFd < 0) {
         std::cerr << "RF24Gw: Error allocating tun/tap interface: " << tunFd << std::endl;
-        exit(1);
+        return tunFd;
     }
+#if RF24GATEWAY_DEBUG_LEVEL >= 1
+    std::cout << "RF24Gw: Successfully attached to tun/tap device " << tunTapDevice << std::endl;
 #endif
     return tunFd;
 }
@@ -206,24 +208,22 @@ int ESBGateway<mesh_t, network_t, radio_t>::allocateTunDevice(char* dev, int fla
 
     // Create device
     if (ioctl(fd, TUNSETIFF, (void*)&ifr) < 0) {
-        // close(fd);
-        //#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
+        close(fd);
         std::cerr << "RF24Gw: Error: enabling TUNSETIFF" << std::endl;
         uint32_t UID = getuid();
         if (UID) {
+            const char* login = getlogin();
             std::cout << "Not running as root, preconfigure the interface as follows" << std::endl;
-            std::cout << "sudo ip tuntap add dev tun_nrf24 mode tun user " << getlogin() << " multi_queue" << std::endl;
+            std::cout << "sudo ip tuntap add dev tun_nrf24 mode tun user " << (login ? login : "<user>") << " multi_queue" << std::endl;
             std::cout << "sudo ifconfig tun_nrf24 10.10.2.2/24" << std::endl;
         }
         return -1;
-        //#endif
     }
 
     // Make persistent
     if (ioctl(fd, TUNSETPERSIST, 1) < 0) {
-#if (RF24GATEWAY_DEBUG_LEVEL >= 1)
+        close(fd);
         std::cerr << "RF24Gw: Error: enabling TUNSETPERSIST" << std::endl;
-#endif
         return -1;
     }
 
@@ -397,6 +397,11 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
         msgStruct msg;
 
         if (f.message_size > 0 && f.message_size <= MAX_PAYLOAD_SIZE) {
+            if (!validSource(f)) {
+                ++droppedSpoofed;
+                network.external_queue.pop();
+                continue;
+            }
             memcpy(&msg.message, &f.message_buffer, f.message_size);
             msg.size = f.message_size;
 
@@ -421,6 +426,45 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRadioIn()
         }
         network.external_queue.pop();
     }
+}
+
+/***************************************************************************************/
+
+template<class mesh_t, class network_t, class radio_t>
+bool ESBGateway<mesh_t, network_t, radio_t>::validSource(RF24NetworkFrame& frame)
+{
+    // Only the master assigns mesh addresses, so only it can match a sender to its IP.
+    // TAP frames carry Ethernet headers and are left to ARP.
+    if (!config_TUN || !mesh_enabled || thisNodeID > 0) {
+        return true;
+    }
+
+    // IPv4 only, with at least a full IP header
+    if (frame.message_size < 20 || (frame.message_buffer[0] >> 4) != 4) {
+        return false;
+    }
+
+    int16_t senderID = mesh.getNodeID(frame.header.from_node);
+    if (senderID < 0) {
+        return false; // Sender has no address assigned by this master
+    }
+
+    struct in_addr ipSource;
+    memcpy(&ipSource.s_addr, &frame.message_buffer[12], 4);
+
+    // Inside the RF24Mesh network: the last octet must be the sender's nodeID
+    if ((getLocalIP().s_addr & 0x00FFFFFF) == (ipSource.s_addr & 0x00FFFFFF)) {
+        return frame.message_buffer[15] == (uint8_t)senderID;
+    }
+
+    // Outside it: only a node listed as the gateway for that subnet in routing.txt may send
+    for (int i = 0; i < routingTableSize; i++) {
+        uint32_t mask = routingStruct[i].mask.s_addr;
+        if ((ipSource.s_addr & mask) == (routingStruct[i].ip.s_addr & mask) && (uint8_t)(routingStruct[i].gw.s_addr >> 24) == (uint8_t)senderID) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /***************************************************************************************/
@@ -636,15 +680,29 @@ void ESBGateway<mesh_t, network_t, radio_t>::handleRX(uint32_t waitDelay)
     uint8_t buffer[MAX_PAYLOAD_SIZE];
     int nread;
 
-    FD_ZERO(&socketSet);
-    FD_SET(tunFd, &socketSet);
-
-    selectTimeout.tv_sec = 0;
-    selectTimeout.tv_usec = waitDelay * 1000;
+    if (tunFd < 0) {
+        return;
+    }
 
     uint32_t tunTimeout = millis();
 
-    while (select(tunFd + 1, &socketSet, NULL, NULL, &selectTimeout) != 0) {
+    while (true) {
+        // select() modifies both of these, so they must be reset before every call
+        FD_ZERO(&socketSet);
+        FD_SET(tunFd, &socketSet);
+        selectTimeout.tv_sec = 0;
+        selectTimeout.tv_usec = waitDelay * 1000;
+
+        int ready = select(tunFd + 1, &socketSet, NULL, NULL, &selectTimeout);
+        if (ready == 0) {
+            return;
+        }
+        if (ready < 0) {
+            if (errno == EINTR && millis() - tunTimeout <= 750) {
+                continue;
+            }
+            return;
+        }
         if (FD_ISSET(tunFd, &socketSet)) {
             if ((nread = read(tunFd, buffer, MAX_PAYLOAD_SIZE)) >= 0) {
 #if (RF24GATEWAY_DEBUG_LEVEL >= 1)
@@ -681,7 +739,7 @@ template<class mesh_t, class network_t, class radio_t>
 void ESBGateway<mesh_t, network_t, radio_t>::handleTX()
 {
 
-    if (rxQueue.size() < 1)
+    if (rxQueue.size() < 1 || tunFd < 0)
     {
         return;
     }

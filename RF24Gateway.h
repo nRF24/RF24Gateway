@@ -24,6 +24,7 @@
 #include <sys/ioctl.h>
 #include <netdb.h>
 #include <fstream>
+#include <cerrno>
 
 #include <RF24/RF24.h>
 #include <RF24Network/RF24Network.h>
@@ -168,6 +169,12 @@ public:
         return droppedIncoming;
     }
 
+    /**
+     * How many packets received from the radio were dropped because their source IP
+     * did not match the mesh node that sent them (TUN mode, master node only)
+     */
+    uint32_t droppedSpoofed;
+
     void sendUDP(uint8_t nodeID, RF24NetworkFrame frame);
 
     /**@}*/
@@ -221,7 +228,7 @@ public:
     /**
      * The size of the existing routing table loaded into memory. See routeStruct
      */
-    uint8_t routingTableSize;
+    uint16_t routingTableSize;
 
     /**
      * How many times the network has returned error 160 NETWORK_OVERRUN
@@ -253,6 +260,7 @@ private:
 
     void handleRadioOut();
     void handleRadioIn();
+    bool validSource(RF24NetworkFrame& frame);
     void handleRX(uint32_t waitDelay = 0);
     void handleTX();
     volatile bool gotInterrupt;
