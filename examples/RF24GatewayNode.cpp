@@ -8,10 +8,30 @@ RF24Network network(radio);
 RF24Mesh mesh(radio, network);
 RF24Gateway gw(radio, network, mesh);
 
+// AES-CCM encryption (compatible with nRF52/nRF54 nodes using nrf_to_nrf with radio.enableEncryption = true):
+// Replace the four declarations above with the ones below, and uncomment the encryption lines in main().
+// - RF24Network, RF24Mesh and RF24Gateway must be built with -DRF24NETWORK_CCM=ON (install.sh asks)
+// - Every node must use the same key. Nodes without encryption, e.g. Arduino + nRF24L01, can't communicate
+//   with an encrypting gateway, so run them on a different channel
+// - Each radio frame carries 12 bytes of data instead of 24, so throughput is lower. nrf_to_nrf nodes must keep
+//   32 byte frames: don't call radio.enableDynamicPayloads(123) on them
+//#include <RF24Network/RF24CCM.h>
+//RF24CCM radio(22, 0);
+//ESBNetwork<RF24CCM> network(radio);
+//ESBMesh<ESBNetwork<RF24CCM>, RF24CCM> mesh(radio, network);
+//ESBGateway<ESBMesh<ESBNetwork<RF24CCM>, RF24CCM>, ESBNetwork<RF24CCM>, RF24CCM> gw(radio, network, mesh);
+// Replace with your own random key, e.g. from: head -c16 /dev/urandom | xxd -i
+//uint8_t encryptionKey[RF24CCM_KEY_SIZE] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+//                                           0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10};
+
 uint32_t mesh_timer = 0;
 
 int main(int argc, char** argv)
 {
+
+    //AES-CCM encryption (see RF24CCM above): set the key and enable it before gw.begin()
+    //radio.setKey(encryptionKey);
+    //radio.enableEncryption = true;
 
     //Config for use with RF24Mesh as Master Node
     //uint8_t nodeID=0;

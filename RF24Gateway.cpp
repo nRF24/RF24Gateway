@@ -6,6 +6,9 @@
 
 #include "RF24Gateway.h"
 #include "RF24Mesh/RF24Mesh_config.h"
+#if defined(RF24NETWORK_CCM)
+    #include <RF24Network/RF24CCM.h>
+#endif
 
 /***************************************************************************************/
 
@@ -846,3 +849,6 @@ void ESBGateway<mesh_t, network_t, radio_t>::sendUDP(uint8_t nodeID, RF24Network
 
 // ensure the compiler is aware of the possible datatype for the template class
 template class ESBGateway<ESBMesh<ESBNetwork<RF24>, RF24>, ESBNetwork<RF24>, RF24>;
+#if defined(RF24NETWORK_CCM)
+template class ESBGateway<ESBMesh<ESBNetwork<RF24CCM>, RF24CCM>, ESBNetwork<RF24CCM>, RF24CCM>;
+#endif
