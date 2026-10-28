@@ -42,7 +42,7 @@ to utilize standard RF24Network messages as well.
 
 Documentation & Setup Info: http://nRF24.github.io/RF24Ethernet
 
-##V2.0 API Changes
+## V2.0 API Changes
 Introducing **RF24Network & RF24Mesh & RF24Gateway v2.0** with some *significant API changes*, adding the use of [C++ Templates](https://cplusplus.com/doc/oldtutorial/templates/)
 in order to support a range of ESB enabled radios, most recently NRF52x radios.
 
