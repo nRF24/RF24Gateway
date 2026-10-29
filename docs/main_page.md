@@ -194,3 +194,7 @@ Examples are:
 ## Example: create TCP/IP link between two Raspberry Pi
 
 This example demonstrates how a TCP/IP link could be created between two RPIs: [Example LINK](rpi_tcpip_link.md)
+
+## Securing the Network
+
+See [Securing the Network](securing_the_network.md) for firewall, IPv6, reverse path filtering, nodeID allowlist and AES-CCM encryption settings for production deployments.
