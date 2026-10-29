@@ -3,11 +3,46 @@
 ## RF24Gateway
 A complimentary library to RF24Ethernet, for RPi/Linux devices.
 
-RF24Ethernet allows small Arduino/AVR devices to communicate using TCP/IP over nrf24l01 radio modules.
+Give $2 Arduino radio nodes a real IP address. Ping them, browse them, and use MQTT, HTTP and SSH
+from your network, with no WiFi or ESP32 needed. A Raspberry Pi/Linux box running RF24Gateway is the
+bridge.
+
+**Why not just use an ESP32?**
+
+The RF24 Comm stack uses very little power, and provides a self-healing mesh with range beyond WiFi,
+cheap nodes, and no WiFi credentials on every device. Use RF24 software to extend your ESP32 networks!
 
 RF24Gateway allows a RPi/Linux device to act as a gateway for those nodes, handling IP traffic automatically, while allowing users
 to utilize standard RF24Network messages as well.
 
+
+## Quick Start:
+
+**A: No Gateway**
+
+1. Install RF24Ethernet from the Arduino Library Manager
+
+2. Run the Headless examples on two RF24Ethernet nodes
+
+**B: With a Gateway**
+
+1. Download and run the installer on RPi:
+
+`wget https://raw.githubusercontent.com/nRF24/.github/main/installer/install.sh`
+
+2. Make it executable:
+
+`chmod +x install.sh`
+
+3. Run it!
+
+`./install.sh`
+
+4. Use the Arduino Library Manager to install RF24Ethernet and its dependencies.
+
+Documentation & Setup Info: http://nRF24.github.io/RF24Ethernet
+
+## V2.0 API Changes
 Introducing **RF24Network & RF24Mesh & RF24Gateway v2.0** with some *significant API changes*, adding the use of [C++ Templates](https://cplusplus.com/doc/oldtutorial/templates/)
 in order to support a range of ESB enabled radios, most recently NRF52x radios.
 
