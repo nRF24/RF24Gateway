@@ -6,11 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 <!-- markdownlint-disable MD024 -->
 
+## [2.2.0] - 2026-10-30
+
+### <!-- 1 --> 🚀 Added
+
+- Add security doc by \@TMRh20 in [#64](https://github.com/nRF24/RF24Gateway/pull/64)
+
+### <!-- 9 --> 🗨️ Changed
+
+- Sec fixes by \@TMRh20 in [#61](https://github.com/nRF24/RF24Gateway/pull/61)
+- Update CMakeLists.txt by \@TMRh20 in [#62](https://github.com/nRF24/RF24Gateway/pull/62)
+- Update readme by \@TMRh20 in [#63](https://github.com/nRF24/RF24Gateway/pull/63)
+
+[2.2.0]: https://github.com/nRF24/RF24Gateway/compare/v2.1.5...v2.2.0
+
+Full commit diff: [`v2.1.5...v2.2.0`][2.2.0]
+
 ## [2.1.5] - 2026-06-06
 
 ### <!-- 9 --> 🗨️ Changed
 
 - Rollover-safe millis call by \@TMRh20 in [#59](https://github.com/nRF24/RF24Gateway/pull/59)
+- Bump version to v2.1.5 by \@TMRh20 in [`6c85f11`](https://github.com/nRF24/RF24Gateway/commit/6c85f11bf942e879859bae9184ebb90fb95cb295)
 
 [2.1.5]: https://github.com/nRF24/RF24Gateway/compare/v2.1.4...v2.1.5
 
