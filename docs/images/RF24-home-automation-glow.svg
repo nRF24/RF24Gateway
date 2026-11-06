@@ -1,0 +1,333 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1028" viewBox="0 0 1600 1028">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#000000"/><stop offset="1" stop-color="#0D1117"/>
+</linearGradient>
+<linearGradient id="gw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5EF2A8"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+<linearGradient id="eth" gradientUnits="userSpaceOnUse" x1="518" y1="0" x2="922" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#A371F7"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#8B949E" opacity=".16"/></pattern>
+<radialGradient id="halo"><stop offset="0" stop-color="#22D3EE" stop-opacity=".16"/><stop offset="1" stop-color="#22D3EE" stop-opacity="0"/></radialGradient>
+<filter id="glowS" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="glowLine" filterUnits="userSpaceOnUse" x="0" y="0" width="1600" height="1028"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="glowT" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="3.5"/><feComponentTransfer result="b"><feFuncA type="linear" slope=".6"/></feComponentTransfer><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="glowM" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="glowL" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="4.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<radialGradient id="ambP"><stop offset="0" stop-color="#A371F7" stop-opacity=".20"/><stop offset="1" stop-color="#A371F7" stop-opacity="0"/></radialGradient>
+<radialGradient id="ambK"><stop offset="0" stop-color="#F472B6" stop-opacity=".10"/><stop offset="1" stop-color="#F472B6" stop-opacity="0"/></radialGradient>
+<linearGradient id="ruler" gradientUnits="userSpaceOnUse" x1="616" y1="0" x2="84" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#A371F7"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<clipPath id="meshClip"><rect x="0" y="170" width="636" height="696"/></clipPath>
+</defs>
+<rect x="0" y="0" width="1600" height="1028" rx="0" fill="url(#bg)"  />
+<rect x="0" y="0" width="1600" height="1028" rx="0" fill="url(#dots)"  />
+<circle cx="822" cy="520" r="520" fill="url(#ambP)"/><circle cx="60" cy="560" r="380" fill="url(#ambK)"/><circle cx="1500" cy="120" r="420" fill="url(#ambP)"/>
+<text x="52" y="92" font-family="Noto Sans" font-size="60" font-weight="bold" filter="url(#glowT)"><tspan fill="#E6EDF3">RF24Gateway</tspan><tspan fill="#8B949E" dx="14">+</tspan><tspan fill="url(#eth)" dx="14">RF24Ethernet</tspan></text>
+<rect x="54" y="110" width="72" height="4" rx="2" fill="#22D3EE"  filter="url(#glowS)"/>
+<text x="52" y="148" font-family="Noto Sans" font-size="25" font-weight="normal" fill="#A3ACB8" text-anchor="start" >Real TCP/IP home automation over RF24 radios</text>
+<rect x="1072" y="52" width="476" height="46" rx="8" fill="#17112A" stroke="#A371F7" stroke-width="1.4" filter="url(#glowS)"/>
+<text x="1092" y="81" font-family="DejaVu Sans Mono" font-size="18" fill="#E6EDF3">client.<tspan fill="#22D3EE">publish</tspan>(<tspan fill="#5EF2A8">"home/temp"</tspan>, <tspan fill="#FBBF24">"21.5"</tspan>);</text>
+<text x="1548" y="124" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#8B949E" text-anchor="end" >from a sensor node, across the mesh, to your broker</text>
+<circle cx="616" cy="652" r="400" fill="url(#halo)"/>
+<g clip-path="url(#meshClip)">
+<circle cx="616" cy="652" r="90" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="152" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="214" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="276" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="338" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="400" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="462" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="524" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+<circle cx="616" cy="652" r="586" fill="none" stroke="#D2A8FF" stroke-opacity=".10" stroke-dasharray="2 7"/>
+</g>
+<text x="52" y="216" font-family="Noto Sans" font-size="23" font-weight="bold" fill="#22D3EE" text-anchor="start" filter="url(#glowT)">Sensor &amp; control nodes</text>
+<text x="52" y="241" font-family="Noto Sans" font-size="15" font-weight="normal" fill="#A3ACB8" text-anchor="start" >RF24Ethernet on Arduino / ESP32 / nRF52x / nRF54x</text>
+<text x="52" y="262" font-family="Noto Sans" font-size="15" font-weight="normal" fill="#A3ACB8" text-anchor="start" >RF24Gateway on Linux / Raspberry Pi</text>
+<line x1="616" y1="652" x2="452" y2="318" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="616" y1="652" x2="452" y2="468" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="525.8" cy="550.8" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="616" y1="652" x2="440" y2="610" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="519.2" cy="628.9" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="616" y1="652" x2="440" y2="725" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="616" y1="652" x2="450" y2="812" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="524.7" cy="740.0" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="452" y1="318" x2="300" y2="288" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="383.6" cy="304.5" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="452" y1="318" x2="300" y2="382" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="383.6" cy="346.8" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="452" y1="468" x2="300" y2="478" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="440" y1="610" x2="285" y2="590" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="370.25" cy="601.0" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="440" y1="610" x2="285" y2="672" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="440" y1="725" x2="285" y2="758" stroke="#A371F7" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="370.25" cy="739.85" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="300" y1="288" x2="118" y2="292" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="300" y1="382" x2="118" y2="392" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="190.8" cy="388.0" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="300" y1="478" x2="118" y2="490" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="190.8" cy="485.2" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="285" y1="590" x2="118" y2="588" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="184.8" cy="588.8" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="285" y1="672" x2="118" y2="684" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="184.8" cy="679.2" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="285" y1="758" x2="118" y2="782" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" filter="url(#glowLine)"/>
+<polygon points="452.0,300.0 467.6,309.0 467.6,327.0 452.0,336.0 436.4,327.0 436.4,309.0" fill="#0D1117" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="452" cy="318" r="6.5" fill="#22D3EE"/>
+<text x="478" y="302" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#7DE3F4" text-anchor="start" >01</text>
+<polygon points="452.0,450.0 467.6,459.0 467.6,477.0 452.0,486.0 436.4,477.0 436.4,459.0" fill="#0D1117" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="452" cy="468" r="6.5" fill="#22D3EE"/>
+<text x="478" y="452" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#7DE3F4" text-anchor="start" >02</text>
+<polygon points="440.0,592.0 455.6,601.0 455.6,619.0 440.0,628.0 424.4,619.0 424.4,601.0" fill="#0D1117" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="440" cy="610" r="6.5" fill="#22D3EE"/>
+<text x="466" y="594" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#7DE3F4" text-anchor="start" >03</text>
+<polygon points="440.0,707.0 455.6,716.0 455.6,734.0 440.0,743.0 424.4,734.0 424.4,716.0" fill="#0D1117" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="440" cy="725" r="6.5" fill="#22D3EE"/>
+<text x="440" y="760" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#7DE3F4" text-anchor="middle" >04</text>
+<polygon points="450.0,794.0 465.6,803.0 465.6,821.0 450.0,830.0 434.4,821.0 434.4,803.0" fill="#0D1117" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="450" cy="812" r="6.5" fill="#22D3EE"/>
+<text x="477" y="817" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#7DE3F4" text-anchor="start" >05</text>
+<text x="422" y="818" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="end" >Pi / Linux node</text>
+<polygon points="300.0,274.0 312.1,281.0 312.1,295.0 300.0,302.0 287.9,295.0 287.9,281.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="300" cy="288" r="5.0" fill="#D2A8FF"/>
+<text x="300" y="319" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >011</text>
+<polygon points="300.0,368.0 312.1,375.0 312.1,389.0 300.0,396.0 287.9,389.0 287.9,375.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="300" cy="382" r="5.0" fill="#D2A8FF"/>
+<text x="300" y="413" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >021</text>
+<polygon points="300.0,464.0 312.1,471.0 312.1,485.0 300.0,492.0 287.9,485.0 287.9,471.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="300" cy="478" r="5.0" fill="#D2A8FF"/>
+<text x="300" y="509" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >012</text>
+<polygon points="285.0,576.0 297.1,583.0 297.1,597.0 285.0,604.0 272.9,597.0 272.9,583.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="285" cy="590" r="5.0" fill="#D2A8FF"/>
+<text x="285" y="621" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >013</text>
+<polygon points="285.0,658.0 297.1,665.0 297.1,679.0 285.0,686.0 272.9,679.0 272.9,665.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="285" cy="672" r="5.0" fill="#D2A8FF"/>
+<text x="285" y="703" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >023</text>
+<polygon points="285.0,744.0 297.1,751.0 297.1,765.0 285.0,772.0 272.9,765.0 272.9,751.0" fill="#0D1117" stroke="#A371F7" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="285" cy="758" r="5.0" fill="#D2A8FF"/>
+<text x="285" y="789" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#D2A8FF" text-anchor="middle" >014</text>
+<polygon points="118.0,280.0 128.4,286.0 128.4,298.0 118.0,304.0 107.6,298.0 107.6,286.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="292" r="4.3" fill="#F472B6"/>
+<text x="118" y="323" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0111</text>
+<text x="118" y="341" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Climate</text>
+<polygon points="118.0,380.0 128.4,386.0 128.4,398.0 118.0,404.0 107.6,398.0 107.6,386.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="392" r="4.3" fill="#F472B6"/>
+<text x="118" y="423" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0121</text>
+<text x="118" y="441" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Lights / relays</text>
+<polygon points="118.0,478.0 128.4,484.0 128.4,496.0 118.0,502.0 107.6,496.0 107.6,484.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="490" r="4.3" fill="#F472B6"/>
+<text x="118" y="521" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0112</text>
+<text x="118" y="539" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Door &amp; window</text>
+<polygon points="118.0,576.0 128.4,582.0 128.4,594.0 118.0,600.0 107.6,594.0 107.6,582.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="588" r="4.3" fill="#F472B6"/>
+<text x="118" y="619" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0113</text>
+<text x="118" y="637" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Motion</text>
+<polygon points="118.0,672.0 128.4,678.0 128.4,690.0 118.0,696.0 107.6,690.0 107.6,678.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="684" r="4.3" fill="#F472B6"/>
+<text x="118" y="715" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0123</text>
+<text x="118" y="733" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Energy meter</text>
+<polygon points="118.0,770.0 128.4,776.0 128.4,788.0 118.0,794.0 107.6,788.0 107.6,776.0" fill="#0D1117" stroke="#F472B6" stroke-width="2.2" filter="url(#glowM)"/>
+<circle cx="118" cy="782" r="4.3" fill="#F472B6"/>
+<text x="118" y="813" font-family="DejaVu Sans Mono" font-size="13" font-weight="bold" fill="#F9A8D4" text-anchor="middle" >0114</text>
+<text x="118" y="831" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >Water leak</text>
+<text x="528" y="402" font-family="DejaVu Sans Mono" font-size="14" font-weight="bold" fill="#22D3EE" text-anchor="start" >2.4 GHz</text>
+<text x="528" y="422" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" fill="#7DE3F4" text-anchor="start" >radio mesh</text>
+<text x="350" y="859" font-family="Noto Sans" font-size="13" font-weight="normal" fill="#A3ACB8" text-anchor="middle" >Each hop extends range: ≈1 km+ per hop, line of sight, PA+LNA radios</text>
+<line x1="616" y1="870" x2="92" y2="870" stroke="url(#ruler)" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<path d="M92 863 L78 870 L92 877 Z" fill="#F472B6" filter="url(#glowS)"/>
+<line x1="616" y1="864" x2="616" y2="876" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<text x="616" y="891" text-anchor="middle" font-family="DejaVu Sans Mono" font-size="13"><tspan fill="#22D3EE" font-weight="bold">0 km</tspan><tspan fill="#A3ACB8" dx="7">master</tspan></text>
+<line x1="445" y1="864" x2="445" y2="876" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<text x="445" y="891" text-anchor="middle" font-family="DejaVu Sans Mono" font-size="13"><tspan fill="#22D3EE" font-weight="bold">≈1 km+</tspan><tspan fill="#A3ACB8" dx="7">1 hop</tspan></text>
+<line x1="290" y1="864" x2="290" y2="876" stroke="#A371F7" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<text x="290" y="891" text-anchor="middle" font-family="DejaVu Sans Mono" font-size="13"><tspan fill="#A371F7" font-weight="bold">≈2 km+</tspan><tspan fill="#A3ACB8" dx="7">2 hops</tspan></text>
+<line x1="118" y1="864" x2="118" y2="876" stroke="#F472B6" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<text x="118" y="891" text-anchor="middle" font-family="DejaVu Sans Mono" font-size="13"><tspan fill="#F472B6" font-weight="bold">≈3 km+</tspan><tspan fill="#A3ACB8" dx="7">3 hops</tspan></text>
+<rect x="636" y="196" width="372" height="656" rx="16" fill="#0D1117" stroke="#A371F7" stroke-width="2.5" filter="url(#glowM)"/>
+<rect x="656" y="214" width="44" height="34" rx="6" fill="#0A2A2C" stroke="#5EF2A8" stroke-width="1.6" />
+<path d="M665 223 l8 8 l-8 8" fill="none" stroke="#5EF2A8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="677" y1="240" x2="690" y2="240" stroke="#5EF2A8" stroke-width="2.4" stroke-linecap="round" />
+<text x="714" y="231" font-family="Noto Sans" font-size="23" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Linux box</text>
+<text x="714" y="251" font-family="Noto Sans" font-size="13.5" font-weight="normal" fill="#A3ACB8" text-anchor="start" >Raspberry Pi or any Linux host</text>
+<line x1="822.0" y1="360" x2="822.0" y2="376" stroke="#A371F7" stroke-width="2.5" stroke-linecap="round" />
+<circle cx="822.0" cy="368.0" r="3.2" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="822.0" y1="456" x2="822.0" y2="472" stroke="#A371F7" stroke-width="2.5" stroke-linecap="round" />
+<circle cx="822.0" cy="464.0" r="3.2" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="822.0" y1="552" x2="822.0" y2="568" stroke="#A371F7" stroke-width="2.5" stroke-linecap="round" />
+<circle cx="822.0" cy="560.0" r="3.2" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="822.0" y1="642" x2="822.0" y2="658" stroke="#A371F7" stroke-width="2.5" stroke-linecap="round" />
+<circle cx="822.0" cy="650.0" r="3.2" fill="#E6EDF3" filter="url(#glowS)"/>
+<line x1="822.0" y1="744" x2="822.0" y2="760" stroke="#A371F7" stroke-width="2.5" stroke-linecap="round" />
+<circle cx="822.0" cy="752.0" r="3.2" fill="#E6EDF3" filter="url(#glowS)"/>
+<rect x="656" y="268" width="332" height="92" rx="10" fill="#151A23" stroke="#30363D" stroke-width="1" />
+<text x="672" y="294" font-family="Noto Sans" font-size="15" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Optional services on the same box</text>
+<rect x="670" y="318" width="84.96" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="712.48" y="334.5" font-family="DejaVu Sans Mono" font-size="12" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >mosquitto</text>
+<rect x="762.96" y="318" width="77.52" height="24" rx="12" fill="#F472B622" stroke="#F472B6" stroke-width="1" />
+<text x="801.72" y="334.5" font-family="DejaVu Sans Mono" font-size="12" font-weight="bold" fill="#F472B6" text-anchor="middle" >node-red</text>
+<rect x="848.48" y="318" width="40.32" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="868.64" y="334.5" font-family="DejaVu Sans Mono" font-size="12" font-weight="bold" fill="#22D3EE" text-anchor="middle" >ntp</text>
+<rect x="656" y="376" width="332" height="80" rx="10" fill="#151A23" stroke="#30363D" stroke-width="1" />
+<text x="672" y="406" font-family="Noto Sans" font-size="16" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Linux IP stack</text>
+<text x="672" y="432" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#A3ACB8" text-anchor="start" >Routing · NAT · firewall</text>
+<rect x="656" y="472" width="332" height="80" rx="10" fill="#0A2422" stroke="#5EF2A8" stroke-width="1.8" filter="url(#glowS)"/>
+<rect x="670" y="488" width="62" height="48" rx="6" fill="#000000" stroke="#8957E5" stroke-width="1" />
+<text x="701" y="518" font-family="DejaVu Sans Mono" font-size="16" font-weight="bold" fill="#E6EDF3" text-anchor="middle" >TUN</text>
+<text x="748" y="506" font-family="DejaVu Sans Mono" font-size="18" font-weight="bold" fill="#E6EDF3" text-anchor="start" >tun_nrf24</text>
+<text x="748" y="530" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" fill="#5EF2A8" text-anchor="start" >10.10.2.2</text>
+<rect x="656" y="568" width="332" height="74" rx="10" fill="#0B2B33" stroke="#22D3EE" stroke-width="2.5" filter="url(#glowS)"/>
+<text x="822.0" y="601" font-family="Noto Sans" font-size="24" font-weight="bold" fill="url(#gw)" text-anchor="middle">RF24Gateway</text>
+<text x="822.0" y="625" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#E6EDF3" text-anchor="middle" >IP packets ⇄ RF24 frames</text>
+<rect x="656" y="658" width="332" height="86" rx="10" fill="#17112A" stroke="#A371F7" stroke-width="1.8" filter="url(#glowS)"/>
+<text x="672" y="686" font-family="Noto Sans" font-size="18" font-weight="bold" fill="#22D3EE" text-anchor="start" >RF24Mesh</text>
+<text x="972" y="686" font-family="DejaVu Sans Mono" font-size="15" font-weight="bold" fill="#7DE3F4" text-anchor="end" >master 00</text>
+<text x="672" y="708" font-family="Noto Sans" font-size="13.5" font-weight="normal" fill="#E6EDF3" text-anchor="start" >Assigns addresses to joining nodes</text>
+<text x="672" y="730" font-family="Noto Sans" font-size="13.5" font-weight="normal" fill="#A3ACB8" text-anchor="start" >RF24Network: routing · fragmentation</text>
+<rect x="656" y="760" width="332" height="72" rx="10" fill="#151A23" stroke="#30363D" stroke-width="1" />
+<text x="672" y="790" font-family="Noto Sans" font-size="16" font-weight="bold" fill="#E6EDF3" text-anchor="start" >RF24 driver</text>
+<text x="672" y="813" font-family="Noto Sans" font-size="14" font-weight="normal" fill="#A3ACB8" text-anchor="start" >SPI → nRF24L01 radio</text>
+<path d="M914 812 h52 v-10 h-44 v-10 h44 v-10 h-52" fill="none" stroke="#FBBF24" stroke-width="3" filter="url(#glowS)"/>
+<rect x="572" y="626" width="76" height="52" rx="8" fill="#071F33" stroke="#22D3EE" stroke-width="2.2" filter="url(#glowM)"/>
+<rect x="584" y="637" width="52" height="30" rx="4" fill="#000000" stroke="#8957E5" stroke-width="1" />
+<text x="610" y="658" font-family="DejaVu Sans Mono" font-size="18" font-weight="bold" fill="#E6EDF3" text-anchor="middle" >00</text>
+<line x1="648" y1="652" x2="656" y2="652" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round" />
+<text x="1176" y="216" font-family="Noto Sans" font-size="23" font-weight="bold" fill="#5EF2A8" text-anchor="start" filter="url(#glowT)">Home automation systems</text>
+<text x="1176" y="241" font-family="Noto Sans" font-size="15" font-weight="normal" fill="#A3ACB8" text-anchor="start" >On this box, on your LAN, or in the cloud</text>
+<line x1="988" y1="416" x2="1104" y2="416" stroke="#5EF2A8" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<rect x="988" y="399" width="40" height="34" rx="5" fill="#E6EDF3" stroke="#8B949E" stroke-width="1" />
+<rect x="996" y="407" width="24" height="18" rx="2" fill="#0D1117"  />
+<text x="1066" y="388" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >eth0 /</text>
+<text x="1066" y="404" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >wlan0</text>
+<text x="1066" y="438" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#E6EDF3" text-anchor="middle" >TCP/IP</text>
+<line x1="1104" y1="295.0" x2="1104" y2="805.0" stroke="#A371F7" stroke-width="3" stroke-linecap="round" filter="url(#glowLine)"/>
+<line x1="1104" y1="295.0" x2="1176" y2="295.0" stroke="#5EF2A8" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="295.0" r="5" fill="#5EF2A8" filter="url(#glowS)"/>
+<rect x="1176" y="256" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<line x1="1210" y1="295" x2="1210.0" y2="280.0" stroke="#5EF2A8" stroke-width="2"/>
+<circle cx="1210.0" cy="280.0" r="3.4" fill="#5EF2A8"/>
+<line x1="1210" y1="295" x2="1224.3" y2="290.4" stroke="#5EF2A8" stroke-width="2"/>
+<circle cx="1224.3" cy="290.4" r="3.4" fill="#5EF2A8"/>
+<line x1="1210" y1="295" x2="1218.8" y2="307.1" stroke="#5EF2A8" stroke-width="2"/>
+<circle cx="1218.8" cy="307.1" r="3.4" fill="#5EF2A8"/>
+<line x1="1210" y1="295" x2="1201.2" y2="307.1" stroke="#5EF2A8" stroke-width="2"/>
+<circle cx="1201.2" cy="307.1" r="3.4" fill="#5EF2A8"/>
+<line x1="1210" y1="295" x2="1195.7" y2="290.4" stroke="#5EF2A8" stroke-width="2"/>
+<circle cx="1195.7" cy="290.4" r="3.4" fill="#5EF2A8"/>
+<circle cx="1210" cy="295" r="5.5" fill="#0D1117" stroke="#5EF2A8" stroke-width="2.2"/>
+</g>
+<text x="1244" y="286" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >MQTT broker</text>
+<text x="1364.2" y="286" font-family="Noto Sans" font-size="13.5" font-weight="normal" fill="#A3ACB8" text-anchor="start" >Mosquitto</text>
+<rect x="1244" y="298" width="89.3" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1288.65" y="314.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT :1883</text>
+<rect x="1341.3" y="298" width="117.82" height="24" rx="12" fill="#FBBF2422" stroke="#FBBF24" stroke-width="1" />
+<text x="1400.21" y="314.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#FBBF24" text-anchor="middle" >MQTT/TLS :8883</text>
+<line x1="1104" y1="380.0" x2="1176" y2="380.0" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="380.0" r="5" fill="#22D3EE" filter="url(#glowS)"/>
+<rect x="1176" y="341" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<path d="M1194 380 L1210 365 L1226 380 M1199 376 V395 H1221 V376" fill="none" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1206" y="383" width="8" height="12" fill="none" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="371" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Home Assistant</text>
+<rect x="1244" y="383" width="46.519999999999996" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1267.26" y="399.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT</text>
+<rect x="1298.52" y="383" width="96.42999999999999" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="1346.735" y="399.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >HTTP / REST</text>
+<line x1="1104" y1="465.0" x2="1176" y2="465.0" stroke="#F472B6" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="465.0" r="5" fill="#F472B6" filter="url(#glowS)"/>
+<rect x="1176" y="426" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<rect x="1192" y="451" width="13" height="10" rx="2" fill="none" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="1215" y="460" width="13" height="10" rx="2" fill="none" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="1192" y="470" width="13" height="10" rx="2" fill="none" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1205 456 C1212 456 1209 465 1215 465 M1205 475 C1212 475 1209 465 1215 465" fill="none" stroke="#F472B6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="456" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Node-RED</text>
+<rect x="1244" y="468" width="46.519999999999996" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1267.26" y="484.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT</text>
+<rect x="1298.52" y="468" width="46.519999999999996" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="1321.78" y="484.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >HTTP</text>
+<rect x="1353.04" y="468" width="39.39" height="24" rx="12" fill="#F472B622" stroke="#F472B6" stroke-width="1" />
+<text x="1372.735" y="484.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >UDP</text>
+<line x1="1104" y1="550.0" x2="1176" y2="550.0" stroke="#FBBF24" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="550.0" r="5" fill="#FBBF24" filter="url(#glowS)"/>
+<rect x="1176" y="511" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<path d="M1204 557 C1204 551 1198 550 1198 544 A12 12 0 0 1 1222 544 C1222 550 1216 551 1216 557 Z M1205 562 H1215 M1207 567 H1213" fill="none" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="541" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >openHAB</text>
+<rect x="1244" y="553" width="46.519999999999996" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1267.26" y="569.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT</text>
+<rect x="1298.52" y="553" width="96.42999999999999" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="1346.735" y="569.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >HTTP / REST</text>
+<line x1="1104" y1="635.0" x2="1176" y2="635.0" stroke="#60A5FA" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="635.0" r="5" fill="#60A5FA" filter="url(#glowS)"/>
+<rect x="1176" y="596" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<rect x="1195" y="620" width="13" height="13" rx="2.5" fill="none" stroke="#60A5FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1195" y="636" width="13" height="13" rx="2.5" fill="none" stroke="#60A5FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1211" y="620" width="13" height="13" rx="2.5" fill="none" stroke="#60A5FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1211" y="636" width="13" height="13" rx="2.5" fill="none" stroke="#60A5FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="626" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Domoticz</text>
+<rect x="1244" y="638" width="46.519999999999996" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1267.26" y="654.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT</text>
+<rect x="1298.52" y="638" width="96.42999999999999" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="1346.735" y="654.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >HTTP / JSON</text>
+<line x1="1104" y1="720.0" x2="1176" y2="720.0" stroke="#D2A8FF" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="720.0" r="5" fill="#D2A8FF" filter="url(#glowS)"/>
+<rect x="1176" y="681" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<rect x="1201" y="703" width="18" height="34" rx="3.5" fill="none" stroke="#D2A8FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1207" y1="732" x2="1213" y2="732" fill="none" stroke="#D2A8FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="711" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Phones &amp; browsers</text>
+<rect x="1244" y="723" width="132.07999999999998" height="24" rx="12" fill="#5EF2A822" stroke="#5EF2A8" stroke-width="1" />
+<text x="1310.04" y="739.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >MQTT / WebSocket</text>
+<rect x="1384.08" y="723" width="110.69" height="24" rx="12" fill="#22D3EE22" stroke="#22D3EE" stroke-width="1" />
+<text x="1439.425" y="739.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >HTTP to nodes</text>
+<line x1="1104" y1="805.0" x2="1176" y2="805.0" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round" filter="url(#glowLine)"/>
+<circle cx="1104" cy="805.0" r="5" fill="#22D3EE" filter="url(#glowS)"/>
+<rect x="1176" y="766" width="376" height="78" rx="10" fill="#0D1117" stroke="#A371F7" stroke-width="1.6" filter="url(#glowS)"/>
+<g filter="url(#glowS)">
+<path d="M1201 816 A8 8 0 0 1 1200 800 A11 11 0 0 1 1220 800 A8 8 0 0 1 1220 816 Z" fill="none" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="1244" y="796" font-family="Noto Sans" font-size="17" font-weight="bold" fill="#E6EDF3" text-anchor="start" >Internet services</text>
+<rect x="1244" y="808" width="39.39" height="24" rx="12" fill="#F472B622" stroke="#F472B6" stroke-width="1" />
+<text x="1263.695" y="824.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >DNS</text>
+<rect x="1291.39" y="808" width="39.39" height="24" rx="12" fill="#F472B622" stroke="#F472B6" stroke-width="1" />
+<text x="1311.085" y="824.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >NTP</text>
+<rect x="1338.7800000000002" y="808" width="117.82" height="24" rx="12" fill="#FBBF2422" stroke="#FBBF24" stroke-width="1" />
+<text x="1397.6900000000003" y="824.5" font-family="DejaVu Sans Mono" font-size="11.5" font-weight="bold" fill="#FBBF24" text-anchor="middle" >Cloud MQTT/TLS</text>
+<circle cx="1140.0" cy="380.0" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<circle cx="1140.0" cy="635.0" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<circle cx="1104" cy="337.5" r="3.8" fill="#E6EDF3" filter="url(#glowS)"/>
+<rect x="40" y="902" width="568" height="96" rx="12" fill="#0D1117" stroke="#22D3EE66" stroke-width="1.2" />
+<text x="58" y="930" font-family="Noto Sans" font-size="18" font-weight="bold" fill="#22D3EE" text-anchor="start" filter="url(#glowT)">RF24Mesh</text>
+<text x="592" y="929" font-family="Noto Sans" font-size="12.5" font-weight="normal" fill="#A3ACB8" text-anchor="end" >Node IP = 10.10.2.&lt;nodeID&gt;</text>
+<rect x="56" y="950" width="134.25" height="28" rx="14" fill="#17112A" stroke="#22D3EEAA" stroke-width="1" />
+<text x="123.125" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >Self-organizing</text>
+<rect x="197.25" y="950" width="111.0" height="28" rx="14" fill="#17112A" stroke="#22D3EEAA" stroke-width="1" />
+<text x="252.75" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >Self-healing</text>
+<rect x="315.25" y="950" width="173.0" height="28" rx="14" fill="#17112A" stroke="#22D3EEAA" stroke-width="1" />
+<text x="401.75" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#22D3EE" text-anchor="middle" >Automatic addressing</text>
+<rect x="620" y="902" width="404" height="96" rx="12" fill="#0D1117" stroke="#5EF2A866" stroke-width="1.2" />
+<text x="638" y="930" font-family="Noto Sans" font-size="18" font-weight="bold" fill="#5EF2A8" text-anchor="start" filter="url(#glowT)">RF24Gateway</text>
+<text x="1008" y="929" font-family="Noto Sans" font-size="12.5" font-weight="normal" fill="#A3ACB8" text-anchor="end" >ping · curl · ssh to the mesh</text>
+<rect x="636" y="950" width="72.25" height="28" rx="14" fill="#17112A" stroke="#5EF2A8AA" stroke-width="1" />
+<text x="672.125" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >TUN/TAP</text>
+<rect x="715.25" y="950" width="118.75" height="28" rx="14" fill="#17112A" stroke="#5EF2A8AA" stroke-width="1" />
+<text x="774.625" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >Linux routing</text>
+<rect x="841.0" y="950" width="103.25" height="28" rx="14" fill="#17112A" stroke="#5EF2A8AA" stroke-width="1" />
+<text x="892.625" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#5EF2A8" text-anchor="middle" >Any IP tool</text>
+<rect x="1036" y="902" width="524" height="96" rx="12" fill="#0D1117" stroke="#F472B666" stroke-width="1.2" />
+<text x="1054" y="930" font-family="Noto Sans" font-size="18" font-weight="bold" fill="#F472B6" text-anchor="start" filter="url(#glowT)">RF24Ethernet</text>
+<text x="1544" y="929" font-family="Noto Sans" font-size="12.5" font-weight="normal" fill="#A3ACB8" text-anchor="end" >Standard Arduino client &amp; server networking</text>
+<rect x="1052" y="950" width="165.25" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1134.625" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >uIP / lwIP / Zephyr</text>
+<rect x="1224.25" y="950" width="41.25" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1244.875" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >TCP</text>
+<rect x="1272.5" y="950" width="41.25" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1293.125" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >UDP</text>
+<rect x="1320.75" y="950" width="41.25" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1341.375" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >DNS</text>
+<rect x="1369.0" y="950" width="49.0" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1393.5" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >MQTT</text>
+<rect x="1425.0" y="950" width="41.25" height="28" rx="14" fill="#17112A" stroke="#F472B6AA" stroke-width="1" />
+<text x="1445.625" y="969" font-family="DejaVu Sans Mono" font-size="12.5" font-weight="bold" fill="#F472B6" text-anchor="middle" >TLS</text>
+</svg>
