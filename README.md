@@ -42,7 +42,7 @@ to utilize standard RF24Network messages as well.
 
 Documentation & Setup Info: http://nRF24.github.io/RF24Ethernet
 
-![docs/images/RF24-home-automation.svg](docs/images/RF24-home-automation.svg){width=70% height=70%}
+![docs/images/RF24-home-automation-glow.svg](docs/images/RF24-home-automation-glow.svg){width=70% height=70%}
 
 ![docs/images/RF24Gateway-network.svg](docs/images/RF24Gateway-network.svg){width=70% height=70%}
 
