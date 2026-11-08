@@ -1,0 +1,5 @@
+# Service user for RF24Gateway. Applied by systemd-sysusers at install and boot.
+u @RF24GATEWAY_USER@ - "RF24Gateway service" /var/lib/rf24gateway
+# Raspberry Pi OS device groups for /dev/spidev* and /dev/gpiochip*
+m @RF24GATEWAY_USER@ spi
+m @RF24GATEWAY_USER@ gpio

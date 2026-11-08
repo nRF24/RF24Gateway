@@ -1,0 +1,9 @@
+#!/bin/sh
+# Attach to the RF24Gateway ncurses UI. Detach with Ctrl-A then D.
+user=@RF24GATEWAY_USER@
+if [ "$(id -un)" = "$user" ]; then
+    exec screen -r rf24gateway
+fi
+# script(1) gives screen a terminal owned by the service user, which it requires.
+# script runs its command with $SHELL, which sudo sets to the account's nologin shell
+exec sudo -u "$user" env SHELL=/bin/sh script -q -c "screen -r rf24gateway" /dev/null
