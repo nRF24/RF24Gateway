@@ -48,7 +48,7 @@ in order to support a range of ESB enabled radios, most recently NRF52x radios.
 
 ## Installation
 
-See <http://nRF24.github.io/RF24> for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
+See <http://nRF24.github.io/RF24Ethernet> for installation instructions using the installer, or clone the RF24 libs and run 'make install' for each one.
 
 After running the installer, RF24Gateway will be installed at rf24libs/RF24Gateway. [**Examples**](examples.html) are included for operating the gateway
 as well as client scripts & programs to control nodes via http requests.
