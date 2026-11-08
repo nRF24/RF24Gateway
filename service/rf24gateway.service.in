@@ -1,0 +1,29 @@
+[Unit]
+Description=RF24Gateway (nRF24L01 mesh to IP bridge, @RF24GATEWAY_SERVICE_MODE@)
+Documentation=https://nrf24.github.io/RF24Gateway/
+After=network.target
+
+[Service]
+Type=simple
+@SERVICE_EXEC_LINES@
+# dhcplist.txt, routing.txt and failLog.txt live here (systemd chowns it to the service user)
+StateDirectory=rf24gateway
+WorkingDirectory=/var/lib/rf24gateway
+# Restart even after a clean exit, e.g. 'x' pressed in the UI. 'systemctl stop' still stops it
+Restart=always
+RestartSec=5
+Nice=-5
+
+# Run unprivileged. The user is created by sysusers.d/rf24gateway.conf and is in the
+# spi and gpio groups for /dev/spidev* and /dev/gpiochip*
+User=@RF24GATEWAY_USER@
+# CAP_NET_ADMIN is the only privilege needed: to create tun_nrf24 and set its address
+AmbientCapabilities=CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_ADMIN
+NoNewPrivileges=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

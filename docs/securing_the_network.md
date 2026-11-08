@@ -280,6 +280,22 @@ for (int i = 0; i < mesh.addrListTop; i++) {
 The comment says the check "can be run on a timer" to save CPU time. Keep the interval short: an unauthorized node holds a valid address from the
 moment the master assigns it until the next time the check runs. Running it on every loop, right after the gateway processes DHCP requests, gives the smallest window.
 
+### With the rf24gatewayd Service
+
+The `rf24gatewayd` service (in the `service` folder) has the allowlist built in, so no code changes or rebuilds are needed. List the nodeIDs in
+`/etc/rf24gateway/rf24gateway.conf`, separated by commas or spaces, then restart the service:
+
+```ini
+allowed_nodes = 3, 4, 5, 22
+```
+
+```sh
+sudo systemctl restart rf24gateway
+```
+
+The service checks the list on every loop pass and logs each node it releases (`journalctl -u rf24gateway`). Leaving `allowed_nodes` empty or
+commented out lets any node join. If the line can't be parsed, the service logs an error and doesn't start, rather than running without the list.
+
 ### Limitations
 
 The nodeID is chosen by the node itself and sent in its address request; nothing proves a node is who it says it is. Anyone who knows (or guesses) an
